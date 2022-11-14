@@ -1,0 +1,212 @@
+.Sites {
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.containerSites {
+    width: 100%;
+    height: 90%;
+    flex-direction: column;
+    display: flex;
+}
+@media (min-height: 768px) {
+    .containerSites {
+        height: 88%;
+    }
+    .barcode {
+        flex: 3;
+    }
+}
+@media (min-width: 532px) {
+    .viewItems {
+        height: 100%;
+        margin-left: 20px;
+        margin-right: 20px;        
+    }
+    #line {
+        display: none;
+    }
+    .scanner {
+        flex: 4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        width: 70%;
+    }
+    .barcodeBox {
+        background-color: white;
+        width: 50%;
+        max-height: 40vh;
+        border-radius: 2%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+    }
+    #scanTextStyle {
+        font-size: 3rem;
+        margin-right: 10%;
+        font-family: 'Arimo', sans-serif;
+    }
+    .sitesBar {
+        flex: 2;
+        display: flex;
+        align-items: center;
+        background-color: black;
+        min-height: 188px;
+        overflow: hidden;
+    }
+    .scanText {
+        flex: 2;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: space-around;
+        height: 80%;
+
+    }
+    .barcode {
+        display: flex;
+        align-items: center;
+    }
+    .audioAssist {
+        margin-right: 10%;
+        display: flex;
+        justify-content: flex-end;
+        width: 52%;
+
+        padding: 2%;
+    }
+    .titleText {
+        width: 100%;
+        color:white;
+        text-align: right;
+    }
+    .iconB {
+        width: 33%;
+        margin-right: 10px;
+    }
+    .rec.rec-arrow {
+        border: none;
+        background-color: #2270a2;
+        color: white;
+        font-size: 2em;
+        font-family: none;
+        text-align: center;
+        box-shadow: 0 0 3px 0px white;
+        z-index: 1234567;
+    }
+    .rec{
+        opacity: 1  ;
+    }
+    .rec.rec-arrow:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+    .rec.rec-arrow:active {
+        box-shadow: 0 5px #666;
+        transform: translateY(4px);
+        background-color: #2271a2b0;
+    }
+    
+    
+
+}
+
+@media (max-width: 532px) {
+    .barcodeBox {
+        border-radius: 2%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        align-self: center;
+    }
+    .barcode {
+        flex-direction: column-reverse;
+        align-items: center;
+        justify-content: space-between;
+        max-height: 44%;
+    }
+    
+    #scanTextStyle {
+        color: #d8a51d;
+        font-size: 2em;
+        align-self: right;
+        margin: 0;
+        font-family: 'Arimo', sans-serif;
+    }
+    .scanText {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: space-between;
+        flex: 2;
+        width: 94%;
+        align-self: center;
+    }
+    .rec.rec-arrow {
+        /* display: none; */
+        visibility: hidden;
+        width: 0px;
+        height: 0px;
+        line-height: 0px;
+        min-width: 0px!important;
+        border: none;
+        font-size: 0;
+
+    }
+    .scanner {
+        border-radius: 1%;
+        width: 90%;
+        align-self: center;
+        /* background-color: white; */
+        flex: 2;
+    }
+    .sitesBar {
+        flex: 1;
+        display: block;
+        background-color: black;
+        min-height: 300px;
+                overflow: hidden;
+
+    }
+    .viewItems {
+        float: right;
+        width: 100%;
+
+    }
+    .titleText {
+        flex: 5;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+    }
+    .audioAssist {
+        flex: 2;
+        display: flex;
+        align-items: center;
+    }
+}
+
+.barcode {
+    display: flex;
+}
+
+
+/* .arrowButtons {
+    padding: 0px;
+    background-color: black;
+    border: black;
+
+} */
+/* .arrowButtons:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+} */
+.rec-pagination {
+    display: none!important;
+}
+
+

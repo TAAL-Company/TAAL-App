@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600;700&display=swap');	
+
+.loader {
+	position: absolute;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	margin: auto;
+	width: 100px;
+}
+
+.posts-container {
+	margin-left: 16px;
+}
+
+.post-content img{
+	width: 100%;
+}
+
+body{
+	height: 100%;
+	width: 100%;
+	overscroll-behavior-y: contain;
+	overflow: hidden;
+}
+
+#root{
+	height: 100vh;
+	width: 100%;
+	background-image: url('../src/images/Background.png');
+	/* for more opacity */
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-attachment: fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	background-size: cover;
+	-o-background-size: cover;
+}
+
+@media (max-width: 450px) {
+	#root{
+		background-color: black;
+		background-image: unset;
+		background-repeat: unset;
+		background-position: unset;
+		background-attachment: unset;
+		-webkit-background-size: unset;
+		-moz-background-size: unset;
+		background-size: unset;
+		-o-background-size: unset;
+	}
+}

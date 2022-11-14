@@ -1,0 +1,102 @@
+@media (max-width: 450px) {
+
+    text{
+        color:white;
+        font-size: 12px;
+        font-family: Arial;
+    }
+    
+    .blueBg{
+        width:auto;
+        height:auto;
+    }
+    
+    
+    .form-group{
+        display: inline-flex;
+        direction: rtl;
+        text-align: center;
+    }
+    
+    .btn{
+        width: auto;
+        background: rgb(86,152,197);
+        border-color: rgb(86,152,197);
+        color: white
+    }
+    
+
+}
+
+
+
+.centered{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+
+.icon{
+    height: auto;
+    color: white;
+    width: 5vh ;
+    background:rgb(37, 111, 161)
+}
+
+.input{
+    width: 100%;
+}
+
+.logo{
+    padding-bottom: 1vh;
+}
+
+.form-group{
+    display: inline-flex;
+    direction: rtl;
+    text-align: center;
+    width: -webkit-fill-available;
+    height: 20%;
+}
+
+.form-control{
+    border:0px solid #ffff;
+    border-radius: 0rem;
+    height: auto;
+    font-size: medium;
+}
+.btn{
+    width: 16rem;
+    background: rgb(37, 111, 161);
+    border-color: rgb(37, 111, 161);
+    color: white;
+}
+
+lable{
+    height: auto;
+    width: 100%;
+    margin-right: 15px solid black;
+}
+
+.forgotPass {
+    background-color: transparent;
+    background-repeat:no-repeat;
+    border: none;
+    cursor:pointer;
+    overflow: hidden;
+    outline:none;
+    color:white;
+    font-size: 12px;
+    font-family: Arial;
+}
+.forgotPass:focus {
+    border: none;
+    outline: none;
+}
+
+.alert{
+    direction: rtl;
+}
