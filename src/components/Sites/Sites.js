@@ -233,7 +233,7 @@ export default function Sites(props) {
                   },
                 })
                 .then(async (res) => {
-                  console.log("maslolim: ",res.data);
+                  console.log("maslolim: ", res.data);
                   // setDataRoutes(res.data)
                   routesInfo = transformArrayOfObjects(res.data);
 
