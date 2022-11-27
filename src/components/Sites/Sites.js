@@ -210,10 +210,13 @@ export default function Sites(props) {
                       },
                     })
                     .then((response) => {
-                      console.log("response.data: ", response.data);
+                      // console.log("response.data: ", response.data);
 
                       Array.prototype.push.apply(tasksList, response.data);
                       taskInformation = trasformObject(tasksList);
+
+                      console.log("taskInformation: ", taskInformation)
+
                     });
                 }
               } else {
@@ -221,6 +224,7 @@ export default function Sites(props) {
 
                 console.log("taskInformation1: ", taskInformation);
               }
+
               // Get the user's routes
               axios
                 .get(wpConfig.getRoutes, {
@@ -236,13 +240,16 @@ export default function Sites(props) {
                   console.log("maslolim: ",res.data);
                   // setDataRoutes(res.data)
                   routesInfo = transformArrayOfObjects(res.data);
+                  console.log("routesInfo: ",routesInfo);
 
                   let userRoutes = await getUserTasksFromRouteList(
                     res.data,
                     user.user.id
                   );
+                  console.log("userRoutes: ", userRoutes);
 
                   let newTaskList = getTasksList(taskInformation, userRoutes);
+                  console.log("after getTasksList: ",newTaskList);
 
                   newTaskList = addStationDetailsToTask(
                     newTaskList,
@@ -261,15 +268,21 @@ export default function Sites(props) {
                 })
                 .catch((err) => {
                   console.log(err);
+                  console.log("1");
+
                   setLoading(false);
                 });
             })
             .catch((err) => {
               console.log(err);
+              console.log("2");
+
               setLoading(false);
             });
         })
         .catch((err) => {
+          console.log("3");
+
           setLoading(false);
         });
     } else {

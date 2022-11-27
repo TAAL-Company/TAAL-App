@@ -16,6 +16,17 @@ import { PersistGate } from 'redux-persist/integration/react'
 
 // test
 function App() {
+
+	// Function to clear complete cache data
+	const clearCacheData = () => {
+		caches.keys().then((names) => {
+			names.forEach((name) => {
+				caches.delete(name);
+			});
+		});
+		alert('Complete Cache Cleared')
+	};
+
 	return (
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>

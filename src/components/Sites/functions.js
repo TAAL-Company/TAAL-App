@@ -17,9 +17,9 @@ export const getTasksList = (full, partial) => {
     console.log("full[element]: " + full[element]);
     newArray.push(full[element]);
   });
-  console.log("arrayOfId: " + arrayOfId);
-  console.log("partial" + partial);
-  console.log("newArray:", newArray);
+  // console.log("arrayOfId: " + arrayOfId);
+  // console.log("partial" + partial);
+  console.log("getTasksList function res:", newArray);
   return newArray;
 };
 
