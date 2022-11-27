@@ -1,0 +1,17 @@
+.audioBtn {
+  background-color: #e6b227;
+  border: 0;
+  border-radius: 50%;
+  outline: none;
+  width: 100%;
+  height: 100%;
+  display: "flex";
+  justify-content: "center";
+  align-items: "center";
+}
+
+.audioBtn:active {
+  background-color: rgb(255, 194, 27);
+  width: 105%;
+  height: 105%;
+}
