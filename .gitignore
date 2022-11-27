@@ -1,9 +1,21 @@
+
+# production
+/build
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+dist/
 .idea/
+
+.cache
+
+# misc
+.DS_Store
+.env
+
 *.log
 npm-debug.log
 yarn-error.log
-.DS_Store
-build/
-node_modules/
-dist/
-.cache
