@@ -42,6 +42,9 @@ export default function Sites(props) {
   const currDate = new Date().toLocaleDateString();
   const currTime = new Date().toLocaleTimeString();
 
+
+
+
   const onchange = (scanResult) => {
     if (!(scanResult === "error")) {
       let temp = transformArrayOfObjects(props.user_places.user_places);
@@ -136,7 +139,7 @@ export default function Sites(props) {
 
   // try
 
-  const resetFirstTask = () => {};
+  const resetFirstTask = () => { };
 
   const getDateInfo = () => {
     const date = new Date();
@@ -159,7 +162,29 @@ export default function Sites(props) {
   };
   // checkForInternet()
 
+
   useEffect(() => {
+
+    // Function to clear complete cache data
+    caches.keys().then((names) => {
+      names.forEach((name) => {
+        caches.delete(name);
+      });
+    });
+    alert("Complete Cache Cleared");
+
+    // Function to clear complete cookies data
+    window.addEventListener("beforeunload", (e) => {
+      e.preventDefault();
+      document.cookie.split(";").forEach((c) => {
+        document.cookie = c
+          .replace("/^ +/", "")
+          .replace("/=.*/", "=;expires=" + new Date().toUTCString() + ";path=/");
+      });
+    });
+
+
+
     // const userLang = navigator.language || navigator.userLanguage;
     getData();
 
@@ -240,7 +265,7 @@ export default function Sites(props) {
                   console.log("maslolim: ", res.data);
                   // setDataRoutes(res.data)
                   routesInfo = transformArrayOfObjects(res.data);
-                  console.log("routesInfo: ",routesInfo);
+                  console.log("routesInfo: ", routesInfo);
 
                   let userRoutes = await getUserTasksFromRouteList(
                     res.data,
@@ -249,7 +274,7 @@ export default function Sites(props) {
                   console.log("userRoutes: ", userRoutes);
 
                   let newTaskList = getTasksList(taskInformation, userRoutes);
-                  console.log("after getTasksList: ",newTaskList);
+                  console.log("after getTasksList: ", newTaskList);
 
                   newTaskList = addStationDetailsToTask(
                     newTaskList,
@@ -289,7 +314,7 @@ export default function Sites(props) {
       if (getFirstItemLocation() + 1 === user_places.user_places.length)
         setLineLength(32);
     }
-    return () => {};
+    return () => { };
   }, []);
   const isCurrentSite = (itemId) =>
     itemId === props.user_places.places_location;
