@@ -123,9 +123,7 @@ export default function Sites(props) {
     get(`${siteUrl}wp-json/wp/v2/users/`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization:
-          `Basic ` +
-          Buffer.from(`${userNameApi}:${passwordApi}`).toString("base64"),
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
       params: {
         per_page: 99,
@@ -207,9 +205,7 @@ export default function Sites(props) {
             "Cache-Control": "no-cache",
           },
           headers: {
-            Authorization:
-              `Basic ` +
-              Buffer.from(`${userNameApi}:${passwordApi}`).toString("base64"),
+            Authorization: "Bearer " + localStorage.getItem("token"),
           },
         })
         .then((places_res) => {
@@ -262,11 +258,7 @@ export default function Sites(props) {
                     "Cache-Control": "no-cache",
                   },
                   headers: {
-                    Authorization:
-                      `Basic ` +
-                      Buffer.from(`${userNameApi}:${passwordApi}`).toString(
-                        "base64"
-                      ),
+                    Authorization: "Bearer " + localStorage.getItem("token"),
                   },
                 })
                 .then(async (res) => {

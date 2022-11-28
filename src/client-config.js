@@ -1,7 +1,5 @@
 const clientConfig = {
   siteUrl: "https://taal.tech/",
-
-
 };
 // https://taal.tech/
 export default clientConfig;
