@@ -45,7 +45,6 @@ export default function Sites(props) {
   const userNameApi = process.env.USERNAME_ACCESSKEY;
   const passwordApi = process.env.PASSWORD_ACCESSKEY;
 
-
   const onchange = (scanResult) => {
     if (!(scanResult === "error")) {
       let temp = transformArrayOfObjects(props.user_places.user_places);
@@ -124,7 +123,9 @@ export default function Sites(props) {
     get(`${siteUrl}wp-json/wp/v2/users/`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ` + Buffer.from(`${userNameApi}:${passwordApi}`).toString("base64"),
+        Authorization:
+          `Basic ` +
+          Buffer.from(`${userNameApi}:${passwordApi}`).toString("base64"),
       },
       params: {
         per_page: 99,
@@ -140,7 +141,7 @@ export default function Sites(props) {
 
   // try
 
-  const resetFirstTask = () => { };
+  const resetFirstTask = () => {};
 
   const getDateInfo = () => {
     const date = new Date();
@@ -163,9 +164,7 @@ export default function Sites(props) {
   };
   // checkForInternet()
 
-
   useEffect(() => {
-
     // Function to clear complete cache data
     caches.keys().then((names) => {
       names.forEach((name) => {
@@ -180,11 +179,14 @@ export default function Sites(props) {
       document.cookie.split(";").forEach((c) => {
         document.cookie = c
           .replace("/^ +/", "")
-          .replace("/=.*/", "=;expires=" + new Date().toUTCString() + ";path=/");
+          .replace(
+            "/=.*/",
+            "=;expires=" + new Date().toUTCString() + ";path=/"
+          );
       });
     });
 
-
+    console.log("Complete Cookies Cleared");
 
     // const userLang = navigator.language || navigator.userLanguage;
     getData();
@@ -205,7 +207,9 @@ export default function Sites(props) {
             "Cache-Control": "no-cache",
           },
           headers: {
-            Authorization: `Basic ` + Buffer.from(`${userNameApi}:${passwordApi}`).toString("base64"),
+            Authorization:
+              `Basic ` +
+              Buffer.from(`${userNameApi}:${passwordApi}`).toString("base64"),
           },
         })
         .then((places_res) => {
@@ -241,8 +245,7 @@ export default function Sites(props) {
                       Array.prototype.push.apply(tasksList, response.data);
                       taskInformation = trasformObject(tasksList);
 
-                      console.log("taskInformation: ", taskInformation)
-
+                      console.log("taskInformation: ", taskInformation);
                     });
                 }
               } else {
@@ -259,7 +262,11 @@ export default function Sites(props) {
                     "Cache-Control": "no-cache",
                   },
                   headers: {
-                    Authorization: `Basic ` + Buffer.from(`${userNameApi}:${passwordApi}`).toString("base64"),
+                    Authorization:
+                      `Basic ` +
+                      Buffer.from(`${userNameApi}:${passwordApi}`).toString(
+                        "base64"
+                      ),
                   },
                 })
                 .then(async (res) => {
@@ -315,7 +322,7 @@ export default function Sites(props) {
       if (getFirstItemLocation() + 1 === user_places.user_places.length)
         setLineLength(32);
     }
-    return () => { };
+    return () => {};
   }, []);
   const isCurrentSite = (itemId) =>
     itemId === props.user_places.places_location;
@@ -334,9 +341,9 @@ export default function Sites(props) {
   };
   return (
     <React.Fragment>
-      <h1>
+      {/* <h1>
         current datetime: {currDate} {currTime}
-      </h1>
+      </h1> */}
       {isLoggedIn() ? (
         <div className="Sites">
           <Navbar origin={"Sites"} user_data={props.user} />
