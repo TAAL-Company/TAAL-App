@@ -27,7 +27,7 @@ export default function TaskComp(props) {
   if (props.index === props.currentIndex) {
  
     if (objTime.idTask === 0) {
-      objTime.idTask = props.index;
+      objTime.idTask = props.taskId;
       objTime.startTime = dateAndTime;
     }
     else if (objTime.idTask !== props.currentIndex) {
@@ -42,10 +42,6 @@ export default function TaskComp(props) {
       objTime.idTask = props.index;
       objTime.startTime = dateAndTime;
       objTime.endTime = "";
-
-
-
-      console.log("objTimeDONE: ", JSON.stringify(objTime));
     }
 
     if (props.lastOne){
