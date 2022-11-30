@@ -47,6 +47,17 @@ export default function TaskComp(props) {
 
       console.log("objTimeDONE: ", JSON.stringify(objTime));
     }
+
+    if (props.lastOne){
+      const currDate = new Date().toLocaleDateString();
+      const currTime = new Date().toLocaleTimeString();
+      let dateAndTime = currDate + " " + currTime;
+
+      objTime.endTime = dateAndTime;
+
+      postDataTime(objTime);   //api request to wp db
+
+    }
   }
 
 
