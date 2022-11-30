@@ -46,6 +46,7 @@ export default function Sites(props) {
   const passwordApi = process.env.PASSWORD_ACCESSKEY;
 
   const onchange = (scanResult) => {
+    localStorage.setItem("route_id", scanResult);
     if (!(scanResult === "error")) {
       let temp = transformArrayOfObjects(props.user_places.user_places);
       // scan the barcode and compare it with the redux info

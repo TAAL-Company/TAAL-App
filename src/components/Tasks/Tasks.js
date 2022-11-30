@@ -354,6 +354,7 @@ function Tasks(props) {
                     className={decideClassName(index, currIndex)}
                   >
                     <TaskComp
+                      lastOne= {modalOpen}
                       imgUrl={
                         item.acf && item.acf.image ? item.acf.image.url : false
                       }
@@ -472,6 +473,7 @@ function Tasks(props) {
                 return (
                   <div key={index} className={"slide slideHorizontalItem"}>
                     <TaskComp
+                      lastOne= {modalOpen}
                       imgUrl={
                         item.acf && item.acf.image ? item.acf.image.url : false
                       }

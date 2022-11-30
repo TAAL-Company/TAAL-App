@@ -69,6 +69,7 @@ class Login extends React.Component {
           sessionStorage.setItem("token", token);
           localStorage.setItem("token", token);
           localStorage.setItem("userName", user_nicename);
+          localStorage.setItem("userID", user_ID);
 
           // get user acf fields
           axios

@@ -1,18 +1,64 @@
-import React, { useRef, useEffect, createRef } from "react";
+import React, { useRef, useEffect, createRef, useState } from "react";
+import { postDataTime } from "../api";
 // import { BsFillVolumeUpFill } from 'react-icons/bs';
 import AudioIcon from "../assets/AudioIcon";
 import CheckIcon from "../assets/CheckIcon";
 import styled from "styled-components";
 import { parseContent } from "./functions";
 
+//obj for save the Length of time it took the user to do the task
+let objTime = {userName:"", idUser: 0, idTask: 0, route_id: 0, startTime: "", endTime: "" }; 
+
 export default function TaskComp(props) {
+
+  console.log("lastOne: " , props.lastOne );
+
+  const [, set_obj_time] = useState(null);
+  const [myCurrent, setMyCurrent] = useState();
+
+  const currDate = new Date().toLocaleDateString();
+  const currTime = new Date().toLocaleTimeString();
+  let dateAndTime = currDate + " " + currTime;
+
+  objTime.userName =localStorage.getItem('userName'); 
+  objTime.route_id = localStorage.getItem('route_id');
+  objTime.idUser = localStorage.getItem('userID');
+
+  if (props.index === props.currentIndex) {
+ 
+    if (objTime.idTask === 0) {
+      objTime.idTask = props.index;
+      objTime.startTime = dateAndTime;
+    }
+    else if (objTime.idTask !== props.currentIndex) {
+
+      const currDate = new Date().toLocaleDateString();
+      const currTime = new Date().toLocaleTimeString();
+      let dateAndTime = currDate + " " + currTime;
+
+      objTime.endTime = dateAndTime;
+
+      postDataTime(objTime);   //api request to wp db
+      objTime.idTask = props.index;
+      objTime.startTime = dateAndTime;
+      objTime.endTime = "";
+
+
+
+      console.log("objTimeDONE: ", JSON.stringify(objTime));
+    }
+  }
+
+
   const decideColor = (type) => {
     if (type == null && isFocused()) return "orange";
     else if (type === true) return "green";
     else return "red";
   };
 
-  const isFocused = () => props.index === props.currentIndex;
+  const isFocused = () => {
+    props.index === props.currentIndex;
+  };
 
   return (
     <ContainerWrapper
