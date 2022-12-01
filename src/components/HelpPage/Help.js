@@ -29,7 +29,6 @@ function Help(props) {
   const userNameApi = process.env.USERNAME_ACCESSKEY;
   const passwordApi = process.env.PASSWORD_ACCESSKEY;
 
-
   console.log("user_places.places_location: " + user_places.places_location);
   console.log("len: " + user_places.user_places.length);
   console.log("task_location: " + user_tasks.task_location);
@@ -105,7 +104,7 @@ function Help(props) {
     get(`${siteUrl}wp-json/wp/v2/users/`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Basic ` + Buffer.from(`${userNameApi}:${passwordApi}`).toString("base64"),
+        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
       params: {
         per_page: 99,
