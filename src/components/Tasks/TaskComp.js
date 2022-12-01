@@ -7,11 +7,11 @@ import styled from "styled-components";
 import { parseContent } from "./functions";
 
 //obj for save the Length of time it took the user to do the task
-let objTime = {userName:"", idUser: 0, idTask: 0, route_id: 0, startTime: "", endTime: "" }; 
+let objTime = { userName: "", idUser: 0, idTask: 0, route_id: 0, startTime: "", endTime: "" };
 
 export default function TaskComp(props) {
 
-  console.log("lastOne: " , props.lastOne );
+  console.log("lastOne: ", props.lastOne);
 
   const [, set_obj_time] = useState(null);
   const [myCurrent, setMyCurrent] = useState();
@@ -20,18 +20,20 @@ export default function TaskComp(props) {
   const currTime = new Date().toLocaleTimeString();
   let dateAndTime = currDate + " " + currTime;
 
-  objTime.userName =localStorage.getItem('userName'); 
+  objTime.userName = localStorage.getItem('userName');
   objTime.route_id = localStorage.getItem('route_id');
   objTime.idUser = localStorage.getItem('userID');
 
-  
+
   if (props.index === props.currentIndex) {
- 
+
     if (objTime.idTask === 0) {
       objTime.idTask = props.taskId;
       objTime.startTime = dateAndTime;
+      localStorage.setItem('taskIdForApi', 0);
+
     }
-    else if (objTime.idTask !== props.currentIndex) {
+    else if (objTime.idTask !== props.taskId) {
 
       const currDate = new Date().toLocaleDateString();
       const currTime = new Date().toLocaleTimeString();
@@ -39,137 +41,149 @@ export default function TaskComp(props) {
 
       objTime.endTime = dateAndTime;
 
-      postDataTime(objTime);   //api request to wp db
-      objTime.idTask = props.index;
-      objTime.startTime = dateAndTime;
-      objTime.endTime = "";
+
+      if (localStorage.getItem("taskIdForApi") === 0) {
+        localStorage.setItem('taskIdForApi', objTime.idTask);
+        console.log("objTime.idTask: ", objTime.idTask)
+      }
+      else {
+        if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {
+          localStorage.setItem('taskIdForApi', objTime.idTask);
+          console.log("objTime.idTask: ", objTime.idTask)
+
+          postDataTime(objTime);   //api request to wp db
+
+        }}
+        objTime.idTask = props.taskId;
+        objTime.startTime = dateAndTime;
+        objTime.endTime = "";
+      }
+
+      if (props.lastOne) {
+        const currDate = new Date().toLocaleDateString();
+        const currTime = new Date().toLocaleTimeString();
+        let dateAndTime = currDate + " " + currTime;
+
+        objTime.endTime = dateAndTime;
+
+        postDataTime(objTime);   //api request to wp db
+
+      }
     }
 
-    if (props.lastOne){
-      const currDate = new Date().toLocaleDateString();
-      const currTime = new Date().toLocaleTimeString();
-      let dateAndTime = currDate + " " + currTime;
 
-      objTime.endTime = dateAndTime;
+    const decideColor = (type) => {
+      if (type == null && isFocused()) return "orange";
+      else if (type === true) return "green";
+      else return "red";
+    };
 
-      postDataTime(objTime);   //api request to wp db
+    const isFocused = () => {
+      props.index === props.currentIndex;
+    };
 
-    }
+    return (
+      <ContainerWrapper
+        height={props.height}
+        width={props.wrapperWidth ? props.wrapperWidth : 50}
+      >
+        <TaskContainer
+          backgroundColor={decideColor(props.didFinished)}
+          width={props.width ? props.width : 50}
+          height={props.wideCaro ? props.wideCaro : isFocused() ? 100 : 60}
+        >
+          <WhiteContainer
+            width={isFocused() && props.wideCaro === undefined ? 90 : 80}
+            height={isFocused() && props.wideCaro === undefined ? 90 : 80}
+          >
+            <ImageWrapper
+              maxHeight={isFocused() && props.wideCaro === undefined ? 58 : 100}
+              borderWidth={isFocused() && props.wideCaro === undefined ? 1 : "0"}
+            >
+              <img
+                alt={"task image"}
+                src={
+                  props.imgUrl
+                    ? props.imgUrl
+                    : "https://globalimpactnetwork.org/wp-content/themes/globalimpact/images/no-image-found-360x250.png"
+                }
+                style={styles.imgStyle}
+              />
+            </ImageWrapper>
+            <TopBar
+              display={
+                isFocused() && props.wideCaro === undefined ? "flex" : "none"
+              }
+            >
+              <div style={{ width: "20%", height: "auto", marginTop: "auto" }}>
+                <AudioIcon audioUrl={props.audioUrl} />
+              </div>
+              <div style={{ height: "100%", width: "79.5%", padding: 0 }}>
+                <Text fontSize={3.5}>{props.title}</Text>
+                <Text fontSize={2.8}>{parseContent(props.content)}</Text>
+              </div>
+            </TopBar>
+          </WhiteContainer>
+        </TaskContainer>
+      </ContainerWrapper>
+    );
   }
 
+  const styles = {
+    containerBox: {
+      width: "50%",
+      height: "250px",
+      backgroundColor: "white",
+      borderRadius: "2%",
+      borderStyle: "solid",
+      borderWidth: 6,
+      display: "flex",
+      flexDirection: "column",
+    },
 
-  const decideColor = (type) => {
-    if (type == null && isFocused()) return "orange";
-    else if (type === true) return "green";
-    else return "red";
+    aIconBox: {
+      width: "15%",
+    },
+    cIconBox: {
+      width: "22%",
+    },
+    imgStyle: {
+      width: "100%",
+      height: "auto",
+      objectFit: "cover",
+    },
+    leftBox: {
+      flex: 1,
+    },
+    rightBox: {
+      flex: 5,
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      justifycontent: "center",
+    },
+    textBox: {
+      height: "17%",
+      alignItems: "center",
+      marginBottom: 5,
+    },
+    textStyle: {
+      fontSize: 20,
+      color: "black",
+    },
   };
 
-  const isFocused = () => {
-    props.index === props.currentIndex;
-  };
-
-  return (
-    <ContainerWrapper
-      height={props.height}
-      width={props.wrapperWidth ? props.wrapperWidth : 50}
-    >
-      <TaskContainer
-        backgroundColor={decideColor(props.didFinished)}
-        width={props.width ? props.width : 50}
-        height={props.wideCaro ? props.wideCaro : isFocused() ? 100 : 60}
-      >
-        <WhiteContainer
-          width={isFocused() && props.wideCaro === undefined ? 90 : 80}
-          height={isFocused() && props.wideCaro === undefined ? 90 : 80}
-        >
-          <ImageWrapper
-            maxHeight={isFocused() && props.wideCaro === undefined ? 58 : 100}
-            borderWidth={isFocused() && props.wideCaro === undefined ? 1 : "0"}
-          >
-            <img
-              alt={"task image"}
-              src={
-                props.imgUrl
-                  ? props.imgUrl
-                  : "https://globalimpactnetwork.org/wp-content/themes/globalimpact/images/no-image-found-360x250.png"
-              }
-              style={styles.imgStyle}
-            />
-          </ImageWrapper>
-          <TopBar
-            display={
-              isFocused() && props.wideCaro === undefined ? "flex" : "none"
-            }
-          >
-            <div style={{ width: "20%", height: "auto", marginTop: "auto" }}>
-              <AudioIcon audioUrl={props.audioUrl} />
-            </div>
-            <div style={{ height: "100%", width: "79.5%", padding: 0 }}>
-              <Text fontSize={3.5}>{props.title}</Text>
-              <Text fontSize={2.8}>{parseContent(props.content)}</Text>
-            </div>
-          </TopBar>
-        </WhiteContainer>
-      </TaskContainer>
-    </ContainerWrapper>
-  );
-}
-
-const styles = {
-  containerBox: {
-    width: "50%",
-    height: "250px",
-    backgroundColor: "white",
-    borderRadius: "2%",
-    borderStyle: "solid",
-    borderWidth: 6,
-    display: "flex",
-    flexDirection: "column",
-  },
-
-  aIconBox: {
-    width: "15%",
-  },
-  cIconBox: {
-    width: "22%",
-  },
-  imgStyle: {
-    width: "100%",
-    height: "auto",
-    objectFit: "cover",
-  },
-  leftBox: {
-    flex: 1,
-  },
-  rightBox: {
-    flex: 5,
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    justifycontent: "center",
-  },
-  textBox: {
-    height: "17%",
-    alignItems: "center",
-    marginBottom: 5,
-  },
-  textStyle: {
-    fontSize: 20,
-    color: "black",
-  },
-};
-
-const ContainerWrapper = styled.div`
+  const ContainerWrapper = styled.div`
   width: ${(props) => (props.width ? props.width : 50)}%;
   height: ${(props) => (props.height ? props.height : 90)}px;
   margin-left: auto;
   margin-right: auto;
 `;
 
-const TaskContainer = styled.div`
+  const TaskContainer = styled.div`
   height: ${(props) => (props.height ? props.height : 100)}%;
   background-color: ${(props) =>
-    props.backgroundColor ? props.backgroundColor : "white"};
+      props.backgroundColor ? props.backgroundColor : "white"};
   border-radius: 5pt;
 
   justify-content: center;
@@ -177,7 +191,7 @@ const TaskContainer = styled.div`
   display: flex;
   flex-direction: column;
 `;
-const WhiteContainer = styled.div`
+  const WhiteContainer = styled.div`
   background-color: white;
   width: ${(props) => (props.width ? props.width : 80)}%;
   height: ${(props) => (props.height ? props.height : 80)}%;
@@ -185,7 +199,7 @@ const WhiteContainer = styled.div`
   border-radius: 5pt;
   justify-content: space-between;
 `;
-const TopBar = styled.div`
+  const TopBar = styled.div`
   display: ${(props) => props.display};
   width: 100%;
   max-height: ${(props) => (props.maxHeight ? props.maxHeight : 42)}%;
@@ -196,14 +210,14 @@ const TopBar = styled.div`
   overflow: hidden;
 `;
 
-const ImageWrapper = styled.div`
+  const ImageWrapper = styled.div`
   width: 100%;
   display: flex;
   max-height: ${(props) => (props.maxHeight ? props.maxHeight : 52)}%;
   padding-bottom: 3px;
 `;
 
-const Text = styled.p`
+  const Text = styled.p`
   font-size: ${(props) => (props.fontSize ? props.fontSize : 2)}vw;
   text-align: right;
   font-family: "Arimo", sans-serif;
@@ -212,7 +226,7 @@ const Text = styled.p`
   max-height: 40px;
 `;
 
-const ImageBox = styled.div`
+  const ImageBox = styled.div`
   overflow: hidden;
   height: 90%;
   width: 95%;
