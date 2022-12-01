@@ -24,6 +24,7 @@ export default function TaskComp(props) {
   objTime.route_id = localStorage.getItem('route_id');
   objTime.idUser = localStorage.getItem('userID');
 
+  
   if (props.index === props.currentIndex) {
  
     if (objTime.idTask === 0) {
