@@ -65,7 +65,17 @@ export default function TaskComp(props) {
 
       objTime.endTime = dateAndTime;
 
-      postDataTime(objTime); //api request to wp db
+      if (localStorage.getItem("taskIdForApi") === 0) {
+        localStorage.setItem("taskIdForApi", objTime.idTask);
+        console.log("objTime.idTask: ", objTime.idTask);
+      } else {
+        if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {
+          localStorage.setItem("taskIdForApi", objTime.idTask);
+          console.log("objTime.idTask: ", objTime.idTask);
+
+          postDataTime(objTime); //api request to wp db
+        }
+      }
     }
   }
 
