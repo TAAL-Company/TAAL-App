@@ -44,11 +44,11 @@ export default function TaskComp(props) {
 
       if (localStorage.getItem("taskIdForApi") === 0) {
         localStorage.setItem("taskIdForApi", objTime.idTask);
-        console.log("objTime.idTask: ", objTime.idTask);
+        console.log("objTime.idTask1: ", objTime.idTask);
       } else {
         if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {
           localStorage.setItem("taskIdForApi", objTime.idTask);
-          console.log("objTime.idTask: ", objTime.idTask);
+          console.log("objTime.idTask2: ", objTime.idTask);
 
           postDataTime(objTime); //api request to wp db
         }
@@ -67,11 +67,11 @@ export default function TaskComp(props) {
 
       if (localStorage.getItem("taskIdForApi") === 0) {
         localStorage.setItem("taskIdForApi", objTime.idTask);
-        console.log("objTime.idTask: ", objTime.idTask);
+        console.log("objTime.idTask3: ", objTime.idTask);
       } else {
         if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {
           localStorage.setItem("taskIdForApi", objTime.idTask);
-          console.log("objTime.idTask: ", objTime.idTask);
+          console.log("objTime.idTask4: ", objTime.idTask);
 
           postDataTime(objTime); //api request to wp db
         }
