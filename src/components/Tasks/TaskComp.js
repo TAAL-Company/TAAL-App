@@ -10,14 +10,16 @@ import { parseContent } from "./functions";
 let objTime = {
   userName: "",
   idUser: 0,
+  task_location: "",
   idTask: 0,
   route_id: 0,
+  route_title: "",
   startTime: "",
   endTime: "",
 };
 
 export default function TaskComp(props) {
-  console.log("lastOne: ", props.lastOne);
+  // console.log("task_location: ", props.task_location);
 
   const [, set_obj_time] = useState(null);
   const [myCurrent, setMyCurrent] = useState();
@@ -29,10 +31,12 @@ export default function TaskComp(props) {
   objTime.userName = localStorage.getItem("userName");
   objTime.route_id = localStorage.getItem("route_id");
   objTime.idUser = localStorage.getItem("userID");
+  objTime.route_title = localStorage.getItem("route_title");
 
   if (props.index === props.currentIndex) {
     if (objTime.idTask === 0) {
       objTime.idTask = props.taskId;
+      objTime.task_location = props.task_location;
       objTime.startTime = dateAndTime;
       localStorage.setItem("taskIdForApi", 0);
     } else if (objTime.idTask !== props.taskId) {
@@ -54,6 +58,7 @@ export default function TaskComp(props) {
         }
       }
       objTime.idTask = props.taskId;
+      objTime.task_location = props.task_location;
       objTime.startTime = dateAndTime;
       objTime.endTime = "";
     }

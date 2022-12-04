@@ -32,7 +32,7 @@ function Tasks(props) {
   const { current_tasks_list, task_current_index } = user_tasks;
   // const [state, localDispatch] = useReducer(tasksReducer, initialState)
   const {task_location} = user_tasks;
-  console.log("task_location: " , task_location);
+
 
   const getInitialLocation = () => {
     return screen.width > 1020
@@ -358,6 +358,7 @@ function Tasks(props) {
                   >
                     <TaskComp
                       taskId={item.id}
+                      task_location = {task_location}
 
                       lastOne={modalOpen}
                       imgUrl={
@@ -479,6 +480,7 @@ function Tasks(props) {
                   <div key={index} className={"slide slideHorizontalItem"}>
                     <TaskComp
                       taskId={item.id}
+                      task_location = {task_location}
                       lastOne={modalOpen}
                       imgUrl={
                         item.acf && item.acf.image ? item.acf.image.url : false

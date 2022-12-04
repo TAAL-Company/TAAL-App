@@ -46,6 +46,7 @@ export default function Sites(props) {
   const passwordApi = process.env.PASSWORD_ACCESSKEY;
 
   const onchange = (scanResult) => {
+
     localStorage.setItem("route_id", scanResult);
     if (!(scanResult === "error")) {
       let temp = transformArrayOfObjects(props.user_places.user_places);
@@ -60,7 +61,7 @@ export default function Sites(props) {
           props.actions.visitPlaces(scanResult);
           props.actions.changeCurrentTasks(separateList);
           props.actions.changeCurrentTasksList(cleanList);
-
+            localStorage.setItem("route_title", placesList[scanResult].name);
           //navigate to Tasks page
           setScanning(false);
           navigate(`/Tasks/${user.user.username}`); //  { state={}, replace=false }
@@ -72,6 +73,7 @@ export default function Sites(props) {
               routesInfo[placesList[scanResult].acf["defaultPath"][0].ID].acf
                 .tasks
             );
+            
             props.actions.changeCurrentTasks(
               extractPathForSite(lst, scanResult)
             );
