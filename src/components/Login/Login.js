@@ -163,6 +163,7 @@ class Login extends React.Component {
           <div className="logo">
             {/* <img alt={"login logo"} src={LogoLogin} /> */}
           </div>
+          <h1 className="check">check</h1>
           <form onSubmit={this.onFormSubmit}>
             <label className="form-group">
               <div className="icon">
