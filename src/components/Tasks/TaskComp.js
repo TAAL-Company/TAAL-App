@@ -33,13 +33,16 @@ export default function TaskComp(props) {
   objTime.idUser = localStorage.getItem("userID");
   objTime.route_title = localStorage.getItem("route_title");
 
+
+  //this if handle publish the data in the 'Data Time' table for each task the user has done
   if (props.index === props.currentIndex) {
-    if (objTime.idTask === 0) {
+
+    if (objTime.idTask === 0) {  //first tesk in the route
       objTime.idTask = props.taskId;
       objTime.task_location = props.task_location;
       objTime.startTime = dateAndTime;
       localStorage.setItem("taskIdForApi", 0);
-    } else if (objTime.idTask !== props.taskId) {
+    } else if (objTime.idTask !== props.taskId) {      //Prevents double case
       const currDate = new Date().toLocaleDateString();
       const currTime = new Date().toLocaleTimeString();
       let dateAndTime = currDate + " " + currTime;
@@ -48,39 +51,35 @@ export default function TaskComp(props) {
 
       if (localStorage.getItem("taskIdForApi") === 0) {
         localStorage.setItem("taskIdForApi", objTime.idTask);
-        console.log("objTime.idTask1: ", objTime.idTask);
-      } else {
-        if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {
-          localStorage.setItem("taskIdForApi", objTime.idTask);
-          console.log("objTime.idTask2: ", objTime.idTask);
 
-          postDataTime(objTime); //api request to wp db
-        }
       }
+      else if (localStorage.getItem("taskIdForApi") !== objTime.idTask) { //If it is not equal to this, then it means that the user has finished the task
+        localStorage.setItem("taskIdForApi", objTime.idTask);
+        postDataTime(objTime); //api request to wp db
+      }
+
+      //rest the data to the next tesk:
       objTime.idTask = props.taskId;
       objTime.task_location = props.task_location;
       objTime.startTime = dateAndTime;
       objTime.endTime = "";
     }
 
-    if (props.lastOne && localStorage.getItem("taskIdForApi")!=objTime.idTask ) {
+    if (props.lastOne && localStorage.getItem("taskIdForApi") != objTime.idTask) {  //handle the last task
       const currDate = new Date().toLocaleDateString();
       const currTime = new Date().toLocaleTimeString();
       let dateAndTime = currDate + " " + currTime;
 
-      objTime.endTime = dateAndTime;
+      objTime.endTime = dateAndTime; 
 
-      if (localStorage.getItem("taskIdForApi") === 0) {
+      if (localStorage.getItem("taskIdForApi") === 0) { //in case there is only one tesk
         localStorage.setItem("taskIdForApi", objTime.idTask);
-        console.log("objTime.idTask3: ", objTime.idTask);
-      } else {
-        if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {
-          localStorage.setItem("taskIdForApi", objTime.idTask);
-          console.log("objTime.idTask4: ", objTime.idTask);
-
-          postDataTime(objTime); //api request to wp db
-        }
       }
+      else if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {  //If it is not equal to this, then it means that the user has finished the task
+        localStorage.setItem("taskIdForApi", objTime.idTask);
+        postDataTime(objTime); //api request to wp db
+      }
+
     }
   }
 

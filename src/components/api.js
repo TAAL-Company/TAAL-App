@@ -1,4 +1,5 @@
 
+//function to publish the data in the 'Data Time' table for each task the user has done
 export const postDataTime = (objTime) => {
 
     fetch("https://s83.bfa.myftpupload.com/wp-json/wp/v2/time_data", {
