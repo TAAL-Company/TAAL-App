@@ -122,7 +122,7 @@ function Tasks(props) {
     setStationsData(stations);
 
     // on unmount
-    return () => { };
+    return () => {};
   }, []);
   /*
         BreakPoints will determine the behavior of our scroll bar according to the size
@@ -292,7 +292,6 @@ function Tasks(props) {
   const onPressGoToSites = () => {
     resetTasks();
   };
-
   return (
     <div className="Tasks">
       {/* <div className="voicecomman">{const recognition = new webkitSpeechRecognition();
@@ -355,9 +354,7 @@ function Tasks(props) {
                     className={decideClassName(index, currIndex)}
                   >
                     <TaskComp
-                      taskId={item.id}
-
-                      lastOne={modalOpen}
+                      lastOne= {modalOpen}
                       imgUrl={
                         item.acf && item.acf.image ? item.acf.image.url : false
                       }
@@ -476,8 +473,7 @@ function Tasks(props) {
                 return (
                   <div key={index} className={"slide slideHorizontalItem"}>
                     <TaskComp
-                      taskId={item.id}
-                      lastOne={modalOpen}
+                      lastOne= {modalOpen}
                       imgUrl={
                         item.acf && item.acf.image ? item.acf.image.url : false
                       }
