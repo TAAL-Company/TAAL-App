@@ -10,7 +10,7 @@
   align-items: "center";
 }
 
-.audioBtn:focus-within {
+.audioBtn:active {
   background-color: rgb(255, 194, 27);
   width: 105%;
   height: 105%;
