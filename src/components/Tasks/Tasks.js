@@ -31,6 +31,8 @@ function Tasks(props) {
   const { user_tasks } = props;
   const { current_tasks_list, task_current_index } = user_tasks;
   // const [state, localDispatch] = useReducer(tasksReducer, initialState)
+  const {task_location} = user_tasks;
+  console.log("task_location: " , task_location);
 
   const getInitialLocation = () => {
     return screen.width > 1020
