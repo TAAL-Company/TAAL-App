@@ -58,7 +58,7 @@ export default function TaskComp(props) {
       objTime.endTime = "";
     }
 
-    if (props.lastOne) {
+    if (props.lastOne && localStorage.getItem("taskIdForApi")!=objTime.idTask ) {
       const currDate = new Date().toLocaleDateString();
       const currTime = new Date().toLocaleTimeString();
       let dateAndTime = currDate + " " + currTime;
