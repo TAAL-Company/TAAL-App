@@ -33,6 +33,7 @@ export default function TaskComp(props) {
   objTime.idUser = localStorage.getItem("userID");
   objTime.route_title = localStorage.getItem("route_title");
 
+  
 
   //this if handle publish the data in the 'Data Time' table for each task the user has done
   if (props.index === props.currentIndex) {
