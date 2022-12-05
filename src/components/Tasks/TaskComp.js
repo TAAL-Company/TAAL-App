@@ -42,7 +42,7 @@ export default function TaskComp(props) {
       objTime.task_location = props.task_location;
       objTime.startTime = dateAndTime;
       localStorage.setItem("taskIdForApi", 0);
-    } else if (objTime.idTask !== props.taskId) {      //move to next task
+    } else if (objTime.idTask !== props.taskId) {      //Prevents double case
       const currDate = new Date().toLocaleDateString();
       const currTime = new Date().toLocaleTimeString();
       let dateAndTime = currDate + " " + currTime;
@@ -55,7 +55,6 @@ export default function TaskComp(props) {
       }
       else if (localStorage.getItem("taskIdForApi") !== objTime.idTask) { //If it is not equal to this, then it means that the user has finished the task
         localStorage.setItem("taskIdForApi", objTime.idTask);
-        console.log("POST1");
         postDataTime(objTime); //api request to wp db
       }
 
@@ -71,18 +70,16 @@ export default function TaskComp(props) {
       const currTime = new Date().toLocaleTimeString();
       let dateAndTime = currDate + " " + currTime;
 
-      objTime.endTime = dateAndTime;
+      objTime.endTime = dateAndTime; 
 
       if (localStorage.getItem("taskIdForApi") === 0) { //in case there is only one tesk
         localStorage.setItem("taskIdForApi", objTime.idTask);
       }
-      else {
-        if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {  //If it is not equal to this, then it means that the user has finished the task
-          localStorage.setItem("taskIdForApi", objTime.idTask);
-          console.log("POST2");
-          postDataTime(objTime); //api request to wp db
-        }
+      else if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {  //If it is not equal to this, then it means that the user has finished the task
+        localStorage.setItem("taskIdForApi", objTime.idTask);
+        postDataTime(objTime); //api request to wp db
       }
+
     }
   }
 

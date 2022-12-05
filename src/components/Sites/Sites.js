@@ -61,7 +61,7 @@ export default function Sites(props) {
           props.actions.visitPlaces(scanResult);
           props.actions.changeCurrentTasks(separateList);
           props.actions.changeCurrentTasksList(cleanList);
-          localStorage.setItem("route_title", placesList[scanResult].name);
+            localStorage.setItem("route_title", placesList[scanResult].name);
           //navigate to Tasks page
           setScanning(false);
           navigate(`/Tasks/${user.user.username}`); //  { state={}, replace=false }
@@ -73,7 +73,7 @@ export default function Sites(props) {
               routesInfo[placesList[scanResult].acf["defaultPath"][0].ID].acf
                 .tasks
             );
-
+            
             props.actions.changeCurrentTasks(
               extractPathForSite(lst, scanResult)
             );
@@ -142,7 +142,7 @@ export default function Sites(props) {
 
   // try
 
-  const resetFirstTask = () => { };
+  const resetFirstTask = () => {};
 
   const getDateInfo = () => {
     const date = new Date();
@@ -317,7 +317,7 @@ export default function Sites(props) {
       if (getFirstItemLocation() + 1 === user_places.user_places.length)
         setLineLength(32);
     }
-    return () => { };
+    return () => {};
   }, []);
   const isCurrentSite = (itemId) =>
     itemId === props.user_places.places_location;
