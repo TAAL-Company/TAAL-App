@@ -15,6 +15,7 @@ function AudioIcon(props) {
           id={props.id ? props.id : ""}
           onClick={() => {
             audio.play();
+            console.log("audio: " + audio);
             console.log("change background color");
           }}
           style={styles.iconBox}
