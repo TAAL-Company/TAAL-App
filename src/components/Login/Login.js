@@ -17,6 +17,12 @@ import { bindActionCreators } from "redux";
 import configureStore from "../../store/configureStore";
 import Spinner from "../assets/Spinner";
 
+
+
+const userNameApi = process.env.REACT_APP_USERNAME_ACCESSKEY;
+const passwordApi = process.env.REACT_APP_PASSWORD_ACCESSKEY;
+const base64encodedData = Buffer.from(`${userNameApi}:${passwordApi}`).toString('base64');
+
 class Login extends React.Component {
   constructor(props) {
     super(props);

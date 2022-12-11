@@ -14,6 +14,7 @@ import { changePlaces, visitPlaces } from './redux/actions/places'
 import { changeTasks, addTasks, changeCurrentTasks, completeTask, changeCurrentTask, changeCurrentTasksList } from './redux/actions/tasks'
 import { PersistGate } from 'redux-persist/integration/react'
 
+
 // test
 function App() {
 
