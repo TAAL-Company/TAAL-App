@@ -167,7 +167,6 @@ export default function Sites(props) {
     internetStatus.current = await internetConnection();
     return internetStatus.current;
   };
-  // checkForInternet()
 
   useEffect(() => {
     (async () => {
