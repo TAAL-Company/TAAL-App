@@ -51,7 +51,7 @@ export const getPlacesList = (places, tasksList) => {
   return placesList;
 };
 
-export const trasformObject = (old_obj) => {
+export const trasformObject = async (old_obj) => {
   let newObj = {};
   old_obj.forEach((element) => {
     newObj[element.id] = element;

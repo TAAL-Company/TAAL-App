@@ -42,7 +42,7 @@ export default function TaskComp(props) {
       objTime.startTime = dateAndTime;
       localStorage.setItem("taskIdForApi", 0);
     } else if (objTime.idTask !== props.taskId) {
-      //move to next task
+      //Prevents double case
       const currDate = new Date().toLocaleDateString();
       const currTime = new Date().toLocaleTimeString();
       let dateAndTime = currDate + " " + currTime;
@@ -54,14 +54,13 @@ export default function TaskComp(props) {
       } else if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {
         //If it is not equal to this, then it means that the user has finished the task
         localStorage.setItem("taskIdForApi", objTime.idTask);
-        console.log("POST1");
         postDataTime(objTime); //api request to wp db
       }
 
       //rest the data to the next tesk:
       objTime.idTask = props.taskId;
       objTime.task_location = props.task_location;
-      objTime.startTime = dateAndTime;
+      objTime.startTime = objTime.endTime;
       objTime.endTime = "";
     }
 

@@ -42,10 +42,12 @@ export default function Sites(props) {
   const currDate = new Date().toLocaleDateString();
   const currTime = new Date().toLocaleTimeString();
 
-  const userNameApi = process.env.USERNAME_ACCESSKEY;
-  const passwordApi = process.env.PASSWORD_ACCESSKEY;
+  const userNameApi = process.env.REACT_APP_USERNAME_ACCESSKEY;
+  const passwordApi = process.env.REACT_APP_PASSWORD_ACCESSKEY;
+  const base64encodedData = Buffer.from(`${userNameApi}:${passwordApi}`).toString('base64');
 
-  const onchange = (scanResult) => {
+
+  const onchange = async (scanResult) => {
 
     localStorage.setItem("route_id", scanResult);
     if (!(scanResult === "error")) {
@@ -53,10 +55,12 @@ export default function Sites(props) {
       // scan the barcode and compare it with the redux info
       if (placesList.hasOwnProperty(scanResult) || placesList.length === 0) {
         if (temp.hasOwnProperty(scanResult)) {
+
+          let tempTransformObject = await trasformObject(props.user_tasks.user_tasks);
           let [separateList, cleanList] = extractPathForSite(
             props.user_tasks.user_tasks,
             scanResult,
-            trasformObject(props.user_tasks.user_tasks)
+            tempTransformObject
           );
           props.actions.visitPlaces(scanResult);
           props.actions.changeCurrentTasks(separateList);
@@ -126,7 +130,7 @@ export default function Sites(props) {
     get(`${siteUrl}wp-json/wp/v2/users/`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        Authorization: `basic ${base64encodedData}`,
       },
       params: {
         per_page: 99,
@@ -163,9 +167,16 @@ export default function Sites(props) {
     internetStatus.current = await internetConnection();
     return internetStatus.current;
   };
-  // checkForInternet()
 
   useEffect(() => {
+    (async () => {
+      await getDataFunction();
+
+    })();
+}, []);
+
+  const getDataFunction = async () => {
+
     // Function to clear complete cache data
     caches.keys().then((names) => {
       names.forEach((name) => {
@@ -201,68 +212,84 @@ export default function Sites(props) {
 
       console.log("setLoading2: ", loading);
       // get all of the places
-      axios
+      await axios
         .get(wpConfig.getPlaces, {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `basic ${base64encodedData}`,
+          },
           params: {
             per_page: 70,
             "Cache-Control": "no-cache",
           },
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
+          // headers: {
+          //   Authorization: "Bearer " + localStorage.getItem("token"),
+          // },
         })
-        .then((places_res) => {
+        .then(async (places_res) => {
           // setPlacesList(trasformObject(places_res.data))
-          placesList = trasformObject(places_res.data);
+          placesList = await trasformObject(places_res.data);
 
           // get all of the tasks
-          axios
+          await axios
             .get(wpConfig.getTasks, {
               params: {
                 per_page: 100,
                 "Cache-Control": "no-cache",
               },
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `basic ${base64encodedData}`,
+              },
             })
-            .then((res) => {
+            .then(async (res) => {
               let max_pages = res.headers["x-wp-totalpages"];
               let arrayTemp = [];
               tasksList = res.data;
 
               if (max_pages > 1) {
+                console.log("YARD")
                 for (let i = 2; i <= max_pages; i++) {
-                  axios
+                  await axios
                     .get(wpConfig.getTasks, {
                       params: {
                         per_page: 100,
                         page: i,
                         "Cache-Control": "no-cache",
                       },
+                      headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `basic ${base64encodedData}`,
+                      },
                     })
-                    .then((response) => {
-                      // console.log("response.data: ", response.data);
+                    .then(async (response) => {
 
+                      console.log("tasksList11: ");
                       Array.prototype.push.apply(tasksList, response.data);
-                      taskInformation = trasformObject(tasksList);
-
-                      console.log("taskInformation: ", taskInformation);
+                      // await this.state.tasksList.push(response.data);
+                      // taskInformation = trasformObject(tasksList);
+                      console.log("tasksList11: ", tasksList);
+                      // console.log("taskInformation: ", taskInformation);
                     });
                 }
-              } else {
-                taskInformation = trasformObject(res.data);
-
-                console.log("taskInformation1: ", taskInformation);
               }
 
+
+
               // Get the user's routes
-              axios
+              await axios
                 .get(wpConfig.getRoutes, {
                   params: {
                     per_page: 70,
                     "Cache-Control": "no-cache",
                   },
                   headers: {
-                    Authorization: "Bearer " + localStorage.getItem("token"),
+                    "Content-Type": "application/json",
+                    Authorization: `basic ${base64encodedData}`,
                   },
+                  // headers: {
+                  //   Authorization: "Bearer " + localStorage.getItem("token"),
+                  // },
                 })
                 .then(async (res) => {
                   console.log("maslolim: ", res.data);
@@ -276,6 +303,17 @@ export default function Sites(props) {
                   );
                   console.log("userRoutes: ", userRoutes);
 
+
+                  console.log("tasksListtttt: ", tasksList);
+                  taskInformation = await trasformObject(tasksList);
+
+                  console.log("taskInformation2: ", taskInformation);
+                  console.log("taskInformation length: ", Object.keys(taskInformation).length);
+
+
+                  console.log("before getTasksList - taskInformation: ", taskInformation);
+                  console.log("before getTasksList - userRoutes: ", userRoutes);
+
                   let newTaskList = getTasksList(taskInformation, userRoutes);
                   console.log("after getTasksList: ", newTaskList);
 
@@ -285,6 +323,9 @@ export default function Sites(props) {
                   );
 
                   props.actions.changeTasks(newTaskList, dateRef.current);
+
+                  console.log("after placesList: ", placesList);
+                  console.log("after newTaskList: ", newTaskList);
 
                   let temp1 = getPlacesList(placesList, newTaskList);
 
@@ -318,7 +359,7 @@ export default function Sites(props) {
         setLineLength(32);
     }
     return () => { };
-  }, []);
+  };
   const isCurrentSite = (itemId) =>
     itemId === props.user_places.places_location;
 
