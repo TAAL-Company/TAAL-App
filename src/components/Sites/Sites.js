@@ -11,6 +11,8 @@ import { navigate } from "@reach/router";
 import styled from "styled-components";
 import wpConfig from "../../wp-config";
 import Navbar from "../Nav/Navbar";
+import { Redirect } from "@reach/router";
+
 import {
   getPlacesList,
   getTasksList,
@@ -173,32 +175,26 @@ export default function Sites(props) {
       await getDataFunction();
 
     })();
-}, []);
+  }, []);
 
   const getDataFunction = async () => {
 
-    // Function to clear complete cache data
-    caches.keys().then((names) => {
-      names.forEach((name) => {
-        caches.delete(name);
-      });
-    });
-    console.log("Complete Cache Cleared");
-
-    // Function to clear complete cookies data
-    window.addEventListener("beforeunload", (e) => {
-      e.preventDefault();
-      document.cookie.split(";").forEach((c) => {
-        document.cookie = c
-          .replace("/^ +/", "")
-          .replace(
-            "/=.*/",
-            "=;expires=" + new Date().toUTCString() + ";path=/"
-          );
-      });
+    // Remove all cookies
+    document.cookie.split(";").forEach(function (c) {
+      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+      console.log("REMOVE ALL COOKIE");
     });
 
-    console.log("Complete Cookies Cleared");
+    // Clear the cache
+    if (window.caches) {
+      window.caches.keys().then(function (cacheNames) {
+        cacheNames.forEach(function (cacheName) {
+          window.caches.delete(cacheName);
+          console.log("REMOVE ALL CACHE");
+        });
+      });
+
+    }
 
     // const userLang = navigator.language || navigator.userLanguage;
     getData();
@@ -219,7 +215,7 @@ export default function Sites(props) {
             Authorization: `basic ${base64encodedData}`,
           },
           params: {
-            per_page: 70,
+            per_page: 99,
             "Cache-Control": "no-cache",
           },
           // headers: {
@@ -280,7 +276,7 @@ export default function Sites(props) {
               await axios
                 .get(wpConfig.getRoutes, {
                   params: {
-                    per_page: 70,
+                    per_page: 99,
                     "Cache-Control": "no-cache",
                   },
                   headers: {
@@ -375,6 +371,7 @@ export default function Sites(props) {
       else if (lineLength !== 32) setLineLength(32);
     }
   };
+ 
   return (
     <React.Fragment>
       {/* <h1>
@@ -444,8 +441,10 @@ export default function Sites(props) {
           </div>
         </div>
       ) : (
-        <div></div>
-      )}
+        <Redirect to={`/`} noThrow />
+      )
+      
+      }
     </React.Fragment>
   );
 }

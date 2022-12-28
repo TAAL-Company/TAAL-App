@@ -104,7 +104,7 @@ function Help(props) {
     get(`${siteUrl}wp-json/wp/v2/users/`, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+        // Authorization: `Bearer ${sessionStorage.getItem("token")}`,
       },
       params: {
         per_page: 99,

@@ -33,6 +33,10 @@ export default function TaskComp(props) {
   objTime.idUser = localStorage.getItem("userID");
   objTime.route_title = localStorage.getItem("route_title");
 
+  if( isLoggedIn()) {
+    return <Redirect to={`/`} noThrow />;
+  }
+
   //this if handle publish the data in the 'Data Time' table for each task the user has done
   if (props.index === props.currentIndex) {
     if (objTime.idTask === 0) {
