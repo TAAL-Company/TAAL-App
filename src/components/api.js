@@ -34,28 +34,3 @@ export const postDataTime = (objTime) => {
 
 
 };
-
-
-
-//function for refreshing the token for user
-async function refreshToken() {
-    try {
-        const response = await fetch('/api/refresh_token', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                refresh_token: refreshToken,
-            }),
-        });
-        const data = await response.json();
-        const newToken = data.token;
-        // Update the token in the component's state or in a global store
-        //   setToken(newToken);
-        sessionStorage.setItem("token", newToken);
-        localStorage.setItem("token", newToken);
-    } catch (error) {
-        console.error(error);
-    }
-}
