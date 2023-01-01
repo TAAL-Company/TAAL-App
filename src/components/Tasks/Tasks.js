@@ -206,6 +206,7 @@ function Tasks(props) {
     else if (arrowDirection === "left" && currIndex !== 0) {
       sliderRef.current.slickGoTo(currIndex - 1);
 
+      
       // if (dateCurrTask - dateLastTask > 3000) {
       //   // start from here
       //   sliderRef.current.slickGoTo(currIndex - 1);
