@@ -7,17 +7,30 @@ import styled from 'styled-components'
 
 export default function SiteComp(props) {
 
-    const decideColor = (type) => {
+
+    function decideColor(type) {
         if (type === "current")
-            return "orange"
+            return "orange";
         else if (type === true)
-            return 'green'
+            return 'green';
+
         else
-            return 'red'
+            return 'red';
     }
 
-    return (
+    function handleImgClick() {
+        try {
+            console.log(props.id);
+            localStorage.setItem("route_id", props.id);
+            props.onImgClick();
+        }
+        catch {
+            throw new Error("site is undefined 10");
+        }
+      }
 
+
+    return (
         <SiteContainer
             width={props.width}
             backgroundColor={decideColor(props.didVisit)}>
@@ -29,8 +42,8 @@ export default function SiteComp(props) {
                 </div>
                 <div style={styles.rightBox}>
                     <div style={styles.imgBox}>
-                        <img alt={'site image'} src={props.imgUrl || "https://globalimpactnetwork.org/wp-content/themes/globalimpact/images/no-image-found-360x250.png"} style={styles.imgStyle} />
-                    </div>
+                    <img alt={'site image'} onClick={handleImgClick} src={props.imgUrl || "https://globalimpactnetwork.org/wp-content/themes/globalimpact/images/no-image-found-360x250.png"} style={styles.imgStyle} />
+                  </div>
                     <div style={styles.textBox}>
                         <p className="siteTxt" style={styles.textStyle}>{props.name}</p>
                     </div>

@@ -369,6 +369,27 @@ export default function Sites(props) {
       else if (lineLength !== 32) setLineLength(32);
     }
   };
+
+  async function handleChildImgClick() {
+    const route_id = localStorage.getItem("route_id");
+    let userPlacesList = transformArrayOfObjects(props.user_places.user_places);
+    console.log('Child img clicked');
+    console.log("handleChildImgClick" + route_id);
+    console.log(userPlacesList);
+    localStorage.setItem("route_title", userPlacesList[route_id].name);
+    // let lst = getTasksList(
+    //   taskInformation,
+    //   routesInfo[userPlacesList[route_id].acf["defaultPath"][0].ID].acf
+    //     .tasks
+    // );
+
+    // props.actions.changeCurrentTasks(
+    //   extractPathForSite(lst, route_id)
+    // );
+    // navigate(`/Tasks/${user.user.username}`);
+
+
+  }
   return (
     <React.Fragment>
       {/* <h1>
@@ -379,7 +400,7 @@ export default function Sites(props) {
           <Navbar origin={"Sites"} user_data={props.user} />
 
           <div className="containerSites">
-            <div className="barcode">
+            {/* <div className="barcode">
               <div className="scanner">
                 <div className="barcodeBox">
                   <BarcodeReader
@@ -402,7 +423,7 @@ export default function Sites(props) {
                   />
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="sitesBar">
               <div className="sitesBar viewItems">
                 <Divider width={screen.width * 0.9} />
@@ -417,7 +438,7 @@ export default function Sites(props) {
                   {props.user_places.user_places.map((item, index) => {
                     return (
                       <SiteComp
-                        key={item.id}
+                        id={item.id}
                         name={item.name}
                         imgUrl={
                           item.acf && item.acf.image ? item.acf.image.url : ""
@@ -425,7 +446,8 @@ export default function Sites(props) {
                         didVisit={
                           isCurrentSite(index) ? "current" : item.didVisit
                         }
-                        onClick={() => console.log(item)}
+                        onImgClick={handleChildImgClick}
+                        value={0}
                         audioUrl={
                           item.acf && item.acf.audio ? item.acf.audio.url : ""
                         }
