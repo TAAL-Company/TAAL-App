@@ -386,7 +386,7 @@ export default function Sites(props) {
     // props.actions.changeCurrentTasks(
     //   extractPathForSite(lst, route_id)
     // );
-    // navigate(`/Tasks/${user.user.username}`);
+    navigate(`/Tasks/${user.user.username}`);
 
 
   }
@@ -438,6 +438,7 @@ export default function Sites(props) {
                   {props.user_places.user_places.map((item, index) => {
                     return (
                       <SiteComp
+                        key={item.id}
                         id={item.id}
                         name={item.name}
                         imgUrl={
