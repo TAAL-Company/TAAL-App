@@ -177,28 +177,22 @@ export default function Sites(props) {
 
   const getDataFunction = async () => {
 
-    // Function to clear complete cache data
-    caches.keys().then((names) => {
-      names.forEach((name) => {
-        caches.delete(name);
-      });
-    });
-    console.log("Complete Cache Cleared");
-
-    // Function to clear complete cookies data
-    window.addEventListener("beforeunload", (e) => {
-      e.preventDefault();
-      document.cookie.split(";").forEach((c) => {
-        document.cookie = c
-          .replace("/^ +/", "")
-          .replace(
-            "/=.*/",
-            "=;expires=" + new Date().toUTCString() + ";path=/"
-          );
-      });
+    // Remove all cookies
+    document.cookie.split(";").forEach(function (c) {
+      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+      console.log("REMOVE ALL COOKIE");
     });
 
-    console.log("Complete Cookies Cleared");
+    // Clear the cache
+    if (window.caches) {
+      window.caches.keys().then(function (cacheNames) {
+        cacheNames.forEach(function (cacheName) {
+          window.caches.delete(cacheName);
+          console.log("REMOVE ALL CACHE");
+        });
+      });
+
+    }
 
     // const userLang = navigator.language || navigator.userLanguage;
     getData();
