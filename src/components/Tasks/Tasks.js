@@ -13,6 +13,7 @@ import AudioIcon from "../assets/AudioIcon";
 import FinishModal from "./FinishModal";
 import BlueArrow from "./BlueArrow";
 import { parseContent } from "./functions";
+import { isLoggedIn, handleLogout } from "../functions";
 Modal.setAppElement("body");
 
 const initialState = {
@@ -113,6 +114,12 @@ function Tasks(props) {
 
   // component did mount
   useEffect(() => {
+    if(!isLoggedIn()){
+      handleLogout();
+
+    }
+
+
     if (screen.width < 1000 && screen.height) {
       sliderRef.current.slickGoTo(props.user_tasks.task_current_index);
     }
