@@ -41,7 +41,7 @@ body{
 
 @media (max-width: 450px) {
 	#root{
-		background-color: black;
+		background-color: #272727;
 		background-image: unset;
 		background-repeat: unset;
 		background-position: unset;

@@ -568,7 +568,7 @@ export default Tasks;
 const InfoBox = styled.div`
   width: 50%;
   height: ${(props) => (props.height ? props.height : 250)}px;
-  border-color: ${(props) => (props.borderColor ? props.borderColor : "black")};
+  border-color: ${(props) => (props.borderColor ? props.borderColor : "#272727")};
   border-radius: 2%;
   border-style: solid;
   border-width: 6px;

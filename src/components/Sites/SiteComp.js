@@ -37,6 +37,7 @@ export default function SiteComp(props) {
             <WhiteContainer>
                 < div style={styles.leftBox}>
                     <AudioIcon
+                    style={{width: "50%"}}
                         audioUrl={props.audioUrl}
                     />
                 </div>
