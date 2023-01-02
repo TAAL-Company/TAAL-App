@@ -93,6 +93,53 @@ export default function Sites(props) {
     }
   };
 
+  async function handleChildImgClick() {
+    const route_id = localStorage.getItem("route_id");
+    let userPlacesList = transformArrayOfObjects(props.user_places.user_places);
+    console.log('Child img clicked');
+    console.log("handleChildImgClick" + route_id);
+    console.log(userPlacesList);
+    localStorage.setItem("route_title", userPlacesList[route_id].name);
+
+    if (placesList.hasOwnProperty(route_id) || placesList.length === 0) {
+      if (userPlacesList.hasOwnProperty(route_id)) {
+
+        let tempTransformObject = await trasformObject(props.user_tasks.user_tasks);
+        let [separateList, cleanList] = extractPathForSite(
+          props.user_tasks.user_tasks,
+          route_id,
+          tempTransformObject
+        );
+        props.actions.visitPlaces(route_id);
+        props.actions.changeCurrentTasks(separateList);
+        props.actions.changeCurrentTasksList(cleanList);
+        localStorage.setItem("route_title", placesList[route_id].name);
+        //navigate to Tasks page
+        setScanning(false);
+        navigate(`/Tasks/${user.user.username}`); //  { state={}, replace=false }
+      } else if (placesList.length > 0) {
+        // pull default route
+        if (placesList[route_id].acf["defaultPath"]) {
+          let lst = getTasksList(
+            taskInformation,
+            routesInfo[placesList[route_id].acf["defaultPath"][0].ID].acf
+              .tasks
+          );
+
+          props.actions.changeCurrentTasks(
+            extractPathForSite(lst, route_id)
+          );
+          setScanning(false);
+          navigate(`/Tasks/${user.user.username}`);
+        } else {
+          setStartOver(!startOver);
+        }
+      }
+    }
+
+
+  }
+
   /*
         BreakPoints will determine the behavior of our scroll bar according to the size
         * Should fix the trasfer from width 1 to 250
@@ -173,7 +220,7 @@ export default function Sites(props) {
       await getDataFunction();
 
     })();
-}, []);
+  }, []);
 
   const getDataFunction = async () => {
 
@@ -370,26 +417,7 @@ export default function Sites(props) {
     }
   };
 
-  async function handleChildImgClick() {
-    const route_id = localStorage.getItem("route_id");
-    let userPlacesList = transformArrayOfObjects(props.user_places.user_places);
-    console.log('Child img clicked');
-    console.log("handleChildImgClick" + route_id);
-    console.log(userPlacesList);
-    localStorage.setItem("route_title", userPlacesList[route_id].name);
-    // let lst = getTasksList(
-    //   taskInformation,
-    //   routesInfo[userPlacesList[route_id].acf["defaultPath"][0].ID].acf
-    //     .tasks
-    // );
 
-    // props.actions.changeCurrentTasks(
-    //   extractPathForSite(lst, route_id)
-    // );
-    navigate(`/Tasks/${user.user.username}`);
-
-
-  }
   return (
     <React.Fragment>
       {/* <h1>
