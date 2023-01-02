@@ -7,15 +7,13 @@ import { FaHandHolding } from "react-icons/fa";
 
 import "./HelpPage.css";
 import Navbar from "../Nav/Navbar";
-import { isLoggedIn, getUserName } from "../functions";
+import { isLoggedIn, handleLogout } from "../functions";
+
 import AudioIcon from "../assets/AudioIcon";
 import logo from "../../images/logo.png";
-import { connect } from "react-redux";
 import { useTranslation } from "react-i18next";
 
 import axios from "axios";
-import wpConfig from "../../wp-config";
-import clientConfig from "../../client-config";
 
 function Help(props) {
   const { user_tasks, user_places, user } = props;
@@ -291,7 +289,7 @@ function Help(props) {
           </div>
         </div>
       ) : (
-        <div></div>
+        handleLogout()
       )}
     </Fragment>
   );
