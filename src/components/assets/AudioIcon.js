@@ -11,7 +11,7 @@ function AudioIcon(props) {
     <SquareWrapper width={props.width} style={containerStyle}>
       <Square style={innerStyle}>
         <button
-          className="audioBtn"
+          className=""
           id={props.id ? props.id : ""}
           onClick={() => {
             audio.play();
@@ -31,12 +31,12 @@ export default AudioIcon;
 
 const styles = {
   iconBox: {
-    // backgroundColor: "#e6b227",
-    // border: 0,
-    // borderRadius: "50%",
-    // outline: "none",
-    // width: "100%",
-    // height: "100%",
+    backgroundColor: "#e6b227",
+    border: 0,
+    borderRadius: "50%",
+    outline: "none",
+    width: "100%",
+    height: "100%",
     // display: "flex",
     // justifyContent: "center",
     // alignItems: "center",
@@ -47,5 +47,8 @@ const styles = {
     width: "100%",
     height: "100%",
     color: "white",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 };

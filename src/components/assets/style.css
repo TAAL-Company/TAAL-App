@@ -12,6 +12,6 @@
 
 .audioBtn:focus-within {
   background-color: rgb(255, 194, 27);
-  width: 105%;
-  height: 105%;
+  /* width: 105%;
+  height: 105%; */
 }
