@@ -113,7 +113,7 @@ export default function Sites(props) {
         props.actions.visitPlaces(route_id);
         props.actions.changeCurrentTasks(separateList);
         props.actions.changeCurrentTasksList(cleanList);
-        localStorage.setItem("route_title", placesList[route_id].name);
+        // localStorage.setItem("route_title", placesList[route_id].name);
         //navigate to Tasks page
         setScanning(false);
         navigate(`/Tasks/${user.user.username}`); //  { state={}, replace=false }

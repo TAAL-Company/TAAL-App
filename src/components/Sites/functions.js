@@ -97,6 +97,38 @@ export const extractPathForSite = (
 
   return [listForExec, cleanList];
 };
+// export const extractPathForSite = (userTasks, siteID, user_tasks_total = null) => {
+//   // Filter userTasks array to only include tasks that have the specified siteID in the places array
+//   const cleanList = userTasks.filter(currentTask =>
+//     currentTask.places.includes(parseInt(siteID))
+//   );
+
+//   // Set didFinish property of each task in cleanList to the corresponding value in user_tasks_total object
+//   // If user_tasks_total is not provided, set didFinish to null
+//   cleanList.forEach(task => {
+//     if (user_tasks_total) {
+//       task.didFinish = user_tasks_total[task.id].didFinish;
+//     } else {
+//       task.didFinish = null;
+//     }
+//   });
+
+//   // Organize tasks in cleanList into sub-arrays based on their ending place
+//   const listForExec = cleanList.reduce((result, task) => {
+//     const endIndex = task.places.length - 1;
+//     if (!result[endIndex]) {
+//       // If a sub-array for the current ending place does not exist, create a new one
+//       result[endIndex] = [task];
+//     } else {
+//       // If a sub-array for the current ending place already exists, push the current task into it
+//       result[endIndex].push(task);
+//     }
+//     return result;
+//   }, []);
+
+//   // Return listForExec and cleanList arrays
+//   return [listForExec, cleanList];
+// };
 
 export const getUserTasksFromRouteList = (data, userID) =>
   new Promise((resolve, reject) => {
