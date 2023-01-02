@@ -83,7 +83,9 @@ function Help(props) {
   };
   useEffect(() => {
     console.log("user:");
-    getData();
+    setPhoneGuide(localStorage.getItem("guidphone"));
+
+    // getData();
     changeHelpText();
   }, []);
 
@@ -98,42 +100,38 @@ function Help(props) {
     }
   };
 
-  const getData = () => {
-    const siteUrl = clientConfig.siteUrl;
+  // const getData = () => {
+    
+  //   const siteUrl = clientConfig.siteUrl;
 
-    get(`${siteUrl}wp-json/wp/v2/users/`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${sessionStorage.getItem("token")}`,
-      },
-      params: {
-        per_page: 99,
-        "Cache-Control": "no-cache",
-      },
-    }).then((res) => {
-      console.log("Users:", res);
+  //   get(`${siteUrl}wp-json/wp/v2/users/me`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `Bearer ${sessionStorage.getItem("token")}`,
+  //     },
+  //     params: {
+  //       per_page: 99,
+  //       "Cache-Control": "no-cache",
+  //     },
+  //   }).then((res) => {
+  //     console.log("my user:", res);
 
-      //  לא רץ בגלל שיש בעיה בקריאה מה DB
-      //  שרה לוי לא מופיעה ב DB
-      // 06.11.2022
+  //     console.log(user.user.id);
+  //     const userId = user.user.id;
 
-      console.log(user.user.id);
-      const userId = user.user.id;
+  //     // const result = res.filter((user) => user.id == userId);
 
-      const result = res.filter((user) => user.id == userId);
+  //     // // commit and pushing
+  //     // console.log(result);
 
-      // commit and pushing
-      console.log(result);
+  //     // change to result[0].phone
+  //     const phone = res.acf.guide_phone;
 
-      // change to result[0].phone
-      const phone = result[0].acf.guide_phone;
+  //     console.log("phone: " + phone);
 
-      console.log("phone: " + phone);
-
-      // set is not working
-      setPhoneGuide(phone);
-    });
-  };
+  //     setPhoneGuide(phone);
+  //   });
+  // };
 
   return (
     <Fragment>

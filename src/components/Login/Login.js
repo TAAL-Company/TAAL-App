@@ -87,6 +87,9 @@ class Login extends React.Component {
             .then((res) => {
               console.log("res:");
               console.log(res);
+              localStorage.setItem("guidphone", res.data.acf.guide_phone);
+
+
               const extraData = res.data.acf ? res.data.acf : [];
               this.props.actions.changeUser({
                 imgPath:

@@ -171,25 +171,25 @@ export default function Sites(props) {
     }
   };
 
-  const getData = () => {
-    const siteUrl = clientConfig.siteUrl;
+  // const getData = () => {
+  //   const siteUrl = clientConfig.siteUrl;
 
-    get(`${siteUrl}wp-json/wp/v2/users/`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `basic ${base64encodedData}`,
-      },
-      params: {
-        per_page: 99,
-        "Cache-Control": "no-cache",
-      },
-    }).then((res) => {
-      console.log("Users:", res);
+  //   get(`${siteUrl}wp-json/wp/v2/users/`, {
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization: `basic ${base64encodedData}`,
+  //     },
+  //     params: {
+  //       per_page: 99,
+  //       "Cache-Control": "no-cache",
+  //     },
+  //   }).then((res) => {
+  //     console.log("Users:", res);
 
-      //  לא רץ בגלל שיש בעיה בקריאה מה DB
-      //  שרה לוי לא מופיעה ב DB
-    });
-  };
+  //     //  לא רץ בגלל שיש בעיה בקריאה מה DB
+  //     //  שרה לוי לא מופיעה ב DB
+  //   });
+  // };
 
   // try
 
@@ -242,7 +242,7 @@ export default function Sites(props) {
     }
 
     // const userLang = navigator.language || navigator.userLanguage;
-    getData();
+    // getData();
 
     resetFirstTask();
 

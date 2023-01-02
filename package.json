@@ -7,7 +7,7 @@
     "webpack-dev-server": "webpack-dev-server",
     "dev": "webpack-dev-server --mode=development",
     "prod": "webpack --mode=production",
-    "build": "webpack --config webpack.config.js"
+    "build": "webpack --mode production --output-path dist"
   },
   "keywords": [],
   "author": "",
