@@ -5,13 +5,13 @@
 .Tasks {
     height: 100vh;
     /* overflow: hidden; */
-    background-color: black;
+    background-color: #272727;
 
 }
 .containerTasks {
     width: 100%;
     height: 88%;
-    background-color: black;
+    background-color: #272727;
     flex-direction: column;
     display: flex;
     justify-content: 'space-between';
@@ -19,7 +19,7 @@
 }
 @media (min-width: 450px) {
     .containerTasks {
-        background-color: black;
+        background-color: #272727;
         /* background-image: url('../images/shine@3x.png'); */
     }
     .img-block {
@@ -36,7 +36,7 @@
     .tasksBar {
         flex: 2;
         display: block;
-        background-color: black;
+        background-color: #272727;
         min-height: 188px;
     }
     .top-bar {
@@ -89,7 +89,7 @@
     .tasksBar {
         flex: 2;
         display: block;
-        background-color: black;
+        background-color: #272727;
         /* min-height: 330px; */
     }
  
@@ -98,7 +98,7 @@
         width: 100%;
         height: 8%;
         min-height: 8%;
-        background-color: #50595c;
+        background-color: #272727;
         z-index: 20;
         /* opacity: 0.98; TODO: ask if we want this*/
     }
@@ -120,8 +120,8 @@
 
 .arrowButtons {
     padding: 0px;
-    background-color: black;
-    border: black;
+    background-color: #272727;
+    border: #272727;
 }
 .arrowButtons:disabled {
     opacity: 0.6;
@@ -176,7 +176,7 @@
 .closeButton {
     background-color: #e6b021;
     border-radius: 50%;
-    border-color: black;
+    border-color: #272727;
 }
 
 .nextStationContainer {
@@ -436,10 +436,10 @@
     align-items: center;
     }
 
-    .slideHorizontalItem {
+    /* .slideHorizontalItem {
     /* height: 200px; */
     /* margin-left: 10%; */
-    }
+
     .slick-list {
     height: 100%;
     width: 100%;
