@@ -1,6 +1,11 @@
 export const isLoggedIn = () => {
 	return localStorage.getItem('token');
 };
+export const handleLogout = () => {
+	console.log('logout');
+	localStorage.removeItem("token");
+	window.location.href = "/";
+};
 
 export const getUserName = () => (
 	localStorage.getItem('userName')
