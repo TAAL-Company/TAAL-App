@@ -8,15 +8,15 @@ import styled from 'styled-components'
 export default function SiteComp(props) {
 
 
-    function decideColor(type) {
-        if (type === "current")
-            return "orange";
-        else if (type === true)
-            return 'green';
+    // function decideColor(type) {
+    //     if (type === "current")
+    //         return "orange";
+    //     else if (type === true)
+    //         return 'green';
 
-        else
-            return 'red';
-    }
+    //     else
+    //         return 'red';
+    // }
 
     function handleImgClick() {
         try {
@@ -33,7 +33,7 @@ export default function SiteComp(props) {
     return (
         <SiteContainer
             width={props.width}
-            backgroundColor={decideColor(props.didVisit)}>
+            backgroundColor={"green"}>
             <WhiteContainer>
                 < div style={styles.leftBox}>
                     <AudioIcon

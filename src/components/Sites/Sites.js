@@ -454,9 +454,9 @@ export default function Sites(props) {
             </div> */}
             <div className="sitesBar">
               <div className="sitesBar viewItems">
-                <Divider width={screen.width * 0.9} />
+                {/* <Divider width={screen.width * 0.9} /> */}
                 {loading ? <Spinner isLoading={loading} /> : <></>}
-                {!loading ? <Connector height={lineLength} /> : <></>}
+                {/* {!loading ? <Connector height={lineLength} /> : <></>} */}
                 <Carousel
                   breakPoints={breakPoints}
                   verticalMode

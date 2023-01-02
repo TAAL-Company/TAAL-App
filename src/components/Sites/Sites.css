@@ -166,10 +166,14 @@
     }
     .sitesBar {
         flex: 1;
-        display: block;
         background-color: black;
         min-height: 300px;
-                overflow: hidden;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
 
     }
     .viewItems {
