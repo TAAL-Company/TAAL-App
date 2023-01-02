@@ -5,7 +5,7 @@ import clientConfig from "../../client-config";
 import "./Login.css";
 import Modal from "react-modal";
 
-// import LogoLogin from "../../images/logoLogin.png";
+import LogoLogin from "../../images/logoLogin.png";
 import { FaRegUser } from "react-icons/fa";
 import { RiKey2Line } from "react-icons/ri";
 import { AiFillCloseCircle } from "react-icons/ai";
@@ -16,6 +16,8 @@ import { connect, Provider } from "react-redux";
 import { bindActionCreators } from "redux";
 import configureStore from "../../store/configureStore";
 import Spinner from "../assets/Spinner";
+import { LogoModal } from '../assets/icons';
+
 
 
 
@@ -170,7 +172,7 @@ class Login extends React.Component {
             />
           )}
           <div className="logo">
-            {/* <img alt={"login logo"} src={LogoLogin} /> */}
+            <img alt={"login logo"} src={LogoLogin} style={{maxWidth: "250px"}} />
           </div>
           <form onSubmit={this.onFormSubmit}>
             <label className="form-group">

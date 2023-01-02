@@ -51,7 +51,7 @@
 }
 
 .logo{
-    padding-bottom: 1vh;
+    padding-bottom: 1.5vh;
 }
 
 .form-group{
@@ -69,7 +69,7 @@
     font-size: medium;
 }
 .btn{
-    width: 16rem;
+    width: 100%;
     background: rgb(37, 111, 161);
     border-color: rgb(37, 111, 161);
     color: white;
