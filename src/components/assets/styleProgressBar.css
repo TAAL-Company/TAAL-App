@@ -1,0 +1,44 @@
+.progressBarWarpper {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: #272727;
+    z-index: 9999999;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 8%;
+}
+
+.LogoLogin {
+    width: 320px;
+    height: 100px;
+}
+
+.wrapper {
+    width: 314px;
+}
+
+.container {
+    padding: 0;
+    border-radius: 12px;
+    background-color: #256fa140;
+}
+
+.barCompleted {
+    background-color: #256FA1;
+    width: 80%;
+    border-radius: 12px;
+    height: 5px;
+    /* display: initial; */
+    text-align: center;
+}
+
+.label {
+    font-size: 20px;
+    color: white;
+}

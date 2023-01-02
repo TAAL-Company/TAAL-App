@@ -22,6 +22,7 @@ import {
 } from "./functions";
 import { Divider } from "../assets/Styles";
 import Spinner from "../assets/Spinner";
+import ProgressBarComp  from "../assets/progressBar.js";
 import { useTranslation } from "react-i18next";
 import { internetConnection } from "../functions";
 import clientConfig from "../../client-config";
@@ -455,7 +456,9 @@ export default function Sites(props) {
             <div className="sitesBar">
               <div className="sitesBar viewItems">
                 {/* <Divider width={screen.width * 0.9} /> */}
-                {loading ? <Spinner isLoading={loading} /> : <></>}
+                <div className="progressbar">
+                {loading ? <ProgressBarComp    />: <></>}
+                </div>
                 {/* {!loading ? <Connector height={lineLength} /> : <></>} */}
                 <Carousel
                   breakPoints={breakPoints}
