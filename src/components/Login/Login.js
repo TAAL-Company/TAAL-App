@@ -15,7 +15,7 @@ import wpConfig from "../../wp-config";
 import { connect, Provider } from "react-redux";
 import { bindActionCreators } from "redux";
 import configureStore from "../../store/configureStore";
-import Spinner from "../assets/Spinner";
+// import Spinner from "../assets/Spinner";
 import { LogoModal } from '../assets/icons';
 
 
@@ -164,7 +164,7 @@ class Login extends React.Component {
     } else {
       return (
         <div className=" centered">
-          {loading && <Spinner isLoading={loading} top={-200} />}
+          {/* {loading && <Spinner isLoading={loading} top={-200} />} */}
           {error && (
             <div
               className="alert alert-danger"
