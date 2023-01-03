@@ -5,6 +5,7 @@ import "./Navbar.css";
 import { StressIconRed, StressIconGrey } from "../assets/icons";
 import ListenIcon from "../../images/ListenIcon.png";
 import { connect } from "react-redux";
+import { BsArrowCounterclockwise } from "react-icons/bs";
 
 function Navbar(props) {
   const { origin, user } = props;
@@ -32,7 +33,16 @@ function Navbar(props) {
                 <div className="navDemo">
                   <div className="nav-item">
                     {origin === "Help" ? (
-                      <StressIconGrey className="StressIcon nav-link linker" />
+                      <>
+                      <div className="GoBackToSitesPage"
+                      onClick={() => {
+                      console.log("go back");
+                      window.location.href = `/Sites/${userName}`;
+
+                    }}>
+                        <BsArrowCounterclockwise style={{height: "80%", width: "80%", marginTop: "0.7vh"}}></BsArrowCounterclockwise>
+                      </div>
+                      </>
                     ) : (
                       <NavLink origin={origin} to={`/Help/${userName}`}>
                         <StressIconRed className="StressIcon" src={stress} />

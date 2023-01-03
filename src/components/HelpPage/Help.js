@@ -2,7 +2,7 @@ import React, { Children, Fragment, useEffect, useState } from "react";
 import Modal from "react-modal";
 
 import { AiFillCloseCircle } from "react-icons/ai";
-import { BsArrowCounterclockwise } from "react-icons/bs";
+import { HiArrowLeft } from "react-icons/hi";
 import { FaHandHolding } from "react-icons/fa";
 
 import "./HelpPage.css";
@@ -232,7 +232,9 @@ function Help(props) {
                   <button className="helpNow" onClick={toggleModal}>
                     <div className="tabletButton">
                       <div className="iconD">
-                        <FaHandHolding />
+                        <div className="helpIcon" style={{display: "flex", alignItems: "center", height: "100%", marginBottom: "13px"}}>
+                          <FaHandHolding />
+                        </div>
                       </div>
                       <div className="vertical">
                         <div className="text">ממשיך לבקש עזרה</div>
@@ -275,8 +277,9 @@ function Help(props) {
                   className="return"
                 >
                   <div className="tabletButton">
+                    {/* icon back */}
                     <div className="iconD">
-                      <BsArrowCounterclockwise />
+                    < HiArrowLeft />
                     </div>
                     <div className="vertical">
                       <div className="text">חזור למשימות שלי</div>
