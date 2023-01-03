@@ -214,3 +214,24 @@
 }
 
 
+.helloAera {
+    height: 20%;
+    display: flex;
+    align-items: flex-end;
+    background-color: #272727;
+    flex-direction: column;
+    justify-content: center;
+    padding-right: 2em;
+}
+
+h5.helloTitle {
+    color: #e8b221;
+    font-size: 36px;
+    direction: rtl;
+    margin-right: 0;
+}
+h1.addText {
+    color: #9B9B9B;
+    font-size: 20px;
+    font-weight: 100;
+}

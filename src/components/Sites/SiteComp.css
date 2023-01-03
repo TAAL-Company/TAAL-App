@@ -3,7 +3,7 @@
     height: 130px;
     border-style: solid;
     border-radius: 2%;
-    border-color: green;
+    /* border-color: green; */
     border-width: medium;
     margin: 3%;
     display: flex;
