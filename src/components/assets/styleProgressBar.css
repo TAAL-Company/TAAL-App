@@ -28,16 +28,17 @@
     border-radius: 12px;
     background-color: #256fa140;
 }
-
+/* 
 .barCompleted {
     background-color: #256FA1;
     width: 80%;
     border-radius: 12px;
     height: 5px;
-    /* display: initial; */
     text-align: center;
-}
-
+    width: calc(100% * (var(--completed) / 100));
+    --completed: 0;
+} 
+*/
 .label {
     font-size: 20px;
     color: white;
