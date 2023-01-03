@@ -2,7 +2,7 @@ img.playIcon {
     width: 28px;
     height: 32px;
     background: #0fa20f;
-    padding: 5px;
+    padding: 6px;
     border-radius: 6px 0px 0px 6px;
 }
 
@@ -84,8 +84,8 @@ img.playIcon {
 }
 
 .WhiteContainer {
-    height: 300px;
-    width: 370px;
+    height: 34vh;
+    width: 83vw;
     display: flex;
     padding: 2%;
     border-radius: 5pt;
@@ -95,7 +95,7 @@ img.playIcon {
 }
 
 .SiteContainer {
-    width: 260px;
+    width: 100vw;
     display: flex;
     align-items: center;
     justify-content: center;
