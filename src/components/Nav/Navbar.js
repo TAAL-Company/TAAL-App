@@ -4,6 +4,7 @@ import { isLoggedIn, getUserName } from "../functions";
 import "./Navbar.css";
 import { StressIconRed, StressIconGrey } from "../assets/icons";
 import ListenIcon from "../../images/ListenIcon.png";
+import maskable from  "../../images/maskable.png";
 import { connect } from "react-redux";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 import Swal from 'sweetalert2'
@@ -123,7 +124,11 @@ function Navbar(props) {
                   <h5>{arabicName}</h5>
                 </div>
                 <div className="imageFrame">
-                  <img src={imgPath} alt={"image frame"} />
+                  {imgPath ? (
+                    <img src={imgPath} alt={"image frame"} />
+                    ) : (
+                      <img src={maskable} alt={"image frame"} style={{width: "110%", height: "110%"}} />
+                    )}
                 </div>
               </div>
             </React.Fragment>

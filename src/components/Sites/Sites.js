@@ -454,8 +454,8 @@ export default function Sites(props) {
 
           <div className="containerSites">
             <div className="helloAera">
-              <h5 className="helloTitle">  שלום {user.user.hebrewName} !</h5>
-              <h1 className="addText">טקסט חופשי טקסט חופשי</h1>
+              <h5 className="helloTitle">!{user.user.hebrewName} שלום</h5>
+              <h1 className="addText">!שמחים לראותך</h1>
             </div>
             {/* <div className="barcode">
               <div className="scanner">
