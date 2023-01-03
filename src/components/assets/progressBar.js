@@ -26,10 +26,10 @@ export default function ProgressBarComp(props) {
                 className="wrapper"
                 barContainerClassName="container"
                 // completedClassName="barCompleted"
-                // labelClassName="label"
+                labelClassName="label"
                 height="10px" 
                 bgColor = "#256FA1" 
-                labelSize="10px"
+                // labelSize="25px"
                 />
         </div>
     )

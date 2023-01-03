@@ -5,6 +5,8 @@ import "./Navbar.css";
 import { StressIconRed, StressIconGrey } from "../assets/icons";
 import ListenIcon from "../../images/ListenIcon.png";
 import { connect } from "react-redux";
+import { BsArrowCounterclockwise } from "react-icons/bs";
+import Swal from 'sweetalert2'
 
 function Navbar(props) {
   const { origin, user } = props;
@@ -32,7 +34,54 @@ function Navbar(props) {
                 <div className="navDemo">
                   <div className="nav-item">
                     {origin === "Help" ? (
-                      <StressIconGrey className="StressIcon nav-link linker" />
+                      <>
+                      <div className="GoBackToSitesPage"
+                      onClick={() => {
+                      console.log("go back");
+                      Swal.fire({
+                        icon: "warning",
+                        title: "",
+                        // text: "האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?",
+                        html: `<div style="direction: rtl">האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?</div>`,
+
+                        showCancelButton: true,
+                        showDenyButton: false,
+                        showConfirmButton: true,
+                        confirmButtonColor: 'green',
+                        cancelButtonColor: 'red',
+                        confirmButtonText: 'כן',
+                        cancelButtonText: 'לא',
+                        focusCancel: false,
+                        focusConfirm: false,
+                        customClass: {
+                          cancelButton: 'order-1 left-gap ',
+                          confirmButton: 'order-2',
+                        },
+
+                        
+                        // onBeforeOpen: () => {
+                        //   // Add a style tag to the head element to hide the focus outline
+                        //   const head = document.head || document.getElementsByTagName('head')[0];
+                        //   const style = document.createElement('style');
+                        //   style.type = 'text/css';
+                        //   style.innerHTML = 'button:focus { outline: none; }';
+                        //   head.appendChild(style);
+                        // }
+
+                      }).then((result) => {
+                        if (result.value) {
+                          // The user clicked the "Confirm" button, perform the desired action
+                          window.location.href = `/Sites/${userName}`;
+                        } else {
+                          // The user clicked the "Cancel" button, do nothing
+                        }
+                      });
+                      // window.location.href = `/Sites/${userName}`;
+
+                    }}>
+                        <BsArrowCounterclockwise style={{height: "80%", width: "80%", marginTop: "0.7vh"}}></BsArrowCounterclockwise>
+                      </div>
+                      </>
                     ) : (
                       <NavLink origin={origin} to={`/Help/${userName}`}>
                         <StressIconRed className="StressIcon" src={stress} />

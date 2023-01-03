@@ -12651,10 +12651,10 @@
     "@babel/runtime" "^7.14.5"
     "html-parse-stringify" "^3.0.1"
 
-"react-icons@^4.1.0":
-  "integrity" "sha512-FCXBg1JbbR0vWALXIxmFAfozHdVIJmmwCD81Jk0EKOt7Ax4AdBNcaRkWhR0NaKy9ugJgoY3fFvo0PHpte55pXg=="
-  "resolved" "https://registry.npmjs.org/react-icons/-/react-icons-4.1.0.tgz"
-  "version" "4.1.0"
+"react-icons@^4.7.1":
+  "integrity" "sha512-yHd3oKGMgm7zxo3EA7H2n7vxSoiGmHk5t6Ou4bXsfcgWyhfDKMpyKfhHR6Bjnn63c+YXBLBPUql9H4wPJM6sXw=="
+  "resolved" "https://registry.npmjs.org/react-icons/-/react-icons-4.7.1.tgz"
+  "version" "4.7.1"
 
 "react-is@^16.13.1":
   "integrity" "sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ=="
@@ -14722,6 +14722,11 @@
     "stable" "^0.1.8"
     "unquote" "~1.1.1"
     "util.promisify" "~1.0.0"
+
+"sweetalert2@^11.6.16":
+  "integrity" "sha512-T2FO8LptErsjE4r0WMfiSk4YbeUvPadNaUZ/cADMEOnws000znrf8zFX9S5e/spvzJDyRI5En73WQyDZhGypxQ=="
+  "resolved" "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.6.16.tgz"
+  "version" "11.6.16"
 
 "symbol-observable@^1.2.0":
   "integrity" "sha512-e900nM8RRtGhlV36KGEU9k65K3mPb1WV70OdjfxlG2EAuM1noi/E/BaW/uMhL7bPEssK8QV57vN3esixjUvcXQ=="
