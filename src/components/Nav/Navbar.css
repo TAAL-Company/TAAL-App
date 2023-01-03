@@ -10,6 +10,10 @@
   cursor: pointer;
 }
 
+.no-focus-outline button:focus {
+  outline: none;
+}
+
 
 .HelpIcon {
   padding-right: 2%;

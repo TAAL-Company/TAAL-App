@@ -41,23 +41,33 @@ function Navbar(props) {
                       Swal.fire({
                         icon: "warning",
                         title: "",
-                        text: "האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?",
+                        // text: "האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?",
+                        html: `<div style="direction: rtl">האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?</div>`,
 
                         showCancelButton: true,
                         showDenyButton: false,
                         showConfirmButton: true,
-
                         confirmButtonColor: 'green',
                         cancelButtonColor: 'red',
-    
                         confirmButtonText: 'כן',
-                        cancelButtonText: 'לא',  
-
+                        cancelButtonText: 'לא',
+                        focusCancel: false,
+                        focusConfirm: false,
                         customClass: {
-                          cancelButton: 'order-1 left-gap',
-                          confirmButton: 'order-2',
-                      
+                          cancelButton: 'order-1 left-gap no-focus-outline',
+                          confirmButton: 'order-2 no-focus-outline',
+                        },
+
+                        
+                        onBeforeOpen: () => {
+                          // Add a style tag to the head element to hide the focus outline
+                          const head = document.head || document.getElementsByTagName('head')[0];
+                          const style = document.createElement('style');
+                          style.type = 'text/css';
+                          style.innerHTML = 'button:focus { outline: none; }';
+                          head.appendChild(style);
                         }
+
                       }).then((result) => {
                         if (result.value) {
                           // The user clicked the "Confirm" button, perform the desired action
