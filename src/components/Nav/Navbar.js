@@ -56,15 +56,8 @@ function Navbar(props) {
                         customClass: {
                           cancelButton: 'order-1 left-gap',
                           confirmButton: 'order-2',
-
-                        
                       
                         }
-                                         
-                        // buttons: {
-                        //   cancel: "Cancel",
-                        //   confirm: "Confirm"
-                        // }
                       }).then((result) => {
                         if (result.value) {
                           // The user clicked the "Confirm" button, perform the desired action
