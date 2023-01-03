@@ -54,19 +54,19 @@ function Navbar(props) {
                         focusCancel: false,
                         focusConfirm: false,
                         customClass: {
-                          cancelButton: 'order-1 left-gap no-focus-outline',
-                          confirmButton: 'order-2 no-focus-outline',
+                          cancelButton: 'order-1 left-gap ',
+                          confirmButton: 'order-2',
                         },
 
                         
-                        onBeforeOpen: () => {
-                          // Add a style tag to the head element to hide the focus outline
-                          const head = document.head || document.getElementsByTagName('head')[0];
-                          const style = document.createElement('style');
-                          style.type = 'text/css';
-                          style.innerHTML = 'button:focus { outline: none; }';
-                          head.appendChild(style);
-                        }
+                        // onBeforeOpen: () => {
+                        //   // Add a style tag to the head element to hide the focus outline
+                        //   const head = document.head || document.getElementsByTagName('head')[0];
+                        //   const style = document.createElement('style');
+                        //   style.type = 'text/css';
+                        //   style.innerHTML = 'button:focus { outline: none; }';
+                        //   head.appendChild(style);
+                        // }
 
                       }).then((result) => {
                         if (result.value) {

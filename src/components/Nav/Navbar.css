@@ -10,9 +10,34 @@
   cursor: pointer;
 }
 
-.no-focus-outline button:focus {
+/* .no-focus-outline button:focus {
   outline: none;
+} */
+
+body.swal2-shown > [aria-hidden="true"] {
+  transition: 0.1s filter;
+  filter: blur(5px);
 }
+
+
+.swal2-confirm,
+.swal2-cancel {
+  min-width: unset;
+  width: 18vw;
+}
+
+/* .swal2-confirm .swal2-styled,
+.swal2-cancel .swal2-styled {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.centered-button .swal2-styled {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
 
 
 .HelpIcon {
