@@ -489,6 +489,7 @@ export default function Sites(props) {
 
                 {/* {!loading ? <Connector height={lineLength} /> : <></>} */}
                 <Carousel
+                  onResize={currentBreakPoint => console.log(currentBreakPoint)}
                   breakPoints={breakPoints}
                   verticalMode
                   initialFirstItem={getFirstItemLocation()}
