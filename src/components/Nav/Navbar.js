@@ -125,9 +125,9 @@ function Navbar(props) {
                 </div>
                 <div className="imageFrame">
                   {imgPath ? (
-                    <img src={imgPath} alt={"image frame"} />
+                    <img src={imgPath} alt={"LOGO"} />
                     ) : (
-                      <img src={maskable} alt={"image frame"} style={{width: "110%", height: "110%"}} />
+                      <img src={maskable} alt={"LOGO"} style={{width: "110%", height: "110%"}} />
                     )}
                 </div>
               </div>
