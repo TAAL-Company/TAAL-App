@@ -379,7 +379,7 @@ function Tasks(props) {
                       }
                       index={index}
                       currentIndex={currIndex}
-                      height={window.innerHeight * 0.28}
+                      height={screen.height * 0.28}
                     />
                   </div>
                 );
