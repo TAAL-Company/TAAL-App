@@ -8,7 +8,6 @@
   border-radius: 50%;
   color: white;
   cursor: pointer;
-  zoom: normal;
 }
 
 /* .no-focus-outline button:focus {
@@ -20,7 +19,6 @@ body.swal2-shown > [aria-hidden="true"] {
   width: 100%;
   height: 100%;
   filter: blur(5px);
-  zoom: normal;
 }
 
 

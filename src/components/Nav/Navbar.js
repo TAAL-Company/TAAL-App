@@ -40,7 +40,7 @@ function Navbar(props) {
                       onClick={() => {
                       console.log("go back");
                       Swal.fire({
-                        icon: "question",
+                        icon: "warning",
                         title: "",
                         // text: "האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?",
                         html: `<div style="direction: rtl">האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?</div>`,

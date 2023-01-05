@@ -23,7 +23,6 @@ body{
 	width: 100%;
 	overscroll-behavior-y: contain;
 	overflow: hidden;
-	zoom: normal;
 }
 
 #root{
@@ -38,7 +37,6 @@ body{
 	-moz-background-size: cover;
 	background-size: cover;
 	-o-background-size: cover;
-	zoom: normal;
 }
 
 @media (max-width: 450px) {
@@ -52,7 +50,5 @@ body{
 		-moz-background-size: unset;
 		background-size: unset;
 		-o-background-size: unset;
-		zoom: normal;
-
 	}
 }
