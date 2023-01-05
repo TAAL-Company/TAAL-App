@@ -1,0 +1,86 @@
+.imgStyle {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+}
+
+.containerWrapper {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.taskContainer {
+    border-radius: 5pt;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.whiteContainer {
+    background-color: white;
+    padding: 6% 6% 2% 6%;
+    border-radius: 5pt;
+    justify-content: space-between;
+}
+
+.topBar{
+  width: 100%;
+  max-height: 42%;
+  margin: auto;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  overflow: hidden;
+}
+.imageWrapper{
+    width: 100%;
+    display: flex;
+    padding-bottom: 3px;
+}
+.textTaskComp{
+    text-align: right;
+    font-family: "Arimo", sans-serif;
+    margin: 0;
+    padding: 0;
+    max-height: 40px;
+    color: black;
+    font-weight: 100;
+}
+
+/* 
+.containerBox {
+    width: 50%;
+    height: 250px;
+    background-color: white;
+    border-radius: 2%;
+    border-style: solid;
+    border-width: 6;
+    display: flex;
+    flex-direction: column;
+}
+.aIconBox {
+    width: 15%;
+}
+.cIconBox {
+    width: 22%;
+}
+.leftBox {
+    flex: 1;
+}
+.rightBox {
+    flex: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.textBox {
+    height: 17%;
+    align-items: center;
+    margin-bottom: 5;
+}
+.textStyle {
+    font-size: 20;
+    color: black;
+} */
