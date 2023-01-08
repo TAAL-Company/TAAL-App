@@ -308,8 +308,9 @@ export default function Sites(props) {
               let max_pages = res.headers["x-wp-totalpages"];
               let arrayTemp = [];
               tasksList = res.data;
+              let plusToCompleted = 100/max_pages;
 
-              setCompleted((prevCompleted) => prevCompleted + 20);
+              setCompleted((prevCompleted) => parseInt(prevCompleted + plusToCompleted));
 
               if (max_pages > 1) {
                 console.log("YARD")
@@ -327,7 +328,7 @@ export default function Sites(props) {
                       },
                     })
                     .then(async (response) => {
-                      setCompleted((prevCompleted) => prevCompleted + 20);
+                      setCompleted((prevCompleted) => parseInt(prevCompleted + plusToCompleted));
                       console.log("tasksList11: ");
                       Array.prototype.push.apply(tasksList, response.data);
                       // await this.state.tasksList.push(response.data);
