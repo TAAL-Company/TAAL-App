@@ -99,6 +99,7 @@ body.swal2-shown > [aria-hidden="true"] {
 }
 h5 {
   margin-right: 1em;
+  
 }
 
 .linker {
@@ -215,7 +216,7 @@ h5 {
   }
   h5 {
     margin-right: 0.5rem;
-    font-size: 18px;
+    font-size: 14pt;
   }
 }
 @media (max-width: 350px) {
