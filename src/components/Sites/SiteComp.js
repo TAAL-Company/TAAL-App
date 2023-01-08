@@ -45,7 +45,7 @@ export default function SiteComp(props) {
                 <div className="rightBox">
                     <div className="imgBox">
                         <img alt={'site image'} src={props.imgUrl || "https://globalimpactnetwork.org/wp-content/themes/globalimpact/images/no-image-found-360x250.png"} 
-                        lassName="imgStyle" />
+                        className="imgStyle" />
                     </div>
                     <div className="textBox">
                         <p className="siteTxt" >{props.name}</p>
