@@ -278,7 +278,7 @@ export default function Sites(props) {
         .get(wpConfig.getPlaces, {
           headers: {
             "Content-Type": "application/json",
-            Authorization: `basic ${base64encodedData}`,
+            // Authorization: `basic ${base64encodedData}`,
           },
           params: {
             per_page: 70,
@@ -301,7 +301,7 @@ export default function Sites(props) {
               },
               headers: {
                 "Content-Type": "application/json",
-                Authorization: `basic ${base64encodedData}`,
+                // Authorization: `basic ${base64encodedData}`,
               },
             })
             .then(async (res) => {
@@ -324,7 +324,7 @@ export default function Sites(props) {
                       },
                       headers: {
                         "Content-Type": "application/json",
-                        Authorization: `basic ${base64encodedData}`,
+                        // Authorization: `basic ${base64encodedData}`,
                       },
                     })
                     .then(async (response) => {
@@ -352,7 +352,7 @@ export default function Sites(props) {
                   },
                   headers: {
                     "Content-Type": "application/json",
-                    Authorization: `basic ${base64encodedData}`,
+                    // Authorization: `basic ${base64encodedData}`,
                   },
                   // headers: {
                   //   Authorization: "Bearer " + localStorage.getItem("token"),
