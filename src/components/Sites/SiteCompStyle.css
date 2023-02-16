@@ -65,6 +65,7 @@ img.playIcon {
 }
 
 .textBox {
+    text-align: center;
     /* height: 18%; */
     margin-bottom: 6;
     font-family: 'Arimo';

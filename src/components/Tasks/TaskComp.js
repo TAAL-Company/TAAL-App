@@ -20,7 +20,6 @@ let objTime = {
 };
 
 export default function TaskComp(props) {
-  // console.log("task_location: ", props.task_location);
 
   const [, set_obj_time] = useState(null);
   const [myCurrent, setMyCurrent] = useState();
@@ -28,8 +27,6 @@ export default function TaskComp(props) {
   const currDate = new Date().toLocaleDateString("en-GB");
   const currTime = new Date().toLocaleTimeString("en-GB");
   let dateAndTime = currDate + " " + currTime;
-
-  console.log("dateAndTime:" , dateAndTime)
 
   objTime.userName = localStorage.getItem("userName");
   objTime.route_id = localStorage.getItem("route_id");

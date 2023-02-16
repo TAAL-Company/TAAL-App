@@ -149,6 +149,9 @@ export const getUserTasksFromRouteList = (data, userID) =>
   });
 
 export const addStationDetailsToTask = (userTasks, place) => {
+  console.log("xx userTasks: ", userTasks)
+  console.log("xx place: ", place)
+
   let copyUserTasks = [...userTasks];
   copyUserTasks.forEach((task) => {
     task["stationDetails"] = place[task.places[task.places.length - 1]];

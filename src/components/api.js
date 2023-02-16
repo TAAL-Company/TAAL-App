@@ -1,3 +1,5 @@
+import wpConfig from "../wp-config";
+import axios from "axios";
 
 //function to publish the data in the 'Data Time' table for each task the user has done
 export const postDataTime = (objTime) => {
@@ -33,4 +35,126 @@ export const postDataTime = (objTime) => {
     })
 
 
+};
+
+
+export const get = async (url, header) => {
+    try {
+        const res = await axios.get(url, header);
+        if (res) {
+            return res;
+        }
+    } catch (e) {
+        console.log(e);
+    }
+};
+
+
+
+export const getingDataTasks = async (setCompleted) => {
+
+    let allTasks;
+
+
+    await get(wpConfig.getTasks, {
+        params: {
+            per_page: 100,
+            "Cache-Control": "no-cache",
+        },
+    }).then((res) => {
+        let max_pages = res.headers["x-wp-totalpages"];
+
+        let plusToCompleted = 100 / max_pages;
+
+        setCompleted((prevCompleted) => parseInt(prevCompleted + plusToCompleted));
+
+
+        allTasks = res.data;
+        if (max_pages > 1) {
+            for (let i = 2; i <= max_pages; i++) {
+
+                get(wpConfig.getTasks, {
+                    params: {
+                        per_page: 100,
+                        page: i,
+                        "Cache-Control": "no-cache",
+                    },
+                }).then((res) => {
+                    setCompleted((prevCompleted) => parseInt(prevCompleted + plusToCompleted));
+
+                    Array.prototype.push.apply(allTasks, res.data);
+                });
+            }
+        }
+    });
+
+    return allTasks;
+};
+
+export const getingDataRoutes = async () => {
+
+    let allRoutes;
+    console.log('geting data routes', `${wpConfig}/wp-json/wp/v2/routes/`)
+
+    await get(wpConfig.getRoutes, {
+        params: {
+            per_page: 100,
+            "Cache-Control": "no-cache",
+        },
+    }).then((res) => {
+        let max_pages = res.headers["x-wp-totalpages"];
+
+        allRoutes = res.data;
+        if (max_pages > 1) {
+            for (let i = 2; i <= max_pages; i++) {
+
+                get(wpConfig.getRoutes, {
+                    params: {
+                        per_page: 100,
+                        page: i,
+                        "Cache-Control": "no-cache",
+                    },
+                }).then((res) => {
+                    Array.prototype.push.apply(allRoutes, res.data);
+                });
+            }
+        }
+    });
+
+    return allRoutes;
+};
+
+export const getingDataPlaces = async () => {
+
+    let allPlaces;
+
+    await get(wpConfig.getPlaces, {
+        params: {
+            per_page: 100,
+            "Cache-Control": "no-cache",
+
+        },
+
+    }).then((res) => {
+        let max_pages = res.headers["x-wp-totalpages"];
+
+        allPlaces = res.data;
+        if (max_pages > 1) {
+            for (let i = 2; i <= max_pages; i++) {
+
+                get(wpConfig.getPlaces, {
+                    params: {
+                        per_page: 100,
+                        page: i,
+                        "Cache-Control": "no-cache",
+                    },
+
+                }).then((res) => {
+                    Array.prototype.push.apply(allPlaces, res.data);
+                });
+            }
+        }
+    });
+
+    return allPlaces;
 };

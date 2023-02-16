@@ -11,6 +11,7 @@ import { navigate } from "@reach/router";
 import styled from "styled-components";
 import wpConfig from "../../wp-config";
 import Navbar from "../Nav/Navbar";
+import { getingDataTasks, getingDataRoutes, getingDataPlaces } from "../api"
 import {
   getPlacesList,
   getTasksList,
@@ -43,6 +44,15 @@ export default function Sites(props) {
   const currDate = new Date().toLocaleDateString();
   const currTime = new Date().toLocaleTimeString();
   const [completed, setCompleted] = useState(5);
+  const [allRoutes, setAllRoutes] = useState([])
+  const [allTasks, setAllTasks] = useState([])
+  const [allPlaces, setAllPlaces] = useState([])
+
+
+  useEffect(() => {
+    console.log("user_places: ", props.user_places)
+
+  }, [props.user_places])
 
   useEffect(() => {
     if (completed > 100) {
@@ -213,7 +223,6 @@ export default function Sites(props) {
 
   // try
 
-  const resetFirstTask = () => { };
 
   const getDateInfo = () => {
     const date = new Date();
@@ -235,15 +244,42 @@ export default function Sites(props) {
     return internetStatus.current;
   };
 
+  // useEffect(() => {
+  //   (async () => {
+  //     await getDataFunction();
+
+  //   })();
+  // }, []);
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      setAllTasks(await getingDataTasks(setCompleted)); //get request for tasks
+      setAllRoutes(await getingDataRoutes());  //get request for routes
+      setAllPlaces(await getingDataPlaces()); //get request for places
+    } catch (error) {
+      console.log("Error")
+      console.error(error.message);
+    }
+
+  };
   useEffect(() => {
-    (async () => {
-      await getDataFunction();
 
-    })();
+    fetchData();
   }, []);
+  useEffect(() => {
 
-  const getDataFunction = async () => {
+    if (allPlaces.length > 0 && allRoutes.length > 0 && allTasks.length > 0) {
+      console.log("allRoutes", allRoutes)
+      console.log("allTasks", allTasks)
+      console.log("allPlaces", allPlaces)
 
+      getDataFunction();
+
+    }
+
+  }, [allRoutes, allTasks, allPlaces])
+
+  const clearCache = () => {
     // Remove all cookies
     document.cookie.split(";").forEach(function (c) {
       document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
@@ -260,172 +296,40 @@ export default function Sites(props) {
       });
 
     }
+  }
 
-    // const userLang = navigator.language || navigator.userLanguage;
-    // getData();
+  const getDataFunction = async () => {
 
-    resetFirstTask();
-
-    // Update the document title using the browser API once a day
-    if (user.user.lastFetchDate !== getDateInfo()) {
-      console.log("setLoading1: ", loading);
-      setLoading(true);
+    clearCache();
 
 
-      console.log("setLoading2: ", loading);
-      // get all of the places
-      await axios
-        .get(wpConfig.getPlaces, {
-          headers: {
-            "Content-Type": "application/json",
-            // Authorization: `basic ${base64encodedData}`,
-          },
-          params: {
-            per_page: 70,
-            "Cache-Control": "no-cache",
-          },
-          // headers: {
-          //   Authorization: "Bearer " + localStorage.getItem("token"),
-          // },
-        })
-        .then(async (places_res) => {
-          // setPlacesList(trasformObject(places_res.data))
-          placesList = await trasformObject(places_res.data);
+    placesList = await trasformObject(allPlaces);
+    routesInfo = await trasformObject(allRoutes);
+    taskInformation = await trasformObject(allTasks);
 
-          // get all of the tasks
-          await axios
-            .get(wpConfig.getTasks, {
-              params: {
-                per_page: 100,
-                "Cache-Control": "no-cache",
-              },
-              headers: {
-                "Content-Type": "application/json",
-                // Authorization: `basic ${base64encodedData}`,
-              },
-            })
-            .then(async (res) => {
-              let max_pages = res.headers["x-wp-totalpages"];
-              let arrayTemp = [];
-              tasksList = res.data;
-              let plusToCompleted = 100/max_pages;
+    let userRoutes = await getUserTasksFromRouteList(
+      allRoutes,
+      user.user.id
+    );
 
-              setCompleted((prevCompleted) => parseInt(prevCompleted + plusToCompleted));
+    let newTaskList = getTasksList(taskInformation, userRoutes);
+    console.log("after getTasksList: ", newTaskList);
 
-              if (max_pages > 1) {
-                console.log("YARD")
-                for (let i = 2; i <= max_pages; i++) {
-                  await axios
-                    .get(wpConfig.getTasks, {
-                      params: {
-                        per_page: 100,
-                        page: i,
-                        "Cache-Control": "no-cache",
-                      },
-                      headers: {
-                        "Content-Type": "application/json",
-                        // Authorization: `basic ${base64encodedData}`,
-                      },
-                    })
-                    .then(async (response) => {
-                      setCompleted((prevCompleted) => parseInt(prevCompleted + plusToCompleted));
-                      console.log("tasksList11: ");
-                      Array.prototype.push.apply(tasksList, response.data);
-                      // await this.state.tasksList.push(response.data);
-                      // taskInformation = trasformObject(tasksList);
-                      console.log("tasksList11: ", tasksList);
-                      // console.log("taskInformation: ", taskInformation);
-                    });
+    newTaskList = addStationDetailsToTask(
+      newTaskList,
+      placesList
+    );
 
+    props.actions.changeTasks(newTaskList, dateRef.current);
 
-                }
-              }
+    let temp1 = getPlacesList(placesList, newTaskList);
 
+    props.actions.changePlaces(temp1, dateRef.current);
+    if (temp1.length < 2) setLineLength(0);
+    else if (temp1.length === 2) setLineLength(32);
+    setLoading(false);
+    props.actions.enterApp(dateRef.current);
 
-
-              // Get the user's routes
-              await axios
-                .get(wpConfig.getRoutes, {
-                  params: {
-                    per_page: 70,
-                    "Cache-Control": "no-cache",
-                  },
-                  headers: {
-                    "Content-Type": "application/json",
-                    // Authorization: `basic ${base64encodedData}`,
-                  },
-                  // headers: {
-                  //   Authorization: "Bearer " + localStorage.getItem("token"),
-                  // },
-                })
-                .then(async (res) => {
-                  console.log("maslolim: ", res.data);
-                  // setDataRoutes(res.data)
-                  routesInfo = transformArrayOfObjects(res.data);
-                  console.log("routesInfo: ", routesInfo);
-
-                  let userRoutes = await getUserTasksFromRouteList(
-                    res.data,
-                    user.user.id
-                  );
-                  console.log("userRoutes: ", userRoutes);
-
-
-                  console.log("tasksListtttt: ", tasksList);
-                  taskInformation = await trasformObject(tasksList);
-
-                  console.log("taskInformation2: ", taskInformation);
-                  console.log("taskInformation length: ", Object.keys(taskInformation).length);
-
-
-                  console.log("before getTasksList - taskInformation: ", taskInformation);
-                  console.log("before getTasksList - userRoutes: ", userRoutes);
-
-                  let newTaskList = getTasksList(taskInformation, userRoutes);
-                  console.log("after getTasksList: ", newTaskList);
-
-                  newTaskList = addStationDetailsToTask(
-                    newTaskList,
-                    placesList
-                  );
-
-                  props.actions.changeTasks(newTaskList, dateRef.current);
-
-                  console.log("after placesList: ", placesList);
-                  console.log("after newTaskList: ", newTaskList);
-
-                  let temp1 = getPlacesList(placesList, newTaskList);
-
-                  props.actions.changePlaces(temp1, dateRef.current);
-                  if (temp1.length < 2) setLineLength(0);
-                  else if (temp1.length === 2) setLineLength(32);
-                  setLoading(false);
-                  props.actions.enterApp(dateRef.current);
-                })
-                .catch((err) => {
-                  console.log(err);
-                  console.log("1");
-
-                  setLoading(false);
-                });
-            })
-            .catch((err) => {
-              console.log(err);
-              console.log("2");
-
-              setLoading(false);
-            });
-        })
-        .catch((err) => {
-          console.log("3");
-
-          setLoading(false);
-        });
-    } else {
-      if (getFirstItemLocation() + 1 === user_places.user_places.length)
-        setLineLength(32);
-    }
-    return () => { };
   };
   const isCurrentSite = (itemId) =>
     itemId === props.user_places.places_location;
