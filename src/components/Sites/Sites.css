@@ -18,6 +18,7 @@
     height: 100%;
     flex-direction: column;
     display: flex;
+    margin-bottom: 20%;
 }
 @media (min-height: 768px) {
     .containerSites {
