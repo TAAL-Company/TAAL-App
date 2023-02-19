@@ -171,7 +171,7 @@ export default function Sites(props) {
         * Should fix the trasfer from width 1 to 250
     */
   const breakPoints = [
-    { width: 1, itemsToShow: 2, itemsToScroll: 1 },
+    { width: 1, itemsToShow: 3, itemsToScroll: 1 },
     { width: 550, itemsToShow: 3, verticalMode: false, isRTL: true },
     { width: 700, itemsToShow: 3, verticalMode: false, isRTL: true },
     { width: 878, itemsToShow: 4, verticalMode: false, isRTL: true },
@@ -398,13 +398,14 @@ export default function Sites(props) {
                 {loading ? <ProgressBarComp completed={completed} /> : <></>}
 
                 {/* {!loading ? <Connector height={lineLength} /> : <></>} */}
-                <Carousel
+                {/* <Carousel
                   onResize={currentBreakPoint => console.log(currentBreakPoint)}
                   breakPoints={breakPoints}
                   verticalMode
                   initialFirstItem={getFirstItemLocation()}
                   onChange={onChangeSite}
-                >
+                > */}
+                <div className="allPlacesOfUser">
                   {allPlacesOfUser.map((item, index) => {
                     return (
                       <SiteComp
@@ -425,7 +426,8 @@ export default function Sites(props) {
                       />
                     );
                   })}
-                </Carousel>
+                  </div>
+                {/* </Carousel> */}
               </div>
             </div>
           </div>

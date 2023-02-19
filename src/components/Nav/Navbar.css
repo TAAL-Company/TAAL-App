@@ -74,6 +74,7 @@ body.swal2-shown > [aria-hidden="true"] {
   padding: 2% 3%;
   height: 10%;
   zoom: normal;
+  position: sticky;
 
 }
 .Profile {
