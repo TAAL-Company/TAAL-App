@@ -51,7 +51,7 @@ export const get = async (url, header) => {
 
 
 
-export const getingDataTasks = async (setCompleted) => {
+export const getingDataTasks = async (setCompleted,setnumOfTasks) => {
 
     let allTasks;
 
@@ -63,7 +63,8 @@ export const getingDataTasks = async (setCompleted) => {
         },
     }).then((res) => {
         let max_pages = res.headers["x-wp-totalpages"];
-
+        setnumOfTasks(res.headers["x-wp-total"])
+	
         let plusToCompleted = 100 / max_pages;
 
         setCompleted((prevCompleted) => parseInt(prevCompleted + plusToCompleted));

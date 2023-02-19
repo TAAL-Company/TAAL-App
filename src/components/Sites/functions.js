@@ -1,3 +1,6 @@
+import { all } from "core-js/fn/promise";
+import { stringify } from "qs";
+
 /*
     The function gets - full: all tasks data , partial: the user's tasks 
     and returns a new array of tasks
@@ -5,6 +8,8 @@
 export const getTasksList = (full, partial) => {
   let arrayOfId = [],
     newArray = [];
+  console.log("getTasksList partial res:", partial);
+
   partial.forEach((route) => {
     // when the route list includes more than one route
     if (Array.isArray(route)) {
@@ -56,6 +61,7 @@ export const trasformObject = async (old_obj) => {
   old_obj.forEach((element) => {
     newObj[element.id] = element;
   });
+  console.log("after newObj", newObj);
   return newObj;
 };
 
@@ -86,7 +92,7 @@ export const extractPathForSite = (
       }
       user_tasks_total
         ? (currentTask["didFinish"] =
-            user_tasks_total[currentTask.id].didFinish)
+          user_tasks_total[currentTask.id].didFinish)
         : (currentTask["didFinish"] = null);
       listForExec[index]
         ? listForExec[index].push(currentTask)
@@ -130,23 +136,27 @@ export const extractPathForSite = (
 //   return [listForExec, cleanList];
 // };
 
-export const getUserTasksFromRouteList = (data, userID) =>
-  new Promise((resolve, reject) => {
-    const list = data.reduce((accu, curr) => {
-      if (curr.acf.users) {
-        curr.acf.users.forEach((element) => {
-          //console.log('Success?', element.ID.toString() === userID.toString());
+export const getUserTasksFromRouteList = (routesInfo, userID) =>
 
-          if (element.ID.toString() === userID) {
-            accu.push(curr.acf.tasks);
-          }
-        });
-      }
-      return accu;
-    }, []);
-    resolve(list);
-    reject([]);
-  });
+  // console.log("userID: " + userID);
+  // console.log("routesInfo: " + routesInfo);
+
+new Promise((resolve, reject) => {
+  const list = routesInfo.reduce((accu, curr) => {
+    if (curr.acf.users) {
+      curr.acf.users.forEach((element) => {
+        //console.log('Success?', element.ID.toString() === userID.toString());
+
+        if (element.ID.toString() === userID) {
+          accu.push(curr.acf.tasks);
+        }
+      });
+    }
+    return accu;
+  }, []);
+  resolve(list);
+  reject([]);
+});
 
 export const addStationDetailsToTask = (userTasks, place) => {
   console.log("xx userTasks: ", userTasks)
@@ -157,4 +167,28 @@ export const addStationDetailsToTask = (userTasks, place) => {
     task["stationDetails"] = place[task.places[task.places.length - 1]];
   });
   return copyUserTasks;
+};
+// export const getRoutesOfUser = (allRoutes, userId) => {
+
+//   console.log("getRoutesOfUser allRoutes"+ stringify( allRoutes))
+//   let allRoutesOfUser = [];
+//   allRoutes.map(async (route) => {
+//     console.log("getRoutesOfUser route"+ route.acf.users)
+//     allRoutesOfUser.push(await route.acf.users.find((user) => user.ID === userId))
+//     // allRoutesOfUser = allRoutesOfUser + route.acf.users.filter((user) => user.ID === userId)
+//   })
+
+//   return allRoutesOfUser;
+// }
+
+export const getRoutesOfUser = (allRoutes, userID) => {
+  console.log("getRoutesOfUser allRoutes" + allRoutes)
+
+  const routes = allRoutes.filter((route) => {
+    if (Array.isArray(route.acf.users) && route.acf.users.find((user) => user.ID === userID)) {
+      return true;
+    }
+    return false;
+  });
+  return routes;
 };

@@ -20,6 +20,7 @@ import {
   extractPathForSite,
   getUserTasksFromRouteList,
   addStationDetailsToTask,
+  getRoutesOfUser
 } from "./functions";
 import { Divider } from "../assets/Styles";
 import Spinner from "../assets/Spinner";
@@ -35,6 +36,7 @@ let routesInfo, taskInformation;
 
 export default function Sites(props) {
   const { user, user_places, userTasks } = props;
+  const [userId, setUserId] = useState(localStorage.getItem("userID"))
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(true);
   const [lineLength, setLineLength] = useState(52);
@@ -44,10 +46,13 @@ export default function Sites(props) {
   const currDate = new Date().toLocaleDateString();
   const currTime = new Date().toLocaleTimeString();
   const [completed, setCompleted] = useState(5);
+  const [numOfTasks, setnumOfTasks] = useState(0);
   const [allRoutes, setAllRoutes] = useState([])
   const [allTasks, setAllTasks] = useState([])
   const [allPlaces, setAllPlaces] = useState([])
-
+  const [allRoutesOfUser, setAllRoutesOfUser] = useState([])
+  const [allTasksOfUser, setAllTasksOfUser] = useState([])
+  const [allPlacesOfUser, setAllPlacesOfUser] = useState([])
 
   useEffect(() => {
     console.log("user_places: ", props.user_places)
@@ -55,73 +60,64 @@ export default function Sites(props) {
   }, [props.user_places])
 
   useEffect(() => {
+    console.log("after X routesInfo: ", routesInfo)
+
+  }, [routesInfo])
+
+  useEffect(() => {
     if (completed > 100) {
       setCompleted(100);
     }
     console.log("completed: ", completed)
   }, [completed])
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     setCompleted((prevCompleted) => prevCompleted + 20);
-  // if (completed >= 100) {
-  //   clearInterval(interval);
-  // }
-  //   }, 1000);
-
-  //   return () => clearInterval(interval);
-  // }, []);
 
 
-  const userNameApi = process.env.REACT_APP_USERNAME_ACCESSKEY;
-  const passwordApi = process.env.REACT_APP_PASSWORD_ACCESSKEY;
-  const base64encodedData = Buffer.from(`${userNameApi}:${passwordApi}`).toString('base64');
+  //barcode code
+  // const onchange = async (scanResult) => {
 
+  //   localStorage.setItem("route_id", scanResult);
+  //   if (!(scanResult === "error")) {
+  //     let temp = transformArrayOfObjects(props.user_places.user_places);
+  //     // scan the barcode and compare it with the redux info
+  //     if (placesList.hasOwnProperty(scanResult) || placesList.length === 0) {
+  //       if (temp.hasOwnProperty(scanResult)) {
 
-  const onchange = async (scanResult) => {
+  //         let tempTransformObject = await trasformObject(props.user_tasks.user_tasks);
+  //         let [separateList, cleanList] = extractPathForSite(
+  //           props.user_tasks.user_tasks,
+  //           scanResult,
+  //           tempTransformObject
+  //         );
+  //         props.actions.visitPlaces(scanResult);
+  //         props.actions.changeCurrentTasks(separateList);
+  //         props.actions.changeCurrentTasksList(cleanList);
+  //         localStorage.setItem("route_title", placesList[scanResult].name);
+  //         //navigate to Tasks page
+  //         setScanning(false);
+  //         navigate(`/Tasks/${user.user.username}`); //  { state={}, replace=false }
+  //       } else if (placesList.length > 0) {
+  //         // pull default route
+  //         if (placesList[scanResult].acf["defaultPath"]) {
+  //           let lst = getTasksList(
+  //             taskInformation,
+  //             routesInfo[placesList[scanResult].acf["defaultPath"][0].ID].acf
+  //               .tasks
+  //           );
 
-    localStorage.setItem("route_id", scanResult);
-    if (!(scanResult === "error")) {
-      let temp = transformArrayOfObjects(props.user_places.user_places);
-      // scan the barcode and compare it with the redux info
-      if (placesList.hasOwnProperty(scanResult) || placesList.length === 0) {
-        if (temp.hasOwnProperty(scanResult)) {
-
-          let tempTransformObject = await trasformObject(props.user_tasks.user_tasks);
-          let [separateList, cleanList] = extractPathForSite(
-            props.user_tasks.user_tasks,
-            scanResult,
-            tempTransformObject
-          );
-          props.actions.visitPlaces(scanResult);
-          props.actions.changeCurrentTasks(separateList);
-          props.actions.changeCurrentTasksList(cleanList);
-          localStorage.setItem("route_title", placesList[scanResult].name);
-          //navigate to Tasks page
-          setScanning(false);
-          navigate(`/Tasks/${user.user.username}`); //  { state={}, replace=false }
-        } else if (placesList.length > 0) {
-          // pull default route
-          if (placesList[scanResult].acf["defaultPath"]) {
-            let lst = getTasksList(
-              taskInformation,
-              routesInfo[placesList[scanResult].acf["defaultPath"][0].ID].acf
-                .tasks
-            );
-
-            props.actions.changeCurrentTasks(
-              extractPathForSite(lst, scanResult)
-            );
-            setScanning(false);
-            navigate(`/Tasks/${user.user.username}`);
-          } else {
-            setStartOver(!startOver);
-          }
-        }
-      } else {
-        // TODO: barcode doesn't exist
-      }
-    }
-  };
+  //           props.actions.changeCurrentTasks(
+  //             extractPathForSite(lst, scanResult)
+  //           );
+  //           setScanning(false);
+  //           navigate(`/Tasks/${user.user.username}`);
+  //         } else {
+  //           setStartOver(!startOver);
+  //         }
+  //       }
+  //     } else {
+  //       // TODO: barcode doesn't exist
+  //     }
+  //   }
+  // };
 
   async function handleChildImgClick() {
     const route_id = localStorage.getItem("route_id");
@@ -201,29 +197,6 @@ export default function Sites(props) {
     }
   };
 
-  // const getData = () => {
-  //   const siteUrl = clientConfig.siteUrl;
-
-  //   get(`${siteUrl}wp-json/wp/v2/users/`, {
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization: `basic ${base64encodedData}`,
-  //     },
-  //     params: {
-  //       per_page: 99,
-  //       "Cache-Control": "no-cache",
-  //     },
-  //   }).then((res) => {
-  //     console.log("Users:", res);
-
-  //     //  לא רץ בגלל שיש בעיה בקריאה מה DB
-  //     //  שרה לוי לא מופיעה ב DB
-  //   });
-  // };
-
-  // try
-
-
   const getDateInfo = () => {
     const date = new Date();
     dateRef.current =
@@ -244,16 +217,10 @@ export default function Sites(props) {
     return internetStatus.current;
   };
 
-  // useEffect(() => {
-  //   (async () => {
-  //     await getDataFunction();
-
-  //   })();
-  // }, []);
   const fetchData = async () => {
     setLoading(true);
     try {
-      setAllTasks(await getingDataTasks(setCompleted)); //get request for tasks
+      setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
       setAllRoutes(await getingDataRoutes());  //get request for routes
       setAllPlaces(await getingDataPlaces()); //get request for places
     } catch (error) {
@@ -266,15 +233,15 @@ export default function Sites(props) {
 
     fetchData();
   }, []);
+
+
   useEffect(() => {
+    if (numOfTasks != 0 && allTasks.length == numOfTasks) {
+      if (allPlaces.length > 0 && allRoutes.length > 0 && allTasks.length > 0) {
 
-    if (allPlaces.length > 0 && allRoutes.length > 0 && allTasks.length > 0) {
-      console.log("allRoutes", allRoutes)
-      console.log("allTasks", allTasks)
-      console.log("allPlaces", allPlaces)
+        getDataFunction();
 
-      getDataFunction();
-
+      }
     }
 
   }, [allRoutes, allTasks, allPlaces])
@@ -299,26 +266,64 @@ export default function Sites(props) {
   }
 
   const getDataFunction = async () => {
-
+    console.log("allRoutes", allRoutes)
+    console.log("allTasks", allTasks)
+    console.log("allPlaces", allPlaces)
     clearCache();
 
 
+    let allRoutesOfUserTemp = allRoutes.filter((route) => {
+      let usersArray = Object.values(route.acf.users);
+      let userExists = usersArray.find(user => "" + user.ID === userId);
+      if (userExists !== undefined)
+        return route;
+    })
+
+    setAllRoutesOfUser(allRoutesOfUserTemp)
+    console.log(allRoutesOfUserTemp)
+
+    let idOfUserPlaces = [];
+
+    allRoutesOfUserTemp.forEach(route => {
+      route.places.forEach((item) => {
+        idOfUserPlaces.push(item)
+        let temp = allPlaces.find(place => place.id === item)
+        console.log("temp", temp)
+        setAllPlacesOfUser(prevState => prevState.concat([temp]));      }
+      )
+    })
+
+
+    console.log("idOfUserPlaces")
+    console.log(idOfUserPlaces)
+
+
+
     placesList = await trasformObject(allPlaces);
-    routesInfo = await trasformObject(allRoutes);
+    routesInfo = await transformArrayOfObjects(allRoutes);
     taskInformation = await trasformObject(allTasks);
+
+    console.log("after x placesList: ", placesList);
+    console.log("after x routesInfo : ", routesInfo);
+    console.log("after x taskInformation: ", taskInformation);
+
+
 
     let userRoutes = await getUserTasksFromRouteList(
       allRoutes,
-      user.user.id
+      userId
     );
 
-    let newTaskList = getTasksList(taskInformation, userRoutes);
+    console.log("after  userRoutes: ", userRoutes);
+
+    let newTaskList = await getTasksList(taskInformation, userRoutes);
     console.log("after getTasksList: ", newTaskList);
 
     newTaskList = addStationDetailsToTask(
       newTaskList,
       placesList
     );
+    console.log("after newTaskList: ", newTaskList);
 
     props.actions.changeTasks(newTaskList, dateRef.current);
 
@@ -400,7 +405,7 @@ export default function Sites(props) {
                   initialFirstItem={getFirstItemLocation()}
                   onChange={onChangeSite}
                 >
-                  {props.user_places.user_places.map((item, index) => {
+                  {allPlacesOfUser.map((item, index) => {
                     return (
                       <SiteComp
                         key={item.id}
