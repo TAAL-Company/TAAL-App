@@ -24,7 +24,7 @@ export default function SiteComp(props) {
     function handleImgClick() {
         try {
             console.log(props.id);
-            localStorage.setItem("route_id", props.id);
+            localStorage.setItem("site_id", props.id);
             props.onImgClick();
         }
         catch {

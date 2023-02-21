@@ -20,7 +20,8 @@ import {
   extractPathForSite,
   getUserTasksFromRouteList,
   addStationDetailsToTask,
-  getRoutesOfUser
+  getRoutesOfUser,
+  getRoutesOfUserInTheSite
 } from "./functions";
 import { Divider } from "../assets/Styles";
 import Spinner from "../assets/Spinner";
@@ -75,7 +76,7 @@ export default function Sites(props) {
   //barcode code
   // const onchange = async (scanResult) => {
 
-  //   localStorage.setItem("route_id", scanResult);
+  //   localStorage.setItem("site_id", scanResult);
   //   if (!(scanResult === "error")) {
   //     let temp = transformArrayOfObjects(props.user_places.user_places);
   //     // scan the barcode and compare it with the redux info
@@ -120,48 +121,39 @@ export default function Sites(props) {
   // };
 
   async function handleChildImgClick() {
-    const route_id = localStorage.getItem("route_id");
-    let userPlacesList = transformArrayOfObjects(props.user_places.user_places);
+    const site_id = localStorage.getItem("site_id");
     console.log('Child img clicked');
-    console.log("handleChildImgClick" + route_id);
-    console.log(userPlacesList);
-    localStorage.setItem("route_title", userPlacesList[route_id].name);
+    console.log("handleChildImgClick" + typeof (site_id));
+    console.log("allPlacesOfUser", allPlacesOfUser);
+    let site_name = allPlacesOfUser.find(place => place.id === parseInt(site_id))
+    localStorage.setItem("site_title", site_name.name);
 
-    if (placesList.hasOwnProperty(route_id) || placesList.length === 0) {
-      if (userPlacesList.hasOwnProperty(route_id)) {
+    console.log('placesList.hasOwnProperty(site_id)', placesList.hasOwnProperty(site_id));
 
-        let tempTransformObject = await trasformObject(props.user_tasks.user_tasks);
-        let [separateList, cleanList] = extractPathForSite(
-          props.user_tasks.user_tasks,
-          route_id,
-          tempTransformObject
-        );
-        props.actions.visitPlaces(route_id);
-        props.actions.changeCurrentTasks(separateList);
-        props.actions.changeCurrentTasksList(cleanList);
-        // localStorage.setItem("route_title", placesList[route_id].name);
-        //navigate to Tasks page
-        setScanning(false);
-        navigate(`/Tasks/${user.user.username}`); //  { state={}, replace=false }
-      } else if (placesList.length > 0) {
-        // pull default route
-        if (placesList[route_id].acf["defaultPath"]) {
-          let lst = getTasksList(
-            taskInformation,
-            routesInfo[placesList[route_id].acf["defaultPath"][0].ID].acf
-              .tasks
-          );
+    let routesOfUserInTheSite = getRoutesOfUserInTheSite(allRoutesOfUser, site_id);
 
-          props.actions.changeCurrentTasks(
-            extractPathForSite(lst, route_id)
-          );
-          setScanning(false);
-          navigate(`/Tasks/${user.user.username}`);
-        } else {
-          setStartOver(!startOver);
-        }
-      }
-    }
+    console.log("routesOfUserInTheSite", routesOfUserInTheSite)
+
+    localStorage.setItem("route_title", routesOfUserInTheSite[0].title.rendered)
+    localStorage.setItem("route_id", routesOfUserInTheSite[0].id)
+
+    let tempTransformObject = await trasformObject(routesOfUserInTheSite[0].acf.tasks);
+    let [separateList, cleanList] = extractPathForSite(
+      allTasks,
+      routesOfUserInTheSite[0].acf.tasks,
+      site_id,
+      // tempTransformObject
+    );
+
+    props.actions.visitPlaces(site_id);
+    props.actions.changeCurrentTasks(separateList);
+    props.actions.changeCurrentTasksList(cleanList);
+    // localStorage.setItem("site_title", placesList[site_id].name);
+    //navigate to Tasks page
+    setScanning(false);
+    navigate(`/Tasks/${user.user.username}`, { state: { newId: 1 } }); //  { state={}, replace=false }
+
+
 
 
   }
@@ -286,10 +278,15 @@ export default function Sites(props) {
 
     allRoutesOfUserTemp.forEach(route => {
       route.places.forEach((item) => {
-        idOfUserPlaces.push(item)
         let temp = allPlaces.find(place => place.id === item)
         console.log("temp", temp)
-        setAllPlacesOfUser(prevState => prevState.concat([temp]));      }
+        if (temp.parent === 0 && !idOfUserPlaces.includes(temp.id)) //place.parent === 0 is Site and not station
+        {
+          setAllPlacesOfUser(prevState => prevState.concat([temp]));
+          idOfUserPlaces.push(item)
+
+        }
+      }
       )
     })
 
@@ -426,7 +423,7 @@ export default function Sites(props) {
                       />
                     );
                   })}
-                  </div>
+                </div>
                 {/* </Carousel> */}
               </div>
             </div>

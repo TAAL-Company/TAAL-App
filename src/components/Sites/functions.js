@@ -59,7 +59,11 @@ export const getPlacesList = (places, tasksList) => {
 export const trasformObject = async (old_obj) => {
   let newObj = {};
   old_obj.forEach((element) => {
-    newObj[element.id] = element;
+    if (element.id !== undefined)
+      newObj[element.id] = element;
+    else
+      newObj[element.ID] = element;
+
   });
   console.log("after newObj", newObj);
   return newObj;
@@ -73,7 +77,15 @@ export const transformArrayOfObjects = (list) => {
   return newList;
 };
 
+export const getRoutesOfUserInTheSite = (routesList, siteId) => {
+
+  let routeListInSite = routesList.filter(route => route.places.find(place => place == siteId))
+
+  return routeListInSite
+}
+
 export const extractPathForSite = (
+  alltasks,
   userTasks,
   siteID,
   user_tasks_total = null
@@ -82,10 +94,19 @@ export const extractPathForSite = (
     cleanList = [];
   let index = 0;
   let temp = -1;
-  userTasks.forEach((currentTask) => {
-    if (currentTask.places.includes(parseInt(siteID))) {
+
+  console.log("userTasks", userTasks)
+
+  userTasks.forEach((task) => {
+
+    let currentTask = alltasks.find(taskTemp => taskTemp.id === task.ID)
+
+    // if (currentTask.places.includes(parseInt(siteID))) {
       let endIndex = currentTask.places.length - 1;
       cleanList.push(currentTask);
+
+      console.log("endIndex", endIndex)
+
       if (currentTask.places[endIndex] !== temp) {
         temp = currentTask.places[endIndex];
         index++;
@@ -97,7 +118,7 @@ export const extractPathForSite = (
       listForExec[index]
         ? listForExec[index].push(currentTask)
         : (listForExec[index] = [currentTask]);
-    }
+    // }
   });
   if (!listForExec[0]) listForExec = listForExec.slice(1);
 
@@ -141,26 +162,24 @@ export const getUserTasksFromRouteList = (routesInfo, userID) =>
   // console.log("userID: " + userID);
   // console.log("routesInfo: " + routesInfo);
 
-new Promise((resolve, reject) => {
-  const list = routesInfo.reduce((accu, curr) => {
-    if (curr.acf.users) {
-      curr.acf.users.forEach((element) => {
-        //console.log('Success?', element.ID.toString() === userID.toString());
+  new Promise((resolve, reject) => {
+    const list = routesInfo.reduce((accu, curr) => {
+      if (curr.acf.users) {
+        curr.acf.users.forEach((element) => {
+          //console.log('Success?', element.ID.toString() === userID.toString());
 
-        if (element.ID.toString() === userID) {
-          accu.push(curr.acf.tasks);
-        }
-      });
-    }
-    return accu;
-  }, []);
-  resolve(list);
-  reject([]);
-});
+          if (element.ID.toString() === userID) {
+            accu.push(curr.acf.tasks);
+          }
+        });
+      }
+      return accu;
+    }, []);
+    resolve(list);
+    reject([]);
+  });
 
 export const addStationDetailsToTask = (userTasks, place) => {
-  console.log("xx userTasks: ", userTasks)
-  console.log("xx place: ", place)
 
   let copyUserTasks = [...userTasks];
   copyUserTasks.forEach((task) => {

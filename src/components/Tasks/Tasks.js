@@ -29,6 +29,7 @@ const tasksReducer = (state, action) => {
 };
 
 function Tasks(props) {
+
   const { user_tasks } = props;
   const { current_tasks_list, task_current_index } = user_tasks;
   // const [state, localDispatch] = useReducer(tasksReducer, initialState)
