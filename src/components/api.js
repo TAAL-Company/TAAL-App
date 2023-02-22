@@ -21,6 +21,7 @@ export const postDataTime = (objTime) => {
                 "fields": {
                     "user_id": objTime.idUser,
                     "route_id": objTime.route_id,
+                    "site_id": objTime.site_id,
                     "route_title": objTime.route_title,
                     "task_id": objTime.idTask.toString(),
                     "task_title": objTime.task_location,
