@@ -5,7 +5,7 @@ import AudioIcon from "../assets/AudioIcon";
 import CheckIcon from "../assets/CheckIcon";
 import styled from "styled-components";
 import { parseContent } from "./functions";
-import "./taskCompStyle.css"
+import "./taskCompStyle.css";
 
 //obj for save the Length of time it took the user to do the task
 let objTime = {
@@ -20,7 +20,6 @@ let objTime = {
 };
 
 export default function TaskComp(props) {
-
   const [, set_obj_time] = useState(null);
   const [myCurrent, setMyCurrent] = useState();
 
@@ -95,28 +94,36 @@ export default function TaskComp(props) {
   const isFocused = () => props.index === props.currentIndex;
 
   return (
-    <div className="containerWrapper"
+    <div
+      className="containerWrapper"
       style={{
         width: props.wrapperWidth ? props.wrapperWidth : "50%",
-        height: props.height ? props.height : "90px"
+        height: props.height ? props.height : "90px",
       }}
     >
-      <div className="taskContainer"
+      <div
+        className="taskContainer"
         style={{
-          height: props.wideCaro ? props.wideCaro : isFocused() ? "100%" : "60%",
+          height: props.wideCaro
+            ? props.wideCaro
+            : isFocused()
+            ? "100%"
+            : "60%",
           backgroundColor: decideColor(props.didFinished),
         }}
       >
-        <div className="whiteContainer"
+        <div
+          className="whiteContainer"
           style={{
             width: isFocused() && props.wideCaro === undefined ? "90%" : "80%",
             height: isFocused() && props.wideCaro === undefined ? "90%" : "80%",
-
           }}
         >
-          <div className="imageWrapper"
+          <div
+            className="imageWrapper"
             style={{
-              maxHeight: isFocused() && props.wideCaro === undefined ? "58%" : "100%",
+              maxHeight:
+                isFocused() && props.wideCaro === undefined ? "58%" : "100%",
               // borderWidth: isFocused() && props.wideCaro === undefined ? 1 : "0"
             }}
           >
@@ -130,22 +137,43 @@ export default function TaskComp(props) {
               className=" imgStyle"
             />
           </div>
-          <div className="topBar"
+          <div
+            className="topBar"
             style={{
-              display: isFocused() && props.wideCaro === undefined ? "flex" : "none",
+              display:
+                isFocused() && props.wideCaro === undefined ? "flex" : "none",
+              direction:
+                localStorage.getItem("route_id") == 3271 ? "rtl" : "ltr",
             }}
-
           >
             <div style={{ width: "20%", height: "auto", marginTop: "auto" }}>
               <AudioIcon audioUrl={props.audioUrl} />
             </div>
             <div style={{ height: "100%", width: "79.5%", padding: 0 }}>
-              <div className="textTaskComp" style={{fontSize: "3.5vw"}}>{props.title}</div>
-              <div className="textTaskComp" style={{fontSize: "2.8vw"}}>{parseContent(props.content)}</div>
+              <div
+                className="textTaskComp"
+                style={{
+                  fontSize: "3.5vw",
+                  textAlign:
+                    localStorage.getItem("route_id") == 3271 ? "" : "right",
+                }}
+              >
+                {props.title}
+              </div>
+              <div
+                className="textTaskComp"
+                style={{
+                  fontSize: "2.8vw",
+                  textAlign:
+                    localStorage.getItem("route_id") == 3271 ? "" : "right",
+                }}
+              >
+                {parseContent(props.content)}
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 }
