@@ -339,10 +339,7 @@ function Help(props) {
                     }
                   >
                     <button className="helpNow" onClick={toggleModal}>
-                      <div
-                        className="tabletButton"
-                        style={{ marginBottom: "17px" }}
-                      >
+                      <div className="tabletButton">
                         <div className="iconD">
                           <div
                             className="helpIcon"

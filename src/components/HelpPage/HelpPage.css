@@ -1,5 +1,5 @@
 .content-wrap-en {
-  height: 88%;
+  height: 80%;
   margin-bottom: 0;
   background-color: #272727;
 }
@@ -7,13 +7,11 @@
 .helpContact-en {
   display: flex;
   height: 100%;
-  height: 100%;
   display: unset;
 }
 .MobileMode-en {
   justify-content: space-between;
   width: 50%;
-  padding-top: 15%;
 }
 
 .ContentWithLogo-en {
@@ -404,7 +402,7 @@ h2 {
   }
   .content-wrap {
     background-color: #272727;
-    height: 88%;
+    height: 80%;
   }
   .tabletButton {
     display: flex;
