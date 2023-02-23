@@ -1,459 +1,669 @@
-img{
-    width: 100%;
-    height: 100%;
+.content-wrap-en {
+  height: 88%;
+  margin-bottom: 0;
+  background-color: #272727;
 }
-.Help{
-    height: 100vh;
+
+.helpContact-en {
+  display: flex;
+  height: 100%;
+  height: 100%;
+  display: unset;
+}
+.MobileMode-en {
+  justify-content: space-between;
+  width: 50%;
+  padding-top: 15%;
+}
+
+.ContentWithLogo-en {
+  display: flex;
+  width: 100%;
+  font-size: unset;
+}
+
+.helpMe-en {
+  /* direction: ltr; */
+  width: 100%;
+  /* padding-left: 1.3rem; */
+  color: white;
+}
+
+.scText-en {
+  width: 100%;
+  text-align: left;
+  padding-left: 1.2rem;
+  color: #d8a51d;
+  font-size: 18pt;
+}
+.thanks-en {
+  width: 100%;
+}
+
+.listenContact-en {
+  display: none;
+}
+.audioCircle-en {
+  width: 3em;
+}
+.Icon-en {
+  /* bottom: 19%;
+  position: fixed;
+  left: 5%;
+  width: 50px; */
+  display: none;
+}
+.content-en {
+  color: white;
+  display: flex;
+  justify-content: space-around;
+  direction: ltr;
+  background: #272727;
+  width: 100%;
+  height: 64%;
+  padding: 15% 3%;
+  bottom: 0;
+}
+.instructionArea-en {
+  width: 100%;
+  background: white;
+  border-radius: 10px;
+  height: auto;
+  text-align: left;
+  color: rgb(35, 39, 43);
+  padding: 5% 5%;
+  font-size: 35pt;
+}
+
+.instructionArea-en h1 {
+  font-size: 13pt;
+  color: gray;
+  text-align: left;
+}
+.textArea-en {
+  height: 100%;
+  width: 100%;
+}
+.headText-en {
+  text-align: left;
+  font-family: "Arimo";
+  font-weight: 500;
+  font-size: 15pt;
+  color: rgb(155, 155, 155);
+}
+.secText-en {
+  text-align: left;
+  font-family: "Arimo";
+  font-weight: bold;
+  font-size: 18pt;
+}
+.listen-en {
+  display: none;
+}
+
+.intro-en {
+  width: 350px;
+  font-size: 15pt;
+  color: rgb(155, 155, 155);
+  font-family: "Arimo";
+  font-weight: 500;
+  font-size: 16pt;
+  color: white;
+  text-align: left;
+  margin-left: 1em;
+}
+
+.footer-en {
+  height: 18%;
+  background: #272727;
+  width: 100%;
+  text-align: center;
+  bottom: 0;
+  position: fixed;
+}
+.row-en {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  justify-content: space-around;
+  padding-top: 2%;
+  padding-bottom: 2%;
+  width: 100%;
+}
+.HelpButton-en {
+  width: 47%;
+  height: 98%;
+}
+.return-en {
+  background-color: rgb(17, 185, 17);
+  border: 1px solid rgb(18, 185, 17);
+  color: black;
+  width: 100%;
+  height: 100%;
+  border-radius: 10px;
+  text-align: center;
+  height: 100%;
+}
+.tabletButton-en {
+  display: flex;
+  direction: ltr;
+  justify-content: space-around;
+  padding: 0% 4%;
+  color: white;
+  align-items: center;
+  flex-direction: column;
+  padding: unset;
+  height: 80%;
+}
+.iconD-en {
+  border: 2px solid white;
+  color: white;
+  width: 35%;
+  height: 40pt;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: xx-large;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.text-en {
+  color: white;
+  font-size: 12pt;
+  font-family: "Arimo";
+  font-weight: bold;
+}
+
+/*  */
+/*  */
+/*  */
+/*  */
+/*  */
+img {
+  width: 100%;
+  height: 100%;
+}
+.Help {
+  height: 100vh;
 }
 .content-wrap {
-    height: 72%;
-    margin-bottom: 0;
+  height: 72%;
+  margin-bottom: 0;
 }
-#x{
-    width: 3em;
-    height: 3em;
-    color: gray;
-    font-size: unset;
+#x {
+  width: 3em;
+  height: 3em;
+  color: gray;
+  font-size: unset;
 }
-.ContentWithLogo{
-    display: flex;
-    direction: rtl;
-    width: 100%;
-    font-size: x-large;
+.ContentWithLogo {
+  display: flex;
+  direction: rtl;
+  width: 100%;
+  font-size: x-large;
 }
 
-.ModalMessage{
-    font-size: xx-large;
-    text-align: right;
-    direction: rtl;
-    margin: 40% 1%;
-    
+.ModalMessage {
+  font-size: xx-large;
+  text-align: right;
+  direction: rtl;
+  margin: 40% 1%;
 }
 /*Dialog*/
-.ReactModal__Content{
-    inset: 10%!important;
-    /* border:15px solid rgb(204, 204, 204)!important; */
+.ReactModal__Content {
+  inset: 10% !important;
+  /* border:15px solid rgb(204, 204, 204)!important; */
 }
-.helpMe{
-    width: 100%;
-    padding-left: 0.3rem;
-    color: white;
+.helpMe {
+  width: 100%;
+  padding-left: 0.3rem;
+  color: white;
 }
-.helpContact{
-    display: flex;
-    height: 100%;
-    direction: rtl;
-    flex-direction: row-reverse;
+.helpContact {
+  display: flex;
+  height: 100%;
+  direction: rtl;
+  flex-direction: row-reverse;
 }
-.textArea{
-    height: 80%;
-    width: 100%;
-
+.textArea {
+  height: 80%;
+  width: 100%;
 }
-.listenContact{
-    display: none;
+.listenContact {
+  display: none;
 }
-.listen{
-    justify-content: left;
-    height: 20%;
-    width: 30%;
-    margin:0.5rem;
-    size: auto;
-    float: right;
+.listen {
+  justify-content: left;
+  height: 20%;
+  width: 30%;
+  margin: 0.5rem;
+  size: auto;
+  float: right;
 }
-.content{
-    padding: 15% 3%;
-    display: flex;
-    justify-content: space-around;
-    direction: rtl;
-    bottom: 0;
-    width: 50%;
-    height: 100%;
+.content {
+  padding: 15% 3%;
+  display: flex;
+  justify-content: space-around;
+  direction: rtl;
+  bottom: 0;
+  width: 50%;
+  height: 100%;
 }
 .MobileMode {
-    direction: rtl;
-    justify-content: space-between;
-    width: 50%;
-    padding-top:15%;
+  direction: rtl;
+  justify-content: space-between;
+  width: 50%;
+  padding-top: 15%;
 }
-.footer{
-    height: 18%;
-    background: #272727;
+.footer {
+  height: 18%;
+  background: #272727;
 }
-.row{
-    height: 100%;
-    justify-content: space-around;
-    padding-top: 2%;
-    padding-bottom: 2%;
+.row {
+  height: 100%;
+  justify-content: space-around;
+  padding-top: 2%;
+  padding-bottom: 2%;
 }
-.HelpButton{
-    width: 47%;
-    height: 98%;
+.HelpButton {
+  width: 47%;
+  height: 98%;
 }
-.return{
-    background-color: rgb(17,185,17);
-    width: 100%;
-    color:black;
-    border-radius: 10px;
-    border:1px solid rgb(17,185,17);
-    height: 100%;
+.return {
+  background-color: rgb(17, 185, 17);
+  width: 100%;
+  color: black;
+  border-radius: 10px;
+  border: 1px solid rgb(17, 185, 17);
+  height: 100%;
 }
-.helpNow{
-    background-color:rgb(194,7,31);
-    height: 100%;
-    width: 100%;
-    border-radius: 10px;
-    border:1px solid rgb(194,7,31);
+.helpNow {
+  background-color: rgb(194, 7, 31);
+  height: 100%;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid rgb(194, 7, 31);
 }
 
-.iconD{
+.iconD {
+  border: 2px solid white;
+  border-radius: 50%;
+  width: 8vw;
+  color: white;
+  font-size: xxx-large;
+  cursor: pointer;
+}
+@media (max-width: 768px) {
+  .iconD {
     border: 2px solid white;
-        border-radius: 50%;
-        width:8vw;
-        color: white;
-        font-size: xxx-large;
-        cursor: pointer;
-
-}
-@media (max-width:768px){
-    .iconD{
-        border: 2px solid white;
-        border-radius: 50%;
-        width: 10vw; 
-        margin: auto;
-        color: white;
-        font-size: xxx-large;
-    }
-    
+    border-radius: 50%;
+    width: 10vw;
+    margin: auto;
+    color: white;
+    font-size: xxx-large;
+  }
 }
 
-.text{
-    font-size: 20pt;
-    color:white;
+.text {
+  font-size: 20pt;
+  color: white;
 }
-.tabletButton{
-    display: flex;
-    direction: rtl;
-    justify-content: space-around;
-    padding: 0% 4%;
-    color:white;
-    align-items: center;
+.tabletButton {
+  display: flex;
+  direction: rtl;
+  justify-content: space-around;
+  padding: 0% 4%;
+  color: white;
+  align-items: center;
 }
-.subText{
-    width: 100%;
-    text-align: right;
-
+.subText {
+  width: 100%;
+  text-align: right;
 }
-h2{
-    width: 100%;
-    text-align: right;
-    font-weight: bold;
-    padding-right: 4%;
+h2 {
+  width: 100%;
+  text-align: right;
+  font-weight: bold;
+  padding-right: 4%;
 }
-.scText{
-    width: 100%;
-    text-align: right;
-    font-size: 35pt;
-    padding-right: 2%;
+.scText {
+  width: 100%;
+  text-align: right;
+  font-size: 35pt;
+  padding-right: 2%;
 }
-.scTextleft{
-    width: 100%;
-    text-align: left;
-    font-size: 35pt;
-    padding-right: 2%;
+.scTextleft {
+  width: 100%;
+  text-align: left;
+  font-size: 35pt;
+  padding-right: 2%;
 }
-.scTextMobile{
-    display: none;
-}
-
-
-.headText{
-    font-size: 32pt;
-    text-align: right;
-    font-family: 'Arimo';
-    font-weight: 500;
+.scTextMobile {
+  display: none;
 }
 
-.secText{
-    font-size: 32pt;
-    text-align: right;
-    font-family: 'Arimo';
-    font-weight: bold;
+.headText {
+  font-size: 32pt;
+  text-align: right;
+  font-family: "Arimo";
+  font-weight: 500;
 }
-.instructionArea{
-    width: 100%;
-    background : white;
-    border-radius: 10px;
+
+.secText {
+  font-size: 32pt;
+  text-align: right;
+  font-family: "Arimo";
+  font-weight: bold;
+}
+.instructionArea {
+  width: 100%;
+  background: white;
+  border-radius: 10px;
 }
 .Icon {
-    bottom: 18%;
-    position: fixed;
-    left: 5%;
+  bottom: 18%;
+  position: fixed;
+  left: 5%;
 }
-#intro{
-    font-size:16pt ;
-    color: white;
-    text-align: right;
-    margin-right: 0.3em;
+#intro {
+  font-size: 16pt;
+  color: white;
+  text-align: right;
+  margin-right: 0.3em;
 }
-#introleft{
-    font-size:16pt ;
-    color: white;
-    text-align: left;
-    margin-right: 0.3em;
+#introleft {
+  font-size: 16pt;
+  color: white;
+  text-align: left;
+  margin-right: 0.3em;
 }
 
 @media (max-width: 450px) {
-    #x{    font-size: xx-small;    }
-    #Tablet{
-        display: none; 
-    }
-    .audioCircle{
-        width: 50%;
-        margin: 25% 40%;
-    }
-    .ModalMessage{
-        font-size: large;
-        text-align: right;
-        direction: rtl;
-        margin: 20% 1%;
-    }
-    .textArea{
-        height: 100%;
-
-    }
-    .Icon{
-        display: none;
-    }
+  #x {
+    font-size: xx-small;
+  }
+  #Tablet {
+    display: none;
+  }
+  .audioCircle {
+    width: 50%;
+    margin: 25% 40%;
+  }
+  .ModalMessage {
+    font-size: large;
+    text-align: right;
+    direction: rtl;
+    margin: 20% 1%;
+  }
+  .textArea {
+    height: 100%;
+  }
+  .Icon {
+    display: none;
+  }
+  .content-wrap {
+    background-color: #272727;
+    height: 88%;
+  }
+  .tabletButton {
+    display: flex;
+    flex-direction: column;
+    padding: unset;
+    height: 80%;
+  }
+  .content {
+    color: white;
+    display: flex;
+    justify-content: space-around;
+    direction: rtl;
+    background: #272727;
+    bottom: 0;
+    width: 100%;
+    height: 64%;
+  }
+  .title {
+    display: flex;
+    justify-content: space-around;
+  }
+  .ContentWithLogo {
+    font-size: unset;
+  }
+  .subText {
+    width: 100%;
+    color: rgb(150, 150, 150);
+    text-align: right;
+  }
+  .headText {
+    font-size: 15pt;
+    text-align: right;
+    color: rgb(155, 155, 155);
+    font-family: "Arimo";
+    font-weight: 500;
+  }
+  .secText {
+    font-size: 18pt;
+    text-align: right;
+    font-family: "Arimo";
+    font-weight: bold;
+  }
+  #intro {
+    width: 350px;
+    font-size: 15pt;
+    color: rgb(155, 155, 155);
+    font-family: "Arimo";
+    font-weight: 500;
+  }
+  #introleft {
+    width: 350px;
+    font-size: 14pt;
+    color: rgb(155, 155, 155);
+  }
+  .Tablet {
+    display: none;
+  }
+  .scText {
+    color: #d8a51d;
+    font-size: 18pt;
+    text-align: right;
+  }
+  .scTextleft {
+    color: #d8a51d;
+    font-size: 18pt;
+    text-align: left;
+  }
+  .scTextMobile {
+    display: block;
+    color: #d8a51d;
+    font-size: 18pt;
+    text-align: right;
+    padding-right: 2%;
+    line-height: 2;
+    width: 100%;
+  }
+  .helpContact {
+    height: 100%;
+    display: unset;
+    direction: unset;
+  }
+  .instructionArea {
+    height: auto;
+    text-align: right;
+    color: rgb(35, 39, 43);
+    padding: 5% 5%;
+    font-size: 35pt;
+  }
+  .instructionArea h1 {
+    font-size: 13pt;
+    color: gray;
+    text-align: right;
+  }
+  .explainArea {
+    visibility: hidden;
+    height: 0;
+    display: none;
+    width: 30%;
+    padding-top: 10%;
+  }
+  .MobileMode {
+    height: 22%;
+    width: unset;
+    padding-top: unset;
+  }
+  .helpMe {
+    width: 70%;
+    padding-left: 1.3rem;
+  }
+  .listen {
+    display: none;
+  }
+  .listenContact {
+    justify-content: left;
+    width: 30%;
+    margin: 0.5rem;
+    text-align: center;
+    display: unset;
+  }
+  .listenIcon {
+    visibility: hidden;
+    width: 0;
+    height: 0;
+  }
+  .footer {
+    width: 100%;
+    text-align: center;
+    bottom: 0;
+    position: fixed;
+    height: 18%;
+    background: #272727;
+  }
+  .return {
+    background-color: rgb(18, 185, 17);
+    width: 100%;
+    color: black;
+    border-radius: 10px;
+    border: 1px solid rgb(18, 185, 17);
+    text-align: center;
+    height: 100%;
+  }
+  .helpNow {
+    background-color: rgb(216, 31, 53) כ;
+    height: 100%;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid red;
+  }
+  .iconD {
+    color: white;
+    font-size: xx-large;
+    border-radius: 50%;
+    border: solid white;
+    width: 35%;
+    display: flex;
+    height: 40pt;
+    justify-content: center;
+    align-items: center;
+  }
+  .HelpButton {
+    width: 47%;
+  }
+  .centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .thanks {
+    width: 100%;
+  }
+  .row {
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+  }
+  #audio {
+    width: 80%;
+  }
+  .text {
+    font-size: 12pt;
+    font-family: "Arimo";
+    font-weight: bold;
+  }
+  @media (min-height: 1024px) {
     .content-wrap {
-        background-color: #272727;
-        height: 88%;
-    }
-    .tabletButton{
-        display: flex;
-        flex-direction: column;
-        padding:unset;
-        height: 80%;
-    }
-    .content{
-        color:white;
-        display: flex;
-        justify-content: space-around;
-        direction: rtl;
-        background: #272727;
-        bottom: 0;
-        width: 100%;
-        height: 64%;
-    }
-    .title{
-        display: flex;
-        justify-content: space-around;
-    }
-    .ContentWithLogo{
-        font-size: unset;
-    }
-    .subText{
-        width: 100%;
-        color: rgb(150, 150, 150);
-        text-align: right;
-    }
-    .headText{
-        font-size: 15pt;
-        text-align: right;
-        color: rgb(155, 155, 155);
-        font-family: 'Arimo';
-        font-weight: 500;
-
-    }
-    .secText{
-        font-size: 18pt;
-        text-align: right;
-        font-family: 'Arimo';
-        font-weight: bold;
-    }
-    #intro{
-        width: 350px;
-        font-size: 15pt;
-        color: rgb(155, 155, 155);
-        font-family: 'Arimo';
-        font-weight:500;
-
-    }
-    #introleft{
-        width: 350px;
-        font-size: 14pt;
-        color: rgb(155, 155, 155);
-    }
-    .Tablet{
-        display: none;
-        }
-    .scText {
-        color: #d8a51d;
-        font-size: 18pt;
-        text-align: right;
-    }
-    .scTextleft {
-        color: #d8a51d;
-        font-size: 18pt;
-        text-align: left;
-    }
-    .scTextMobile {  
-        display:block;
-        color: #d8a51d;
-        font-size: 18pt;
-        text-align: right;
-        padding-right: 2%;
-        line-height: 2;
-        width: 100%;
-    }
-    .helpContact {
-        height: 100%;
-        display: unset;
-        direction: unset;
-    }
-    .instructionArea{
-        height: auto;
-        text-align: right;
-        color:rgb(35,39,43);
-        padding: 5% 5%;
-        font-size:35pt;
-    }
-    .instructionArea h1 {
-        font-size: 13pt;
-        color:gray;
-        text-align: right;
-
-    }
-    .explainArea {
-        visibility: hidden;
-        height: 0;
-        display: none;
-        width: 30%;
-        padding-top: 10%;
+      height: 72%;
     }
     .MobileMode {
-        height: 22%;
-        width: unset;
-        padding-top: unset;
+      padding-top: 15%;
     }
-    .helpMe{
-        width: 70%;
-        padding-left:1.3rem;
-
+    .content {
+      padding: 15% 3%;
     }
-    .listen{
-        display: none;
+    .listen {
+      width: 30%;
     }
-    .listenContact {
-        justify-content: left;
-        width: 30%;
-        margin:0.5rem;
-        text-align: center;
-        display: unset;
+    .tabletButton {
+      justify-content: space-around;
     }
-    .listenIcon{
-        visibility: hidden;
-        width: 0;
-        height: 0;
+    .vertical {
+      padding-right: unset;
     }
-    .footer{
-        width: 100%;
-        text-align: center;
-        bottom: 0;
-        position: fixed;
-        height: 18%;
-        background: #272727;
-    }
-    .return{
-        background-color: rgb(18,185,17);
-        width: 100%;
-        color:black;
-        border-radius: 10px;
-        border:1px solid rgb(18,185,17);
-        /* align-text: center; */
-        height: 100%;
-    }
-    .helpNow{
-        background-color:rgb(216, 31, 53)כ;
-        height: 100%;
-        width: 100%;
-        border-radius: 10px;
-        border:1px solid red;
-    }
-    .iconD{
-        color: white;
-        font-size: xx-large;
-        border-radius: 50%;
-        border: solid white;
-        width: 35%;
-        display: flex;
-        height: 40pt;
-        justify-content: center;
-        align-items: center;
-    }
-    .HelpButton{
-        width: 47%;
-    }
-    .centered{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-    .thanks{
-        width: 100%;
-    }
-    .row{
-        justify-content: space-around;
-        width: 100%;
-        height: 100%;
-    }
-    #audio{
-        width: 80%;
-
-    }
-    .text{
-        font-size: 12pt;
-        font-family: 'Arimo';
-        font-weight: bold;
-        }
-    @media (min-height: 1024px) {
-            .content-wrap {height: 72%;}
-            .MobileMode{padding-top: 15%;}
-            .content{padding:15% 3%}
-            .listen{width: 30%;}
-            .tabletButton{justify-content:space-around;}
-            .vertical{padding-right: unset;}
-    }
+  }
 }
 @media (max-width: 350px) {
-    .text{
-        font-size: 11pt;
-        font-family: 'Arimo';
-        font-weight: bold;
-        } 
+  .text {
+    font-size: 11pt;
+    font-family: "Arimo";
+    font-weight: bold;
+  }
 }
 @media (min-width: 1024px) {
-    @media (min-height: 768px) {
-        .content-wrap {height: 67%;}
-        .MobileMode{padding-top: 2%;}
-        .content{padding:1% 3%}
-        .listen{width: 20%;}
-        .tabletButton{justify-content:unset}
-        .vertical{padding-right: 5%;}
-        .ModalMessage{margin: 12% 1%;}
-        
+  @media (min-height: 768px) {
+    .content-wrap {
+      height: 67%;
     }
-
+    .MobileMode {
+      padding-top: 2%;
+    }
+    .content {
+      padding: 1% 3%;
+    }
+    .listen {
+      width: 20%;
+    }
+    .tabletButton {
+      justify-content: unset;
+    }
+    .vertical {
+      padding-right: 5%;
+    }
+    .ModalMessage {
+      margin: 12% 1%;
+    }
+  }
 }
 @media (min-width: 2048px) {
-    @media (min-height: 1024px) {
-        .content-wrap {height: 67%;}
-        .MobileMode{padding-top: 2%;}
-        .content{padding:1% 3%}
-        .listen{width: 20%;}
-        .tabletButton{justify-content:unset}
-        .vertical{padding-right: 5%;}
+  @media (min-height: 1024px) {
+    .content-wrap {
+      height: 67%;
     }
-    .ModalMessage{margin: 20% 1%;}
+    .MobileMode {
+      padding-top: 2%;
+    }
+    .content {
+      padding: 1% 3%;
+    }
+    .listen {
+      width: 20%;
+    }
+    .tabletButton {
+      justify-content: unset;
+    }
+    .vertical {
+      padding-right: 5%;
+    }
+  }
+  .ModalMessage {
+    margin: 20% 1%;
+  }
 }

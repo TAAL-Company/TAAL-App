@@ -35,6 +35,8 @@ function Help(props) {
   console.log("current task: " + currentTaskName);
 
   const [phoneGuide, setPhoneGuide] = useState("error");
+  const userId = localStorage.getItem("userID");
+  const users_ltr = [39];
 
   const { t } = useTranslation();
 
@@ -60,22 +62,38 @@ function Help(props) {
         ...state,
       });
     } else if (user_tasks.task_location === -1) {
-      setState({
-        ...state,
-        action: "",
-        site: "סיימת את כל המשימות במסלול שלך להיום",
-      });
+      if (users_ltr.includes(parseInt(userId))) {
+        setState({
+          ...state,
+          action: "",
+          site: "You have completed all the tasks in your route for the day.",
+        });
+      } else {
+        setState({
+          ...state,
+          action: "",
+          site: ".סיימת את כל המשימות במסלול שלך להיום",
+        });
+      }
     } else {
       if (user_places.user_places.length === 1) {
         setState({
           ...state,
         });
       } else {
-        setState({
-          ...state,
-          action: "המיקום הבא שלי:",
-          site: user_places.user_places[user_places.places_location].name,
-        });
+        if (users_ltr.includes(parseInt(userId))) {
+          setState({
+            ...state,
+            action: "My next place:",
+            site: user_places.user_places[user_places.places_location].name,
+          });
+        } else {
+          setState({
+            ...state,
+            action: "המיקום הבא שלי:",
+            site: user_places.user_places[user_places.places_location].name,
+          });
+        }
       }
     }
   };
@@ -99,7 +117,7 @@ function Help(props) {
   };
 
   // const getData = () => {
-    
+
   //   const siteUrl = clientConfig.siteUrl;
 
   //   get(`${siteUrl}wp-json/wp/v2/users/me`, {
@@ -136,29 +154,69 @@ function Help(props) {
       {isLoggedIn() ? (
         <div className="Help">
           <Navbar origin={"Help"} user_data={user} />
-          <div className="content-wrap">
-            <div className="helpContact">
-              <div className="MobileMode">
-                <div className="ContentWithLogo">
-                  <div className="helpMe">
-                    <div className="scText">
-                      <b>בבקשה,</b>
+
+          {users_ltr.includes(parseInt(userId)) ? (
+            <div className="content-wrap-en">
+              <div className="helpContact-en">
+                <div className="MobileMode-en">
+                  <div className="ContentWithLogo-en">
+                    <div className="helpMe-en">
+                      <div className="scText-en">
+                        <b>Please,</b>
+                      </div>
+                      {/* <div className="scText">
+                        <b id="Tablet">أحتاج</b>
+                      </div> */}
+                      <div className="thanks-en">
+                        <div id="intro-en" className="intro-en">
+                          I had trouble completing my tasks.
+                        </div>
+                        <div id="intro-en" className="intro-en">
+                          I would appreciate your assistance and thank you for
+                          wanting to help.
+                        </div>
+                        {/* <div id="intro" className="Tablet">
+                          لو سمحت، أنا أواجه صعوبة في أداء مهماتي ، ارجو أن
+                          تساعدني مشكورا
+                        </div> */}
+                      </div>
                     </div>
-                    <div className="scText">
-                      <b id="Tablet">أحتاج</b>
-                    </div>
-                    <div className="thanks">
-                      <div id="intro">התקשיתי במילוי המשימות שלי.</div>
-                      <div id="intro">אשמח לסיוע ותודה על הרצון לעזור</div>
-                      <div id="intro" className="Tablet">
-                        لو سمحت، أنا أواجه صعوبة في أداء مهماتي ، ارجو أن
-                        تساعدني مشكورا
+
+                    <div className="listenContact-en">
+                      <div className="audioCircle-en">
+                        <AudioIcon
+                          id="audio"
+                          onPress={() => console.log("pressed audio")}
+                        />
                       </div>
                     </div>
                   </div>
+                  <div className="Icon-en">
+                    <img src={logo} />
+                  </div>
+                </div>
+                <div className="content-en">
+                  <div className="instructionArea-en">
+                    <div className="textArea-en">
+                      <div className="headText-en">{state.action}</div>
+                      <h2 className="secText-en">{state.site}</h2>
 
-                  <div className="listenContact">
-                    <div className="audioCircle">
+                      <Fragment>
+                        <div
+                          className="headText-en"
+                          hidden={currentTaskName === ""}
+                        >
+                          My current task:
+                        </div>
+                        <h2
+                          className="secText-en"
+                          hidden={currentTaskName === ""}
+                        >
+                          {currentTaskName}
+                        </h2>
+                      </Fragment>
+                    </div>
+                    <div className="listen-en">
                       <AudioIcon
                         id="audio"
                         onPress={() => console.log("pressed audio")}
@@ -166,130 +224,291 @@ function Help(props) {
                     </div>
                   </div>
                 </div>
-                <div className="Icon">
-                  <img src={logo} />
-                </div>
               </div>
-              <div className="content">
-                <div className="instructionArea">
-                  <div className="textArea">
-                    <div className="headText">{state.action}</div>
-                    <h2 className="secText">{state.site}</h2>
-
-                    <Fragment>
-                      <div className="headText" hidden={currentTaskName === ""}>
-                        המשימה הנוכחית שלי:
+            </div>
+          ) : (
+            <div className="content-wrap">
+              <div className="helpContact">
+                <div className="MobileMode">
+                  <div className="ContentWithLogo">
+                    <div className="helpMe">
+                      <div className="scText">
+                        <b>בבקשה,</b>
                       </div>
-                      <h2 className="secText" hidden={currentTaskName === ""}>
-                        {currentTaskName}
-                      </h2>
-                    </Fragment>
+                      <div className="scText">
+                        <b id="Tablet">أحتاج</b>
+                      </div>
+                      <div className="thanks">
+                        <div id="intro">התקשיתי במילוי המשימות שלי.</div>
+                        <div id="intro">אשמח לסיוע ותודה על הרצון לעזור</div>
+                        <div id="intro" className="Tablet">
+                          لو سمحت، أنا أواجه صعوبة في أداء مهماتي ، ارجو أن
+                          تساعدني مشكورا
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="listenContact">
+                      <div className="audioCircle">
+                        <AudioIcon
+                          id="audio"
+                          onPress={() => console.log("pressed audio")}
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className="listen">
-                    <AudioIcon
-                      id="audio"
-                      onPress={() => console.log("pressed audio")}
-                    />
+                  <div className="Icon">
+                    <img src={logo} />
+                  </div>
+                </div>
+                <div className="content">
+                  <div className="instructionArea">
+                    <div className="textArea">
+                      <div className="headText">{state.action}</div>
+                      <h2 className="secText">{state.site}</h2>
+
+                      <Fragment>
+                        <div
+                          className="headText"
+                          hidden={currentTaskName === ""}
+                        >
+                          המשימה הנוכחית שלי:
+                        </div>
+                        <h2 className="secText" hidden={currentTaskName === ""}>
+                          {currentTaskName}
+                        </h2>
+                      </Fragment>
+                    </div>
+                    <div className="listen">
+                      <AudioIcon
+                        id="audio"
+                        onPress={() => console.log("pressed audio")}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div className="footer">
-            <div className="row">
-              <div className="HelpButton">
-                {/* # In JS/HTML
+          )}
+
+          {users_ltr.includes(parseInt(userId)) ? (
+            <div className="footer-en">
+              <div className="row-en">
+                {" "}
+                <div className="HelpButton-en">
+                  <button
+                    onClick={() => window.history.go(-1)}
+                    className="return-en"
+                  >
+                    <div className="tabletButton-en">
+                      {/* icon back */}
+                      <div className="iconD-en">
+                        <HiArrowLeft />
+                      </div>
+                      <div className="vertical-en">
+                        <div className="text-en">Go back to my tasks</div>
+                        {/* <div className="text Tablet">العودة إلى مهماتي</div> */}
+                      </div>
+                    </div>
+                  </button>
+                </div>
+                <div className="HelpButton-en">
+                  <a
+                    href={
+                      phoneGuide !== ""
+                        ? "https://api.whatsapp.com/send/?phone=" +
+                          phoneGuide.toString() +
+                          "&text=" +
+                          user.user.hebrewName.toString() +
+                          " מתקשה במילוי המשימה " +
+                          '"' +
+                          currentTaskName.toString() +
+                          '"' +
+                          "," +
+                          " " +
+                          "אשמח לסיוע ותודה על הרצון לעזור" +
+                          "." +
+                          "&type=phone_number&app_absent=0"
+                        : // "&text=%D7%94%D7%AA%D7%A7%D7%A9%D7%99%D7%AA%D7%99+%D7%91%D7%9E%D7%99%D7%9C%D7%95%D7%99+%D7%94%D7%9E%D7%A9%D7%99%D7%9E%D7%95%D7%AA+%D7%A9%D7%9C%D7%99.+%D7%90%D7%A9%D7%9E%D7%97+%D7%9C%D7%A1%D7%99%D7%95%D7%A2+%D7%95%D7%AA%D7%95%D7%93%D7%94+%D7%A2%D7%9C+%D7%94%D7%A8%D7%A6%D7%95%D7%9F+%D7%9C%D7%A2%D7%96%D7%95%D7%A8&type=phone_number&app_absent=0"
+                          // "https://wa.me/" +
+                          //   phoneGuide +
+                          //   "?text=" +
+                          //   "התקשיתי במילוי המשימות שלי. אשמח לסיוע ותודה על הרצון לעזור" +
+                          //   "&amp;app_absent=0"
+                          "Error Phone doesn't exists"
+                    }
+                  >
+                    <button className="helpNow" onClick={toggleModal}>
+                      <div
+                        className="tabletButton"
+                        style={{ marginBottom: "17px" }}
+                      >
+                        <div className="iconD">
+                          <div
+                            className="helpIcon"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              height: "100%",
+                              marginBottom: "13px",
+                            }}
+                          >
+                            <FaHandHolding />
+                          </div>
+                        </div>
+                        <div className="vertical">
+                          <div className="text">keep asking for help</div>
+                          <div className="text Tablet">
+                            مستمر في طلب المساعدة
+                          </div>
+                        </div>
+                      </div>
+                    </button>
+                  </a>
+                  <Modal
+                    isOpen={isOpen}
+                    onRequestClose={toggleModal}
+                    style={styles.modalStyle}
+                  >
+                    {/* its not working in Hebrew as well - its unnecessary */}
+                    {/* <div className="popup">
+                      <AiFillCloseCircle id="x" onClick={toggleModal} />
+                      <div className="ModalMessage">
+                        {user.user.hebrewName + " " + "זקוק/ה לסיוע."}
+                        <br />
+                        {"נשלחה הודעה למסייע/ת" +
+                          " " +
+                          user.user.guideName +
+                          "."}
+                        <br />
+                        {"בטלפון" + " " + user.user.GuidPhone}
+                        <a href={"tel://" + user.user.GuidPhone}>
+                          {user.user.GuidPhone}
+                        </a>
+                        <br />
+                        {"ניתן ליצור קשר עם" +
+                          " " +
+                          user.user.guideName +
+                          " " +
+                          "לקבלת הנחיות סיוע עד להגעתו/ה"}
+                        <br />
+                        {"תודה על עזרתכם.."}
+                      </div>
+                    </div> */}
+                  </Modal>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <div className="footer">
+              <div className="row">
+                <div className="HelpButton">
+                  {/* # In JS/HTML
                     # const phoneNumber = (input from DB)
                     # const msg = "התקשיתי במילוי המשימות שלי. אשמח לסיוע ותודה על הרצון לעזור"
 
                     # const link = ('https://wa.me/' + phoneNumber + "?text=" + msg + "&amp;app_absent=0");
                     # <a href=link>{ICON גלגל הצלה}</a> */}
-                <a
-                  href={
-                    phoneGuide !== ""
-                      ? "https://api.whatsapp.com/send/?phone=" +
-                        phoneGuide.toString() +
-                        "&text=" +
-                        user.user.hebrewName.toString() +
-                        " מתקשה במילוי המשימה " +
-                        '"' +
-                        currentTaskName.toString() +
-                        '"' +
-                        "," +
-                        " " +
-                        "אשמח לסיוע ותודה על הרצון לעזור" +
-                        "." +
-                        "&type=phone_number&app_absent=0"
-                      : // "&text=%D7%94%D7%AA%D7%A7%D7%A9%D7%99%D7%AA%D7%99+%D7%91%D7%9E%D7%99%D7%9C%D7%95%D7%99+%D7%94%D7%9E%D7%A9%D7%99%D7%9E%D7%95%D7%AA+%D7%A9%D7%9C%D7%99.+%D7%90%D7%A9%D7%9E%D7%97+%D7%9C%D7%A1%D7%99%D7%95%D7%A2+%D7%95%D7%AA%D7%95%D7%93%D7%94+%D7%A2%D7%9C+%D7%94%D7%A8%D7%A6%D7%95%D7%9F+%D7%9C%D7%A2%D7%96%D7%95%D7%A8&type=phone_number&app_absent=0"
-                        // "https://wa.me/" +
-                        //   phoneGuide +
-                        //   "?text=" +
-                        //   "התקשיתי במילוי המשימות שלי. אשמח לסיוע ותודה על הרצון לעזור" +
-                        //   "&amp;app_absent=0"
-                        "Error Phone doesn't exists"
-                  }
-                >
-                  <button className="helpNow" onClick={toggleModal}>
-                    <div className="tabletButton">
-                      <div className="iconD">
-                        <div className="helpIcon" style={{display: "flex", alignItems: "center", height: "100%", marginBottom: "13px"}}>
-                          <FaHandHolding />
+                  <a
+                    href={
+                      phoneGuide !== ""
+                        ? "https://api.whatsapp.com/send/?phone=" +
+                          phoneGuide.toString() +
+                          "&text=" +
+                          user.user.hebrewName.toString() +
+                          " מתקשה במילוי המשימה " +
+                          '"' +
+                          currentTaskName.toString() +
+                          '"' +
+                          "," +
+                          " " +
+                          "אשמח לסיוע ותודה על הרצון לעזור" +
+                          "." +
+                          "&type=phone_number&app_absent=0"
+                        : // "&text=%D7%94%D7%AA%D7%A7%D7%A9%D7%99%D7%AA%D7%99+%D7%91%D7%9E%D7%99%D7%9C%D7%95%D7%99+%D7%94%D7%9E%D7%A9%D7%99%D7%9E%D7%95%D7%AA+%D7%A9%D7%9C%D7%99.+%D7%90%D7%A9%D7%9E%D7%97+%D7%9C%D7%A1%D7%99%D7%95%D7%A2+%D7%95%D7%AA%D7%95%D7%93%D7%94+%D7%A2%D7%9C+%D7%94%D7%A8%D7%A6%D7%95%D7%9F+%D7%9C%D7%A2%D7%96%D7%95%D7%A8&type=phone_number&app_absent=0"
+                          // "https://wa.me/" +
+                          //   phoneGuide +
+                          //   "?text=" +
+                          //   "התקשיתי במילוי המשימות שלי. אשמח לסיוע ותודה על הרצון לעזור" +
+                          //   "&amp;app_absent=0"
+                          "Error Phone doesn't exists"
+                    }
+                  >
+                    <button className="helpNow" onClick={toggleModal}>
+                      <div className="tabletButton">
+                        <div className="iconD">
+                          <div
+                            className="helpIcon"
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              height: "100%",
+                              marginBottom: "13px",
+                            }}
+                          >
+                            <FaHandHolding />
+                          </div>
+                        </div>
+                        <div className="vertical">
+                          <div className="text">ממשיך לבקש עזרה</div>
+                          <div className="text Tablet">
+                            مستمر في طلب المساعدة
+                          </div>
                         </div>
                       </div>
+                    </button>
+                  </a>
+                  <Modal
+                    isOpen={isOpen}
+                    onRequestClose={toggleModal}
+                    style={styles.modalStyle}
+                  >
+                    <div className="popup">
+                      <AiFillCloseCircle id="x" onClick={toggleModal} />
+                      <div className="ModalMessage">
+                        {user.user.hebrewName + " " + "זקוק/ה לסיוע."}
+                        <br />
+                        {"נשלחה הודעה למסייע/ת" +
+                          " " +
+                          user.user.guideName +
+                          "."}
+                        <br />
+                        {"בטלפון" + " " + user.user.GuidPhone}
+                        <a href={"tel://" + user.user.GuidPhone}>
+                          {user.user.GuidPhone}
+                        </a>
+                        <br />
+                        {"ניתן ליצור קשר עם" +
+                          " " +
+                          user.user.guideName +
+                          " " +
+                          "לקבלת הנחיות סיוע עד להגעתו/ה"}
+                        <br />
+                        {"תודה על עזרתכם.."}
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
+                <div className="HelpButton">
+                  <button
+                    onClick={() => window.history.go(-1)}
+                    className="return"
+                  >
+                    <div className="tabletButton">
+                      {/* icon back */}
+                      <div className="iconD">
+                        <HiArrowLeft />
+                      </div>
                       <div className="vertical">
-                        <div className="text">ממשיך לבקש עזרה</div>
-                        <div className="text Tablet">مستمر في طلب المساعدة</div>
+                        <div className="text">חזור למשימות שלי</div>
+                        <div className="text Tablet">العودة إلى مهماتي</div>
                       </div>
                     </div>
                   </button>
-                </a>
-                <Modal
-                  isOpen={isOpen}
-                  onRequestClose={toggleModal}
-                  style={styles.modalStyle}
-                >
-                  <div className="popup">
-                    <AiFillCloseCircle id="x" onClick={toggleModal} />
-                    <div className="ModalMessage">
-                      {user.user.hebrewName + " " + "זקוק/ה לסיוע."}
-                      <br />
-                      {"נשלחה הודעה למסייע/ת" + " " + user.user.guideName + "."}
-                      <br />
-                      {"בטלפון" + " " + user.user.GuidPhone}
-                      <a href={"tel://" + user.user.GuidPhone}>
-                        {user.user.GuidPhone}
-                      </a>
-                      <br />
-                      {"ניתן ליצור קשר עם" +
-                        " " +
-                        user.user.guideName +
-                        " " +
-                        "לקבלת הנחיות סיוע עד להגעתו/ה"}
-                      <br />
-                      {"תודה על עזרתכם.."}
-                    </div>
-                  </div>
-                </Modal>
-              </div>
-              <div className="HelpButton">
-                <button
-                  onClick={() => window.history.go(-1)}
-                  className="return"
-                >
-                  <div className="tabletButton">
-                    {/* icon back */}
-                    <div className="iconD">
-                    < HiArrowLeft />
-                    </div>
-                    <div className="vertical">
-                      <div className="text">חזור למשימות שלי</div>
-                      <div className="text Tablet">العودة إلى مهماتي</div>
-                    </div>
-                  </div>
-                </button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       ) : (
         handleLogout()

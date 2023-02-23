@@ -25,6 +25,7 @@ export default function TaskComp(props) {
 
   const currDate = new Date().toLocaleDateString("en-GB");
   const currTime = new Date().toLocaleTimeString("en-GB");
+  const routes_ltr = [3271, 3304];
   let dateAndTime = currDate + " " + currTime;
 
   objTime.userName = localStorage.getItem("userName");
@@ -142,8 +143,11 @@ export default function TaskComp(props) {
             style={{
               display:
                 isFocused() && props.wideCaro === undefined ? "flex" : "none",
-              direction:
-                localStorage.getItem("route_id") == 3271 ? "rtl" : "ltr",
+              direction: routes_ltr.includes(
+                parseInt(localStorage.getItem("route_id"))
+              )
+                ? "rtl"
+                : "ltr",
             }}
           >
             <div style={{ width: "20%", height: "auto", marginTop: "auto" }}>
@@ -154,8 +158,11 @@ export default function TaskComp(props) {
                 className="textTaskComp"
                 style={{
                   fontSize: "3.5vw",
-                  textAlign:
-                    localStorage.getItem("route_id") == 3271 ? "" : "right",
+                  textAlign: routes_ltr.includes(
+                    parseInt(localStorage.getItem("route_id"))
+                  )
+                    ? ""
+                    : "right",
                 }}
               >
                 {props.title}

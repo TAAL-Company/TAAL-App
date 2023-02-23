@@ -11,7 +11,7 @@ import { navigate } from "@reach/router";
 import styled from "styled-components";
 import wpConfig from "../../wp-config";
 import Navbar from "../Nav/Navbar";
-import { getingDataTasks, getingDataRoutes, getingDataPlaces } from "../api"
+import { getingDataTasks, getingDataRoutes, getingDataPlaces } from "../api";
 import {
   getPlacesList,
   getTasksList,
@@ -21,7 +21,7 @@ import {
   getUserTasksFromRouteList,
   addStationDetailsToTask,
   getRoutesOfUser,
-  getRoutesOfUserInTheSite
+  getRoutesOfUserInTheSite,
 } from "./functions";
 import { Divider } from "../assets/Styles";
 import Spinner from "../assets/Spinner";
@@ -37,7 +37,7 @@ let routesInfo, taskInformation;
 
 export default function Sites(props) {
   const { user, user_places, userTasks } = props;
-  const [userId, setUserId] = useState(localStorage.getItem("userID"))
+  const [userId, setUserId] = useState(localStorage.getItem("userID"));
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(true);
   const [lineLength, setLineLength] = useState(52);
@@ -48,30 +48,28 @@ export default function Sites(props) {
   const currTime = new Date().toLocaleTimeString();
   const [completed, setCompleted] = useState(5);
   const [numOfTasks, setnumOfTasks] = useState(0);
-  const [allRoutes, setAllRoutes] = useState([])
-  const [allTasks, setAllTasks] = useState([])
-  const [allPlaces, setAllPlaces] = useState([])
-  const [allRoutesOfUser, setAllRoutesOfUser] = useState([])
-  const [allTasksOfUser, setAllTasksOfUser] = useState([])
-  const [allPlacesOfUser, setAllPlacesOfUser] = useState([])
+  const [allRoutes, setAllRoutes] = useState([]);
+  const [allTasks, setAllTasks] = useState([]);
+  const [allPlaces, setAllPlaces] = useState([]);
+  const [allRoutesOfUser, setAllRoutesOfUser] = useState([]);
+  const [allTasksOfUser, setAllTasksOfUser] = useState([]);
+  const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
+  const users_ltr = [39];
 
   useEffect(() => {
-    console.log("user_places: ", props.user_places)
-
-  }, [props.user_places])
+    console.log("user_places: ", props.user_places);
+  }, [props.user_places]);
 
   useEffect(() => {
-    console.log("after X routesInfo: ", routesInfo)
-
-  }, [routesInfo])
+    console.log("after X routesInfo: ", routesInfo);
+  }, [routesInfo]);
 
   useEffect(() => {
     if (completed > 100) {
       setCompleted(100);
     }
-    console.log("completed: ", completed)
-  }, [completed])
-
+    console.log("completed: ", completed);
+  }, [completed]);
 
   //barcode code
   // const onchange = async (scanResult) => {
@@ -122,26 +120,39 @@ export default function Sites(props) {
 
   async function handleChildImgClick() {
     const site_id = localStorage.getItem("site_id");
-    console.log('Child img clicked');
-    console.log("handleChildImgClick" + typeof (site_id));
+    console.log("Child img clicked");
+    console.log("handleChildImgClick" + typeof site_id);
     console.log("allPlacesOfUser", allPlacesOfUser);
-    let site_name = allPlacesOfUser.find(place => place.id === parseInt(site_id))
+    let site_name = allPlacesOfUser.find(
+      (place) => place.id === parseInt(site_id)
+    );
     localStorage.setItem("site_title", site_name.name);
 
-    console.log('placesList.hasOwnProperty(site_id)', placesList.hasOwnProperty(site_id));
+    console.log(
+      "placesList.hasOwnProperty(site_id)",
+      placesList.hasOwnProperty(site_id)
+    );
 
-    let routesOfUserInTheSite = getRoutesOfUserInTheSite(allRoutesOfUser, site_id);
+    let routesOfUserInTheSite = getRoutesOfUserInTheSite(
+      allRoutesOfUser,
+      site_id
+    );
 
-    console.log("routesOfUserInTheSite", routesOfUserInTheSite)
+    console.log("routesOfUserInTheSite", routesOfUserInTheSite);
 
-    localStorage.setItem("route_title", routesOfUserInTheSite[0].title.rendered)
-    localStorage.setItem("route_id", routesOfUserInTheSite[0].id)
+    localStorage.setItem(
+      "route_title",
+      routesOfUserInTheSite[0].title.rendered
+    );
+    localStorage.setItem("route_id", routesOfUserInTheSite[0].id);
 
-    let tempTransformObject = await trasformObject(routesOfUserInTheSite[0].acf.tasks);
+    let tempTransformObject = await trasformObject(
+      routesOfUserInTheSite[0].acf.tasks
+    );
     let [separateList, cleanList] = extractPathForSite(
       allTasks,
       routesOfUserInTheSite[0].acf.tasks,
-      site_id,
+      site_id
       // tempTransformObject
     );
 
@@ -152,10 +163,6 @@ export default function Sites(props) {
     //navigate to Tasks page
     setScanning(false);
     navigate(`/Tasks/${user.user.username}`, { state: { newId: 1 } }); //  { state={}, replace=false }
-
-
-
-
   }
 
   /*
@@ -213,35 +220,31 @@ export default function Sites(props) {
     setLoading(true);
     try {
       setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
-      setAllRoutes(await getingDataRoutes());  //get request for routes
+      setAllRoutes(await getingDataRoutes()); //get request for routes
       setAllPlaces(await getingDataPlaces()); //get request for places
     } catch (error) {
-      console.log("Error")
+      console.log("Error");
       console.error(error.message);
     }
-
   };
   useEffect(() => {
-
     fetchData();
   }, []);
-
 
   useEffect(() => {
     if (numOfTasks != 0 && allTasks.length == numOfTasks) {
       if (allPlaces.length > 0 && allRoutes.length > 0 && allTasks.length > 0) {
-
         getDataFunction();
-
       }
     }
-
-  }, [allRoutes, allTasks, allPlaces])
+  }, [allRoutes, allTasks, allPlaces]);
 
   const clearCache = () => {
     // Remove all cookies
     document.cookie.split(";").forEach(function (c) {
-      document.cookie = c.replace(/^ +/, "").replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
       console.log("REMOVE ALL COOKIE");
     });
 
@@ -253,48 +256,40 @@ export default function Sites(props) {
           console.log("REMOVE ALL CACHE");
         });
       });
-
     }
-  }
+  };
 
   const getDataFunction = async () => {
-    console.log("allRoutes", allRoutes)
-    console.log("allTasks", allTasks)
-    console.log("allPlaces", allPlaces)
+    console.log("allRoutes", allRoutes);
+    console.log("allTasks", allTasks);
+    console.log("allPlaces", allPlaces);
     clearCache();
-
 
     let allRoutesOfUserTemp = allRoutes.filter((route) => {
       let usersArray = Object.values(route.acf.users);
-      let userExists = usersArray.find(user => "" + user.ID === userId);
-      if (userExists !== undefined)
-        return route;
-    })
+      let userExists = usersArray.find((user) => "" + user.ID === userId);
+      if (userExists !== undefined) return route;
+    });
 
-    setAllRoutesOfUser(allRoutesOfUserTemp)
-    console.log(allRoutesOfUserTemp)
+    setAllRoutesOfUser(allRoutesOfUserTemp);
+    console.log(allRoutesOfUserTemp);
 
     let idOfUserPlaces = [];
 
-    allRoutesOfUserTemp.forEach(route => {
+    allRoutesOfUserTemp.forEach((route) => {
       route.places.forEach((item) => {
-        let temp = allPlaces.find(place => place.id === item)
-        console.log("temp", temp)
-        if (temp.parent === 0 && !idOfUserPlaces.includes(temp.id)) //place.parent === 0 is Site and not station
-        {
-          setAllPlacesOfUser(prevState => prevState.concat([temp]));
-          idOfUserPlaces.push(item)
-
+        let temp = allPlaces.find((place) => place.id === item);
+        console.log("temp", temp);
+        if (temp.parent === 0 && !idOfUserPlaces.includes(temp.id)) {
+          //place.parent === 0 is Site and not station
+          setAllPlacesOfUser((prevState) => prevState.concat([temp]));
+          idOfUserPlaces.push(item);
         }
-      }
-      )
-    })
+      });
+    });
 
-
-    console.log("idOfUserPlaces")
-    console.log(idOfUserPlaces)
-
-
+    console.log("idOfUserPlaces");
+    console.log(idOfUserPlaces);
 
     placesList = await trasformObject(allPlaces);
     routesInfo = await transformArrayOfObjects(allRoutes);
@@ -304,22 +299,14 @@ export default function Sites(props) {
     console.log("after x routesInfo : ", routesInfo);
     console.log("after x taskInformation: ", taskInformation);
 
-
-
-    let userRoutes = await getUserTasksFromRouteList(
-      allRoutes,
-      userId
-    );
+    let userRoutes = await getUserTasksFromRouteList(allRoutes, userId);
 
     console.log("after  userRoutes: ", userRoutes);
 
     let newTaskList = await getTasksList(taskInformation, userRoutes);
     console.log("after getTasksList: ", newTaskList);
 
-    newTaskList = addStationDetailsToTask(
-      newTaskList,
-      placesList
-    );
+    newTaskList = addStationDetailsToTask(newTaskList, placesList);
     console.log("after newTaskList: ", newTaskList);
 
     props.actions.changeTasks(newTaskList, dateRef.current);
@@ -331,7 +318,6 @@ export default function Sites(props) {
     else if (temp1.length === 2) setLineLength(32);
     setLoading(false);
     props.actions.enterApp(dateRef.current);
-
   };
   const isCurrentSite = (itemId) =>
     itemId === props.user_places.places_location;
@@ -349,20 +335,43 @@ export default function Sites(props) {
     }
   };
 
-
   return (
     <React.Fragment>
       {/* <h1>
         current datetime: {currDate} {currTime}
       </h1> */}
       {isLoggedIn() ? (
+        // userId
         <div className="Sites">
           <Navbar origin={"Sites"} user_data={props.user} />
 
-          <div className="containerSites">
-            <div className="helloAera">
-              <h5 className="helloTitle">,{user.user.hebrewName} שלום</h5>
-              <h1 className="addText">!שמחים לראותך</h1>
+          <div
+            className="containerSites"
+            style={{
+              direction: users_ltr.includes(parseInt(userId)) ? "rtl" : "ltr",
+            }}
+          >
+            <div
+              className="helloAera"
+              style={{
+                direction: users_ltr.includes(parseInt(userId)) ? "rtl" : "ltr",
+                paddingRight: users_ltr.includes(parseInt(userId))
+                  ? "0"
+                  : "2em",
+                paddingLeft: users_ltr.includes(parseInt(userId)) ? "2em" : "0",
+              }}
+            >
+              {users_ltr.includes(parseInt(userId)) ? (
+                <>
+                  <h5 className="helloTitle">Hello {user.user.hebrewName} </h5>
+                  <h1 className="addText">!Happy to see you</h1>
+                </>
+              ) : (
+                <>
+                  <h5 className="helloTitle">{user.user.hebrewName} שלום</h5>{" "}
+                  <h1 className="addText">!שמחים לראותך</h1>
+                </>
+              )}
             </div>
             {/* <div className="barcode">
               <div className="scanner">
