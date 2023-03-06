@@ -14,6 +14,7 @@ let objTime = {
   task_location: "",
   idTask: 0,
   route_id: 0,
+  site_id: 0,
   route_title: "",
   startTime: "",
   endTime: "",
@@ -29,6 +30,7 @@ export default function TaskComp(props) {
   let dateAndTime = currDate + " " + currTime;
 
   objTime.userName = localStorage.getItem("userName");
+  objTime.site_id = localStorage.getItem("site_id");
   objTime.route_id = localStorage.getItem("route_id");
   objTime.idUser = localStorage.getItem("userID");
   objTime.route_title = localStorage.getItem("route_title");
