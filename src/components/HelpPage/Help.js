@@ -30,7 +30,7 @@ function Help(props) {
   console.log("user_places.places_location: " + user_places.places_location);
   console.log("len: " + user_places.user_places.length);
   console.log("task_location: " + user_tasks.task_location);
-  console.log("user_places: " + user_places.user_places);
+  console.log("user_places: ", user_places.user_places);
   console.log("username hebrew" + user.user.hebrewName);
   console.log("current task: " + currentTaskName);
 

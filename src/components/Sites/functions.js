@@ -12,11 +12,11 @@ export const getTasksList = (full, partial) => {
 
   partial.forEach((route) => {
     // when the route list includes more than one route
-    if (Array.isArray(route)) {
-      route.forEach((task) => {
-        arrayOfId.push(task.ID);
-      });
-    } else arrayOfId.push(route.ID);
+    // if (Array.isArray(route)) {
+    route.forEach((task) => {
+      arrayOfId.push(task.taskId);
+    });
+    // } else arrayOfId.push(route.ID);
   });
   arrayOfId.forEach((element) => {
     console.log("full[element]: " + full[element]);
@@ -59,11 +59,8 @@ export const getPlacesList = (places, tasksList) => {
 export const trasformObject = async (old_obj) => {
   let newObj = {};
   old_obj.forEach((element) => {
-    if (element.id !== undefined)
-      newObj[element.id] = element;
-    else
-      newObj[element.ID] = element;
-
+    if (element.id !== undefined) newObj[element.id] = element;
+    else newObj[element.ID] = element;
   });
   console.log("after newObj", newObj);
   return newObj;
@@ -78,11 +75,12 @@ export const transformArrayOfObjects = (list) => {
 };
 
 export const getRoutesOfUserInTheSite = (routesList, siteId) => {
+  let routeListInSite = routesList.filter((route) =>
+    route.sites.find((site) => site.siteId == siteId)
+  );
 
-  let routeListInSite = routesList.filter(route => route.places.find(place => place == siteId))
-
-  return routeListInSite
-}
+  return routeListInSite;
+};
 
 export const extractPathForSite = (
   alltasks,
@@ -95,32 +93,33 @@ export const extractPathForSite = (
   let index = 0;
   let temp = -1;
 
-  console.log("userTasks", userTasks)
+  console.log("userTasks", userTasks);
+  console.log("user_tasks_total", user_tasks_total);
 
-  userTasks.forEach((task) => {
+  userTasks.forEach((currentTask) => {
+    cleanList.push(currentTask);
 
-    let currentTask = alltasks.find(taskTemp => taskTemp.id === task.ID)
+    let stationID = currentTask.stations.find(
+      (station) => station.parentSiteId == siteID
+    );
+    if (stationID) stationID = stationID.id;
+    console.log("stationID", stationID);
 
-    // if (currentTask.places.includes(parseInt(siteID))) {
-      let endIndex = currentTask.places.length - 1;
-      cleanList.push(currentTask);
-
-      console.log("endIndex", endIndex)
-
-      if (currentTask.places[endIndex] !== temp) {
-        temp = currentTask.places[endIndex];
-        index++;
-      }
-      user_tasks_total
-        ? (currentTask["didFinish"] =
-          user_tasks_total[currentTask.id].didFinish)
-        : (currentTask["didFinish"] = null);
-      listForExec[index]
-        ? listForExec[index].push(currentTask)
-        : (listForExec[index] = [currentTask]);
-    // }
+    if (stationID !== temp) {
+      temp = stationID;
+      index++;
+    }
+    // user_tasks_total
+    //   ? (currentTask["didFinish"] = user_tasks_total[currentTask.id].didFinish)
+    //   : (currentTask["didFinish"] = false);
+    listForExec[index]
+      ? listForExec[index].push(currentTask)
+      : (listForExec[index] = [currentTask]);
   });
   if (!listForExec[0]) listForExec = listForExec.slice(1);
+
+  console.log("listForExec: ", listForExec);
+  console.log("cleanList: ", cleanList);
 
   return [listForExec, cleanList];
 };
@@ -158,18 +157,17 @@ export const extractPathForSite = (
 // };
 
 export const getUserTasksFromRouteList = (routesInfo, userID) =>
-
   // console.log("userID: " + userID);
   // console.log("routesInfo: " + routesInfo);
 
   new Promise((resolve, reject) => {
     const list = routesInfo.reduce((accu, curr) => {
-      if (curr.acf.users) {
-        curr.acf.users.forEach((element) => {
+      if (curr.students) {
+        curr.students.forEach((element) => {
           //console.log('Success?', element.ID.toString() === userID.toString());
 
-          if (element.ID.toString() === userID) {
-            accu.push(curr.acf.tasks);
+          if (element.studentId === userID) {
+            accu.push(curr.tasks);
           }
         });
       }
@@ -180,10 +178,9 @@ export const getUserTasksFromRouteList = (routesInfo, userID) =>
   });
 
 export const addStationDetailsToTask = (userTasks, place) => {
-
   let copyUserTasks = [...userTasks];
   copyUserTasks.forEach((task) => {
-    task["stationDetails"] = place[task.places[task.places.length - 1]];
+    task["stationDetails"] = place[task.stations[task.stations.length - 1]];
   });
   return copyUserTasks;
 };
@@ -201,10 +198,13 @@ export const addStationDetailsToTask = (userTasks, place) => {
 // }
 
 export const getRoutesOfUser = (allRoutes, userID) => {
-  console.log("getRoutesOfUser allRoutes" + allRoutes)
+  console.log("getRoutesOfUser allRoutes" + allRoutes);
 
   const routes = allRoutes.filter((route) => {
-    if (Array.isArray(route.acf.users) && route.acf.users.find((user) => user.ID === userID)) {
+    if (
+      Array.isArray(route.acf.users) &&
+      route.acf.users.find((user) => user.ID === userID)
+    ) {
       return true;
     }
     return false;

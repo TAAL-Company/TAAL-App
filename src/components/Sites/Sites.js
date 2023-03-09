@@ -11,7 +11,14 @@ import { navigate } from "@reach/router";
 import styled from "styled-components";
 import wpConfig from "../../wp-config";
 import Navbar from "../Nav/Navbar";
-import { getingDataTasks, getingDataRoutes, getingDataPlaces } from "../api";
+import {
+  getingData_Tasks,
+  getingDataTasks,
+  getingDataRoutes,
+  getingDataPlaces,
+  getingData_Routes,
+  getingData_Places,
+} from "../api";
 import {
   getPlacesList,
   getTasksList,
@@ -37,7 +44,7 @@ let routesInfo, taskInformation;
 
 export default function Sites(props) {
   const { user, user_places, userTasks } = props;
-  const [userId, setUserId] = useState(localStorage.getItem("userID"));
+  const [userId, setUserId] = useState("a71f5b1f-f12c-49c3-9c85-05999062329c"); //localStorage.getItem("userID"));
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(true);
   const [lineLength, setLineLength] = useState(52);
@@ -55,14 +62,19 @@ export default function Sites(props) {
   const [allTasksOfUser, setAllTasksOfUser] = useState([]);
   const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
   const users_ltr = [39];
-
+  useEffect(() => {
+    console.log("allTasks: ", allTasks);
+  }, [allTasks]);
   useEffect(() => {
     console.log("user_places: ", props.user_places);
   }, [props.user_places]);
 
   useEffect(() => {
-    console.log("after X routesInfo: ", routesInfo);
-  }, [routesInfo]);
+    console.log("after X allPlacesOfUser: ", allPlacesOfUser);
+    props.actions.changePlaces(allPlacesOfUser, dateRef.current);
+
+    setLoading(false);
+  }, [allPlacesOfUser]);
 
   useEffect(() => {
     if (completed > 100) {
@@ -70,6 +82,27 @@ export default function Sites(props) {
     }
     console.log("completed: ", completed);
   }, [completed]);
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      setAllTasks(await getingData_Tasks(setCompleted, setnumOfTasks)); //get request for tasks
+      setAllRoutes(await getingData_Routes()); //get request for routes
+      setAllPlaces(await getingData_Places()); //get request for places
+    } catch (error) {
+      console.log("Error");
+      console.error(error.message);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  useEffect(() => {
+    if (allPlaces.length > 0 && allRoutes.length > 0 && allTasks.length > 0) {
+      getDataFunction();
+    }
+  }, [allRoutes, allTasks, allPlaces]);
 
   //barcode code
   // const onchange = async (scanResult) => {
@@ -123,9 +156,7 @@ export default function Sites(props) {
     console.log("Child img clicked");
     console.log("handleChildImgClick" + typeof site_id);
     console.log("allPlacesOfUser", allPlacesOfUser);
-    let site_name = allPlacesOfUser.find(
-      (place) => place.id === parseInt(site_id)
-    );
+    let site_name = allPlacesOfUser.find((place) => place.id === site_id);
     localStorage.setItem("site_title", site_name.name);
 
     console.log(
@@ -140,20 +171,13 @@ export default function Sites(props) {
 
     console.log("routesOfUserInTheSite", routesOfUserInTheSite);
 
-    localStorage.setItem(
-      "route_title",
-      routesOfUserInTheSite[0].title.rendered
-    );
+    localStorage.setItem("route_title", routesOfUserInTheSite[0].name);
     localStorage.setItem("route_id", routesOfUserInTheSite[0].id);
 
-    let tempTransformObject = await trasformObject(
-      routesOfUserInTheSite[0].acf.tasks
-    );
     let [separateList, cleanList] = extractPathForSite(
       allTasks,
-      routesOfUserInTheSite[0].acf.tasks,
+      routesOfUserInTheSite[0].tasks,
       site_id
-      // tempTransformObject
     );
 
     props.actions.visitPlaces(site_id);
@@ -162,7 +186,9 @@ export default function Sites(props) {
     // localStorage.setItem("site_title", placesList[site_id].name);
     //navigate to Tasks page
     setScanning(false);
-    navigate(`/Tasks/${user.user.username}`, { state: { newId: 1 } }); //  { state={}, replace=false }
+    navigate(`/Tasks/${user.user.username}`, {
+      state: { routeForShow: routesOfUserInTheSite[0] },
+    });
   }
 
   /*
@@ -185,17 +211,6 @@ export default function Sites(props) {
 
   // try
 
-  const get = async (url, header) => {
-    try {
-      const res = await axios.get(url, header);
-      if (res) {
-        return res.data;
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   const getDateInfo = () => {
     const date = new Date();
     dateRef.current =
@@ -210,34 +225,6 @@ export default function Sites(props) {
         : date.getDate().toString());
     return dateRef.current;
   };
-
-  const checkForInternet = async () => {
-    internetStatus.current = await internetConnection();
-    return internetStatus.current;
-  };
-
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
-      setAllRoutes(await getingDataRoutes()); //get request for routes
-      setAllPlaces(await getingDataPlaces()); //get request for places
-    } catch (error) {
-      console.log("Error");
-      console.error(error.message);
-    }
-  };
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    if (numOfTasks != 0 && allTasks.length == numOfTasks) {
-      if (allPlaces.length > 0 && allRoutes.length > 0 && allTasks.length > 0) {
-        getDataFunction();
-      }
-    }
-  }, [allRoutes, allTasks, allPlaces]);
 
   const clearCache = () => {
     // Remove all cookies
@@ -265,59 +252,75 @@ export default function Sites(props) {
     console.log("allPlaces", allPlaces);
     clearCache();
 
+    //get only the routes that belong to the user
     let allRoutesOfUserTemp = allRoutes.filter((route) => {
-      let usersArray = Object.values(route.acf.users);
-      let userExists = usersArray.find((user) => "" + user.ID === userId);
+      let userExists = route.students.find((user) => user.studentId === userId);
       if (userExists !== undefined) return route;
     });
 
     setAllRoutesOfUser(allRoutesOfUserTemp);
-    console.log(allRoutesOfUserTemp);
+    console.log("allRoutesOfUserTemp", allRoutesOfUserTemp);
+    console.log("userId", userId);
 
     let idOfUserPlaces = [];
 
     allRoutesOfUserTemp.forEach((route) => {
-      route.places.forEach((item) => {
-        let temp = allPlaces.find((place) => place.id === item);
+      //get only the sites that belong to the user
+      route.sites.forEach((item) => {
+        let temp = allPlaces.find((place) => place.id === item.siteId);
         console.log("temp", temp);
-        if (temp.parent === 0 && !idOfUserPlaces.includes(temp.id)) {
-          //place.parent === 0 is Site and not station
+        if (!idOfUserPlaces.includes(temp.id)) {
+          //get the site only once
           setAllPlacesOfUser((prevState) => prevState.concat([temp]));
-          idOfUserPlaces.push(item);
+          idOfUserPlaces.push(item.siteId);
         }
       });
+
+      route.tasks.forEach((task, index) => {
+        let tempTask = allTasks.find((item) => task.taskId === item.id);
+        route.tasks[index].stations = tempTask.stations;
+        route.tasks[index].title = tempTask.title;
+        route.tasks[index].audio_url = tempTask.audio_url;
+        route.tasks[index].picture_url = tempTask.picture_url;
+        let updatedContent = tempTask.subtitle;
+        if (tempTask.subtitle.includes("<p>")) {
+          updatedContent = tempTask.subtitle.replace("</p>", "");
+          updatedContent = updatedContent.replace("<p>", "");
+        }
+        route.tasks[index].subtitle = updatedContent;
+        route.tasks[index].didFinish = null;
+      });
     });
+    console.log("allRoutesOfUserTemp", allRoutesOfUserTemp);
 
     console.log("idOfUserPlaces");
     console.log(idOfUserPlaces);
 
-    placesList = await trasformObject(allPlaces);
-    routesInfo = await transformArrayOfObjects(allRoutes);
-    taskInformation = await trasformObject(allTasks);
+    // placesList = await trasformObject(allPlaces);
+    // routesInfo = await transformArrayOfObjects(allRoutes);
+    // taskInformation = await trasformObject(allTasks);
 
-    console.log("after x placesList: ", placesList);
-    console.log("after x routesInfo : ", routesInfo);
-    console.log("after x taskInformation: ", taskInformation);
+    // console.log("after x placesList: ", placesList);
+    // console.log("after x routesInfo : ", routesInfo);
+    // console.log("after x taskInformation: ", taskInformation);
 
-    let userRoutes = await getUserTasksFromRouteList(allRoutes, userId);
+    // let userRoutes = await getUserTasksFromRouteList(allRoutes, userId);
 
-    console.log("after  userRoutes: ", userRoutes);
+    // console.log("after  userRoutes: ", userRoutes);
 
-    let newTaskList = await getTasksList(taskInformation, userRoutes);
-    console.log("after getTasksList: ", newTaskList);
+    // let newTaskList = await getTasksList(taskInformation, userRoutes);
+    // console.log("after getTasksList: ", newTaskList);
 
-    newTaskList = addStationDetailsToTask(newTaskList, placesList);
-    console.log("after newTaskList: ", newTaskList);
+    // newTaskList = addStationDetailsToTask(newTaskList, placesList);
+    // console.log("after newTaskList: ", newTaskList);
 
-    props.actions.changeTasks(newTaskList, dateRef.current);
+    //
 
-    let temp1 = getPlacesList(placesList, newTaskList);
+    // let temp1 = getPlacesList(placesList, newTaskList);
+    props.actions.changeTasks(allTasks, dateRef.current);
+    console.log("allPlacesOfUser hh: ", allPlacesOfUser);
 
-    props.actions.changePlaces(temp1, dateRef.current);
-    if (temp1.length < 2) setLineLength(0);
-    else if (temp1.length === 2) setLineLength(32);
-    setLoading(false);
-    props.actions.enterApp(dateRef.current);
+    // props.actions.enterApp(dateRef.current);
   };
   const isCurrentSite = (itemId) =>
     itemId === props.user_places.places_location;
@@ -418,17 +421,13 @@ export default function Sites(props) {
                         key={item.id}
                         id={item.id}
                         name={item.name}
-                        imgUrl={
-                          item.acf && item.acf.image ? item.acf.image.url : ""
-                        }
+                        imgUrl={item.picture_url ? item.picture_url : ""}
                         didVisit={
                           isCurrentSite(index) ? "current" : item.didVisit
                         }
                         onImgClick={handleChildImgClick}
                         value={0}
-                        audioUrl={
-                          item.acf && item.acf.audio ? item.acf.audio.url : ""
-                        }
+                        audioUrl={item.audio_url ? item.audio_url : ""}
                       />
                     );
                   })}

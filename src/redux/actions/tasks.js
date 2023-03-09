@@ -29,6 +29,7 @@ export function changeCurrentTasks(current_tasks) {
 }
 
 export function changeCurrentTasksList(current_tasks_list) {
+  console.log("current_tasks_list", current_tasks_list);
   return {
     type: CURRENT_SITE_TASKS_LIST,
     payload: current_tasks_list,
@@ -43,6 +44,9 @@ export function completeTask(currentTaskId, index) {
 }
 
 export function changeCurrentTask(currentTaskName, currentTaskIndex) {
+  console.log("currentTaskName", currentTaskName);
+  console.log("currentTaskIndex", currentTaskIndex);
+
   return {
     type: CHANGE_TASK_NAME,
     payload: { currentTaskName, currentTaskIndex },

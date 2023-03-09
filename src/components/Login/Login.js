@@ -16,14 +16,13 @@ import { connect, Provider } from "react-redux";
 import { bindActionCreators } from "redux";
 import configureStore from "../../store/configureStore";
 // import Spinner from "../assets/Spinner";
-import { LogoModal } from '../assets/icons';
-
-
-
+import { LogoModal } from "../assets/icons";
 
 const userNameApi = process.env.REACT_APP_USERNAME_ACCESSKEY;
 const passwordApi = process.env.REACT_APP_PASSWORD_ACCESSKEY;
-const base64encodedData = Buffer.from(`${userNameApi}:${passwordApi}`).toString('base64');
+const base64encodedData = Buffer.from(`${userNameApi}:${passwordApi}`).toString(
+  "base64"
+);
 
 class Login extends React.Component {
   constructor(props) {
@@ -90,7 +89,6 @@ class Login extends React.Component {
               console.log("res:");
               console.log(res);
               localStorage.setItem("guidphone", res.data.acf.guide_phone);
-
 
               const extraData = res.data.acf ? res.data.acf : [];
               this.props.actions.changeUser({
@@ -172,7 +170,11 @@ class Login extends React.Component {
             />
           )}
           <div className="logo">
-            <img alt={"login logo"} src={LogoLogin} style={{maxWidth: "250px"}} />
+            <img
+              alt={"login logo"}
+              src={LogoLogin}
+              style={{ maxWidth: "250px" }}
+            />
           </div>
           <form onSubmit={this.onFormSubmit}>
             <label className="form-group">

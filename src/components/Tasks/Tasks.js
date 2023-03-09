@@ -29,12 +29,10 @@ const tasksReducer = (state, action) => {
 };
 
 function Tasks(props) {
-
   const { user_tasks } = props;
   const { current_tasks_list, task_current_index } = user_tasks;
   // const [state, localDispatch] = useReducer(tasksReducer, initialState)
-  const {task_location} = user_tasks;
-
+  const { task_location } = user_tasks;
 
   const getInitialLocation = () => {
     return screen.width > 1020
@@ -49,6 +47,19 @@ function Tasks(props) {
   const sliderRef = useRef();
   const prevIndex = useRef(0);
 
+  useEffect(() => {
+    console.log("currIndex ", currIndex);
+  }, [currIndex]);
+
+  useEffect(() => {
+    console.log("allData ", allData);
+    console.log("allData[currIndex]  ", allData[currIndex]);
+    // console.log(
+    //   "allData[currIndex].stations.title  ",
+    //   allData[currIndex].stations[0].title
+    // );
+  }, [allData]);
+
   const [barStatus2, setBarStatus2] = useState("center bottomBar hide");
   const barStatus = useRef("center bottomBar hide");
 
@@ -59,7 +70,7 @@ function Tasks(props) {
       if (screen.width > 1020) {
         if (currIndex === 0) {
           props.actions.completeTask(
-            allData[currIndex].id,
+            allData[currIndex].taskId,
             allData.length - 1 - currIndex
           );
           setModalOpen(true);
@@ -68,7 +79,7 @@ function Tasks(props) {
         if (currIndex < allData.length - 1) {
           sliderRef.current.slickNext();
         } else if (currIndex === allData.length - 1) {
-          props.actions.completeTask(allData[currIndex].id, currIndex);
+          props.actions.completeTask(allData[currIndex].taskId, currIndex);
           setModalOpen(true);
         }
       }
@@ -98,15 +109,15 @@ function Tasks(props) {
   };
 
   const markTaskAsFinished = (index) => {
-    if (allData[index] && allData[index].id)
+    if (allData[index] && allData[index].taskId)
       props.actions.completeTask(
-        allData[index].id,
+        allData[index].taskId,
         screen.width > 1023 ? allData.length - 1 - index : index
       );
   };
   const updateCurrentTask = (nextIndex) => {
     props.actions.changeCurrentTask(
-      allData[nextIndex].title.rendered,
+      allData[nextIndex].title,
       screen.width > 1023 ? allData.length - 1 - nextIndex : nextIndex
     );
     prevIndex.current = currIndex;
@@ -115,24 +126,23 @@ function Tasks(props) {
 
   // component did mount
   useEffect(() => {
-    if(!isLoggedIn()){
+    if (!isLoggedIn()) {
       handleLogout();
-
     }
-
 
     if (screen.width < 1000 && screen.height) {
       sliderRef.current.slickGoTo(props.user_tasks.task_current_index);
     }
     // setCurrIndex(props.user_tasks.task_current_index)
     let stations = storeInitialData([...props.user_tasks.current_tasks]);
+    console.log("stations", props.user_tasks.current_tasks);
     if (screen.width > 1020)
       setAllData(props.user_tasks.current_tasks_list.slice(0).reverse());
     else setAllData(props.user_tasks.current_tasks_list);
     setStationsData(stations);
 
     // on unmount
-    return () => { };
+    return () => {};
   }, []);
   /*
         BreakPoints will determine the behavior of our scroll bar according to the size
@@ -200,7 +210,7 @@ function Tasks(props) {
   var dateLastTask = new Date();
 
   const onClickArrows = (arrowDirection) => {
-    // const nameOfTaks = allData[currIndex].title.rendered;
+    // const nameOfTaks = allData[currIndex].title;
     // var dateCurrTask = new Date();
     // console.log("dateCurrTask: " + dateCurrTask);
     // console.log("dateLastTask: " + dateLastTask);
@@ -286,16 +296,16 @@ function Tasks(props) {
     setModalOpen(false);
   }
   const getLargeImage = () => {
-    if (allData[currIndex] && allData[currIndex].acf.image.url)
-      return allData[currIndex].acf.image.url;
+    if (allData[currIndex] && allData[currIndex].picture_url)
+      return allData[currIndex].picture_url;
     else
       return "https://globalimpactnetwork.org/wp-content/themes/globalimpact/images/no-image-found-360x250.png";
   };
 
   // get station name for tablet design
   const getStationName = (index) => {
-    if (allData && allData[index] && allData[index].stationDetails)
-      return allData[index].stationDetails.name;
+    if (allData && allData[index] && allData[index].stations[0])
+      return allData[index].stations[0].title;
     else return "none";
   };
 
@@ -348,7 +358,7 @@ function Tasks(props) {
         <div className="containerTasks">
           <div className="center grayBar">
             <Text>
-              {allData[currIndex] ? allData[currIndex].stationDetails.name : ""}
+              {allData[currIndex] ? allData[currIndex].stations[0].title : ""}
             </Text>
           </div>
           <Connector
@@ -365,19 +375,16 @@ function Tasks(props) {
                     className={decideClassName(index, currIndex)}
                   >
                     <TaskComp
-                      taskId={item.id}
-                      task_location = {task_location}
-
+                      taskId={item.taskId}
+                      task_location={task_location}
                       lastOne={modalOpen}
                       imgUrl={
-                        item.acf && item.acf.image ? item.acf.image.url : false
+                        item && item.picture_url ? item.picture_url : false
                       }
-                      title={item.title && item.title.rendered.split("&")[0]}
-                      content={item.content && item.content.rendered}
+                      title={item.title && item.title.split("&")[0]}
+                      content={item.subtitle}
                       didFinished={item.didFinish}
-                      audioUrl={
-                        item.acf && item.acf.audio ? item.acf.audio.url : false
-                      }
+                      audioUrl={item && item.audio_url ? item.audio_url : false}
                       index={index}
                       currentIndex={currIndex}
                       height={window.innerHeight * 0.28}
@@ -397,7 +404,11 @@ function Tasks(props) {
           </PrevButton>
           <div className={barStatus2}>
             <Text>
-              {stationsData[currIndex] ? stationsData[currIndex].name : ""}
+              {allData[currIndex] ? allData[currIndex].stations[0].title : ""}
+
+              {/* {stationsData[currIndex]
+                ? stationsData[currIndex][0].title
+                : ""} */}
             </Text>
           </div>
 
@@ -442,12 +453,10 @@ function Tasks(props) {
             <div className={"taskDetailsContainer"}>
               <div className={"detailsTextContainer"}>
                 <Text fontSize={4} textAlign={"right"}>
-                  {allData[currIndex] &&
-                    parseContent(allData[currIndex].title.rendered)}
+                  {allData[currIndex] && allData[currIndex].title}
                 </Text>
                 <Text fontSize={2.5} textAlign={"right"}>
-                  {allData[currIndex] &&
-                    parseContent(allData[currIndex].content.rendered)}
+                  {allData[currIndex] && allData[currIndex].subtitle}
                 </Text>
               </div>
               <div className={"audioContainer"}>
@@ -487,18 +496,16 @@ function Tasks(props) {
                 return (
                   <div key={index} className={"slide slideHorizontalItem"}>
                     <TaskComp
-                      taskId={item.id}
-                      task_location = {task_location}
+                      taskId={item.taskId}
+                      task_location={task_location}
                       lastOne={modalOpen}
                       imgUrl={
-                        item.acf && item.acf.image ? item.acf.image.url : false
+                        item && item.picture_url ? item.picture_url : false
                       }
-                      title={item.title && item.title.rendered.split("&")[0]}
-                      content={item.content && item.content.rendered}
+                      title={item.title && item.title.split("&")[0]}
+                      content={item.content && item.subtitle}
                       didFinished={item.didFinish}
-                      audioUrl={
-                        item.acf && item.acf.audio ? item.acf.audio.url : false
-                      }
+                      audioUrl={item && item.audio_url ? item.audio_url : false}
                       index={index}
                       currentIndex={currIndex}
                       height={screen.height * 0.2}
@@ -569,7 +576,8 @@ export default Tasks;
 const InfoBox = styled.div`
   width: 50%;
   height: ${(props) => (props.height ? props.height : 250)}px;
-  border-color: ${(props) => (props.borderColor ? props.borderColor : "#272727")};
+  border-color: ${(props) =>
+    props.borderColor ? props.borderColor : "#272727"};
   border-radius: 2%;
   border-style: solid;
   border-width: 6px;

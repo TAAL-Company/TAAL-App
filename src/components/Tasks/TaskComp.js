@@ -177,7 +177,7 @@ export default function TaskComp(props) {
                     localStorage.getItem("route_id") == 3271 ? "" : "right",
                 }}
               >
-                {parseContent(props.content)}
+                {props.content}
               </div>
             </div>
           </div>
