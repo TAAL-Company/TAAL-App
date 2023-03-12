@@ -9,27 +9,27 @@ export const postDataTime = (objTime) => {
     `${userNameApi}:${passwordApi}`
   ).toString("base64");
 
-  fetch("https://s83.bfa.myftpupload.com/wp-json/wp/v2/time_data", {
+  console.log(objTime);
+
+  fetch("https://prod-web-app0da5905.azurewebsites.net/task-performance", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      Authorization: `basic ${base64encodedData}`,
+      accept: "application/json",
     },
     body: JSON.stringify({
-      title: objTime.userName,
-      fields: {
-        user_id: objTime.idUser,
-        route_id: objTime.route_id,
-        site_id: objTime.site_id,
-        route_title: objTime.route_title,
-        task_id: objTime.idTask.toString(),
-        task_title: objTime.task_location,
-        start_time: objTime.startTime,
-        end_time: objTime.endTime,
-        req_help_time: "1",
-      },
-
-      status: "publish",
+      // title: objTime.userName,
+      // fields: {
+      studentId: "a71f5b1f-f12c-49c3-9c85-05999062329c", //objTime.idUser,
+      routeId: objTime.route_id,
+      siteId: objTime.site_id,
+      // route_title: objTime.route_title,
+      taskId: objTime.idTask,
+      // task_title: objTime.task_location,
+      startTime: objTime.startTime,
+      endTime: objTime.endTime,
+      whenAssisted: "2023-03-09T11:01:56.993Z",
+      // },
     }),
   });
 };

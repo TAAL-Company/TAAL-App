@@ -24,10 +24,11 @@ export default function TaskComp(props) {
   const [, set_obj_time] = useState(null);
   const [myCurrent, setMyCurrent] = useState();
 
-  const currDate = new Date().toLocaleDateString("en-GB");
-  const currTime = new Date().toLocaleTimeString("en-GB");
+  // const currDate = new Date().toLocaleDateString("en-GB");
+  // const currTime = new Date().toLocaleTimeString("en-GB");
   const routes_ltr = [3271, 3304];
-  let dateAndTime = currDate + " " + currTime;
+  // let dateAndTime = currDate + " " + currTime;
+  const dateAndTime = new Date().toISOString(); // "2023-03-09T11:01:56.993Z"
 
   objTime.userName = localStorage.getItem("userName");
   objTime.site_id = localStorage.getItem("site_id");
@@ -45,17 +46,22 @@ export default function TaskComp(props) {
       localStorage.setItem("taskIdForApi", 0);
     } else if (objTime.idTask !== props.taskId) {
       //Prevents double case
-      const currDate = new Date().toLocaleDateString();
-      const currTime = new Date().toLocaleTimeString();
-      let dateAndTime = currDate + " " + currTime;
+      // const currDate = new Date().toLocaleDateString();
+      // const currTime = new Date().toLocaleTimeString();
+      // let dateAndTime = currDate + " " + currTime;
+      const dateAndTime = new Date().toISOString(); // "2023-03-09T11:01:56.993Z"
 
-      objTime.endTime = dateAndTime;
+      objTime["endTime"] = dateAndTime;
+      console.log("objTime.endTime xx", objTime.endTime);
 
       if (localStorage.getItem("taskIdForApi") === 0) {
         localStorage.setItem("taskIdForApi", objTime.idTask);
       } else if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {
         //If it is not equal to this, then it means that the user has finished the task
         localStorage.setItem("taskIdForApi", objTime.idTask);
+
+        console.log("objTime xx", objTime);
+
         postDataTime(objTime); //api request to wp db
       }
 
@@ -63,7 +69,7 @@ export default function TaskComp(props) {
       objTime.idTask = props.taskId;
       objTime.task_location = props.task_location;
       objTime.startTime = objTime.endTime;
-      objTime.endTime = "";
+      // objTime.endTime = "";
     }
 
     if (
