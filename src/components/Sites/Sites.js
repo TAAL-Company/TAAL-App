@@ -254,7 +254,7 @@ export default function Sites(props) {
 
     //get only the routes that belong to the user
     let allRoutesOfUserTemp = allRoutes.filter((route) => {
-      let userExists = route.students.find((user) => user.studentId === userId);
+      let userExists = route.students.find((user) => user.id === userId);
       if (userExists !== undefined) return route;
     });
 
@@ -267,12 +267,14 @@ export default function Sites(props) {
     allRoutesOfUserTemp.forEach((route) => {
       //get only the sites that belong to the user
       route.sites.forEach((item) => {
-        let temp = allPlaces.find((place) => place.id === item.siteId);
+        let temp = allPlaces.find((place) => place.id === item.id);
         console.log("temp", temp);
         if (!idOfUserPlaces.includes(temp.id)) {
+          console.log("temp  !!");
+
           //get the site only once
           setAllPlacesOfUser((prevState) => prevState.concat([temp]));
-          idOfUserPlaces.push(item.siteId);
+          idOfUserPlaces.push(item.id);
         }
       });
 
@@ -293,8 +295,7 @@ export default function Sites(props) {
     });
     console.log("allRoutesOfUserTemp", allRoutesOfUserTemp);
 
-    console.log("idOfUserPlaces");
-    console.log(idOfUserPlaces);
+    console.log("idOfUserPlaces", idOfUserPlaces);
 
     // placesList = await trasformObject(allPlaces);
     // routesInfo = await transformArrayOfObjects(allRoutes);

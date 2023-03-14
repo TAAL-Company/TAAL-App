@@ -76,7 +76,7 @@ export const transformArrayOfObjects = (list) => {
 
 export const getRoutesOfUserInTheSite = (routesList, siteId) => {
   let routeListInSite = routesList.filter((route) =>
-    route.sites.find((site) => site.siteId == siteId)
+    route.sites.find((site) => site.id == siteId)
   );
 
   return routeListInSite;
