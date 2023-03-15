@@ -266,9 +266,11 @@ export default function Sites(props) {
     clearCache();
 
     let allRoutesOfUserTemp = allRoutes.filter((route) => {
-      let usersArray = Object.values(route.acf.users);
-      let userExists = usersArray.find((user) => "" + user.ID === userId);
-      if (userExists !== undefined) return route;
+      if (route.acf.users) {
+        let usersArray = Object.values(route.acf.users);
+        let userExists = usersArray.find((user) => "" + user.ID === userId);
+        if (userExists !== undefined) return route;
+      }
     });
 
     setAllRoutesOfUser(allRoutesOfUserTemp);
