@@ -18,6 +18,7 @@ import {
   getingDataPlaces,
   getingData_Routes,
   getingData_Places,
+  getingData_Users,
 } from "../api";
 import {
   getPlacesList,
@@ -58,6 +59,7 @@ export default function Sites(props) {
   const [allRoutes, setAllRoutes] = useState([]);
   const [allTasks, setAllTasks] = useState([]);
   const [allPlaces, setAllPlaces] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   const [allRoutesOfUser, setAllRoutesOfUser] = useState([]);
   const [allTasksOfUser, setAllTasksOfUser] = useState([]);
   const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
@@ -86,6 +88,7 @@ export default function Sites(props) {
   const fetchData = async () => {
     setLoading(true);
     try {
+      setAllUsers(await getingData_Users());
       setAllTasks(await getingData_Tasks(setCompleted, setnumOfTasks)); //get request for tasks
       setAllRoutes(await getingData_Routes()); //get request for routes
       setAllPlaces(await getingData_Places()); //get request for places
@@ -99,10 +102,26 @@ export default function Sites(props) {
   }, []);
 
   useEffect(() => {
-    if (allPlaces.length > 0 && allRoutes.length > 0 && allTasks.length > 0) {
-      getDataFunction();
+    if (
+      allPlaces.length > 0 &&
+      allRoutes.length > 0 &&
+      allTasks.length > 0 &&
+      allUsers.length > 0
+    ) {
+      console.log("user2:", localStorage.getItem("userName"));
+      let user = allUsers.find((user) => {
+        console.log("user:", user.name);
+        if (
+          user.name.toLowerCase() ===
+          localStorage.getItem("userName").toLowerCase().replace(/-/g, " ")
+        )
+          return true;
+      });
+      console.log("user1:", user);
+      setUserId(user.id);
+      getDataFunction(user.id);
     }
-  }, [allRoutes, allTasks, allPlaces]);
+  }, [allRoutes, allTasks, allPlaces, allUsers]);
 
   //barcode code
   // const onchange = async (scanResult) => {
@@ -246,10 +265,12 @@ export default function Sites(props) {
     }
   };
 
-  const getDataFunction = async () => {
+  const getDataFunction = async (userId) => {
     console.log("allRoutes", allRoutes);
     console.log("allTasks", allTasks);
     console.log("allPlaces", allPlaces);
+    console.log("user 3", userId);
+
     clearCache();
 
     //get only the routes that belong to the user
@@ -268,7 +289,6 @@ export default function Sites(props) {
       //get only the sites that belong to the user
       route.sites.forEach((item) => {
         let temp = allPlaces.find((place) => place.id === item.id);
-        console.log("temp", temp);
         if (!idOfUserPlaces.includes(temp.id)) {
           console.log("temp  !!");
 

@@ -183,3 +183,15 @@ export const getingDataPlaces = async () => {
 
   return allPlaces;
 };
+export const getingData_Users = async () => {
+  let all_Users;
+
+  await get("https://prod-web-app0da5905.azurewebsites.net/students").then(
+    (res) => {
+      all_Users = res.data;
+    }
+  );
+  console.log("res all_Users: ", all_Users);
+
+  return all_Users;
+};
