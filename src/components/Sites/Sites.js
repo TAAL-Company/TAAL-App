@@ -54,7 +54,7 @@ export default function Sites(props) {
   const [allRoutesOfUser, setAllRoutesOfUser] = useState([]);
   const [allTasksOfUser, setAllTasksOfUser] = useState([]);
   const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
-  const users_ltr = [39];
+  const users_ltr = [39, 78];
 
   useEffect(() => {
     console.log("user_places: ", props.user_places);

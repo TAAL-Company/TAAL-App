@@ -16,7 +16,7 @@ function Navbar(props) {
 
   const stress = origin === "Help" ? "StressIconGrey" : "StressIconRed";
   const userId = localStorage.getItem("userID");
-  const users_ltr = [39];
+  const users_ltr = [39, 78];
 
   const handleLogout = () => {
     //console.log('logout');

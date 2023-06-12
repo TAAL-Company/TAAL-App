@@ -36,7 +36,7 @@ function Help(props) {
 
   const [phoneGuide, setPhoneGuide] = useState("error");
   const userId = localStorage.getItem("userID");
-  const users_ltr = [39];
+  const users_ltr = [39, 78];
 
   const { t } = useTranslation();
 

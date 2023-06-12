@@ -18,7 +18,7 @@ export default function SiteComp(props) {
   // }
 
   const userId = localStorage.getItem("userID");
-  const users_ltr = [39];
+  const users_ltr = [39, 78];
 
   function handleImgClick() {
     try {

@@ -152,7 +152,7 @@ export default function TaskComp(props) {
                 : "ltr",
             }}
           >
-            <div style={{ width: "20%", height: "auto", marginTop: "auto" }}>
+            <div style={{ width: "20%", height: "100%" }}>
               <AudioIcon audioUrl={props.audioUrl} />
             </div>
             <div style={{ height: "100%", width: "79.5%", padding: 0 }}>
