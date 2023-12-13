@@ -1,34 +1,30 @@
-import React, { useState, useEffect, useRef } from "react";
-import SiteComp from "./SiteComp.js";
-import Carousel, { consts } from "react-elastic-carousel";
 import axios from "axios/index";
-import BarcodeReader from "./BarcodeReader";
+import React, { useEffect, useRef, useState } from "react";
+import SiteComp from "./SiteComp.js";
 // import BarcodeComp from './BarcodeComp'
-import AudioIcon from "../assets/AudioIcon";
-import "./Sites.css";
-import { isLoggedIn, handleLogout } from "../functions";
 import { navigate } from "@reach/router";
-import styled from "styled-components";
-import wpConfig from "../../wp-config";
-import Navbar from "../Nav/Navbar";
-import { getingDataTasks, getingDataRoutes, getingDataPlaces } from "../api";
-import {
-  getPlacesList,
-  getTasksList,
-  trasformObject,
-  transformArrayOfObjects,
-  extractPathForSite,
-  getUserTasksFromRouteList,
-  addStationDetailsToTask,
-  getRoutesOfUser,
-  getRoutesOfUserInTheSite,
-} from "./functions";
-import { Divider } from "../assets/Styles";
-import Spinner from "../assets/Spinner";
-import ProgressBarComp from "../assets/progressBar.js";
 import { useTranslation } from "react-i18next";
-import { internetConnection } from "../functions";
-import clientConfig from "../../client-config";
+import styled from "styled-components";
+import Navbar from "../Nav/Navbar";
+import {
+  getingDataPlaces,
+  getingDataRoutes,
+  getingDataTasks,
+  getingDataUsers,
+} from "../api";
+import ProgressBarComp from "../assets/progressBar.js";
+import { handleLogout, internetConnection, isLoggedIn } from "../functions";
+import "./Sites.css";
+import {
+  addStationDetailsToTask,
+  extractPathForSite,
+  getPlacesList,
+  getRoutesOfUserInTheSite,
+  getTasksList,
+  getUserTasksFromRouteList,
+  transformArrayOfObjects,
+  trasformObject,
+} from "./functions";
 
 let placesList = [];
 let tasksList = [];
@@ -221,6 +217,7 @@ export default function Sites(props) {
     try {
       setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
       setAllRoutes(await getingDataRoutes()); //get request for routes
+      await getingDataUsers();
       setAllPlaces(await getingDataPlaces()); //get request for places
     } catch (error) {
       console.log("Error");
