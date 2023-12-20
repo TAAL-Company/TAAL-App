@@ -50,6 +50,9 @@ export default function Sites(props) {
   const [allRoutesOfUser, setAllRoutesOfUser] = useState([]);
   const [allTasksOfUser, setAllTasksOfUser] = useState([]);
   const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
+  const [nodeUser, setNodeUser] = useState({});
+  const [allNodeRoutes, setAllNodeRoutes] = useState([]);
+
   const users_ltr = [39, 78];
 
   useEffect(() => {
@@ -217,8 +220,13 @@ export default function Sites(props) {
     try {
       setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
       setAllRoutes(await getingDataRoutes()); //get request for routes
-      await getingDataUsers();
       setAllPlaces(await getingDataPlaces()); //get request for places
+
+      const allUsers = await getingDataUsers();
+      const user = allUsers.find((user) => user.email === "userfrombackend");
+      setNodeUser(user);
+
+      // setAllNodeRoutes(nodeRouteAdapter(await getingDataUsers()));
     } catch (error) {
       console.log("Error");
       console.error(error.message);
