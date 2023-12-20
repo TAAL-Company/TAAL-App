@@ -10,4 +10,3 @@ const azureConfig = {
 };
 
 export default azureConfig;
-git; 
