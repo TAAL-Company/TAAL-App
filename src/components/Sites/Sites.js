@@ -13,7 +13,7 @@ import {
   getingDataUsers,
 } from "../api";
 import ProgressBarComp from "../assets/progressBar.js";
-import { handleLogout, internetConnection, isLoggedIn } from "../functions";
+import { handleLogout, internetConnection, isLoggedIn, nodeRouteAdapter, nodePlacesAdapter } from "../functions";
 import "./Sites.css";
 import {
   addStationDetailsToTask,
@@ -223,15 +223,17 @@ export default function Sites(props) {
       setAllPlaces(await getingDataPlaces()); //get request for places
 
       const allUsers = await getingDataUsers();
-      const user = allUsers.find((user) => user.email === "userfrombackend");
+      const user = allUsers.find((user) => user.email === "taalworker+121@gmail.com");
       setNodeUser(user);
 
-      // setAllNodeRoutes(nodeRouteAdapter(await getingDataUsers()));
+      setAllNodeRoutes(nodeRouteAdapter(await getingDataRoutes()));
+      setAllNodePlaces(nodePlacesAdapter(await getingDataPlaces()));
     } catch (error) {
       console.log("Error");
       console.error(error.message);
     }
   };
+
   useEffect(() => {
     fetchData();
   }, []);

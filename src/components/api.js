@@ -99,31 +99,10 @@ export const getingDataUsers = async () => {
 
 export const getingDataRoutes = async () => {
   let allRoutes;
-  // console.log('geting data routes', `${wpConfig}/wp-json/wp/v2/routes/`)
-  console.log("geting data routes", `${wpConfig}/routes/`);
+  console.log("geting data Routes");
 
-  await get(wpConfig.getRoutes, {
-    params: {
-      per_page: 100,
-      "Cache-Control": "no-cache",
-    },
-  }).then((res) => {
-    let max_pages = res.headers["x-wp-totalpages"];
-
-    allRoutes = res.data;
-    if (max_pages > 1) {
-      for (let i = 2; i <= max_pages; i++) {
-        get(wpConfig.getRoutes, {
-          params: {
-            per_page: 100,
-            page: i,
-            "Cache-Control": "no-cache",
-          },
-        }).then((res) => {
-          Array.prototype.push.apply(allRoutes, res.data);
-        });
-      }
-    }
+  await get(azureConfig.getRoutes).then((res) => {
+    console.log("getRoutes", res);
   });
 
   return allRoutes;
@@ -131,30 +110,73 @@ export const getingDataRoutes = async () => {
 
 export const getingDataPlaces = async () => {
   let allPlaces;
+  console.log("geting data Places");
 
-  await get(wpConfig.getPlaces, {
-    params: {
-      per_page: 100,
-      "Cache-Control": "no-cache",
-    },
-  }).then((res) => {
-    let max_pages = res.headers["x-wp-totalpages"];
-
-    allPlaces = res.data;
-    if (max_pages > 1) {
-      for (let i = 2; i <= max_pages; i++) {
-        get(wpConfig.getPlaces, {
-          params: {
-            per_page: 100,
-            page: i,
-            "Cache-Control": "no-cache",
-          },
-        }).then((res) => {
-          Array.prototype.push.apply(allPlaces, res.data);
-        });
-      }
-    }
+  await get(azureConfig.getPlaces).then((res) => {
+    console.log("getPlaces", res);
   });
 
   return allPlaces;
 };
+
+// export const getingDataRoutes = async () => {
+//   let allRoutes;
+//   // console.log('geting data routes', `${wpConfig}/wp-json/wp/v2/routes/`)
+//   console.log("geting data routes", `${wpConfig}/routes/`);
+
+//   await get(wpConfig.getRoutes, {
+//     params: {
+//       per_page: 100,
+//       "Cache-Control": "no-cache",
+//     },
+//   }).then((res) => {
+//     let max_pages = res.headers["x-wp-totalpages"];
+
+//     allRoutes = res.data;
+//     if (max_pages > 1) {
+//       for (let i = 2; i <= max_pages; i++) {
+//         get(wpConfig.getRoutes, {
+//           params: {
+//             per_page: 100,
+//             page: i,
+//             "Cache-Control": "no-cache",
+//           },
+//         }).then((res) => {
+//           Array.prototype.push.apply(allRoutes, res.data);
+//         });
+//       }
+//     }
+//   });
+
+//   return allRoutes;
+// };
+
+// export const getingDataPlaces = async () => {
+//   let allPlaces;
+
+//   await get(wpConfig.getPlaces, {
+//     params: {
+//       per_page: 100,
+//       "Cache-Control": "no-cache",
+//     },
+//   }).then((res) => {
+//     let max_pages = res.headers["x-wp-totalpages"];
+
+//     allPlaces = res.data;
+//     if (max_pages > 1) {
+//       for (let i = 2; i <= max_pages; i++) {
+//         get(wpConfig.getPlaces, {
+//           params: {
+//             per_page: 100,
+//             page: i,
+//             "Cache-Control": "no-cache",
+//           },
+//         }).then((res) => {
+//           Array.prototype.push.apply(allPlaces, res.data);
+//         });
+//       }
+//     }
+//   });
+
+//   return allPlaces;
+// };

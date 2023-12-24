@@ -1,0 +1,44 @@
+{
+    "id": "1a5f6376-ea31-4892-bece-ee927296f5cb",
+    "name": "מסלול משויך לאביב גלבץ",
+    "picture_url": null,
+    "tasks": [
+      {
+        "position": 0,
+        "routeId": "1a5f6376-ea31-4892-bece-ee927296f5cb",
+        "taskId": "d3331338-7d84-4df7-9a2f-0d05f6337e50"
+      },
+      {
+        "position": 1,
+        "routeId": "1a5f6376-ea31-4892-bece-ee927296f5cb",
+        "taskId": "b010911c-8134-4c1e-a102-0e409504a5d2"
+      },
+      {
+        "position": 2,
+        "routeId": "1a5f6376-ea31-4892-bece-ee927296f5cb",
+        "taskId": "151b3a52-a934-4b71-8924-b8c932a4576c"
+      }
+    ],
+    "students": [
+      {
+        "id": "ed4970c7-d6fd-4ec7-bd17-21bb9d7072c7",
+        "user_name": "TW121",
+        "email": "taalworker+121@gmail.com",
+        "name": "אביב גלבץ",
+        "phone": null,
+        "picture_url": null,
+        "role": "STUDENT",
+        "coachId": null
+      }
+    ],
+    "sites": [
+      {
+        "id": "9fcb753c-28f4-4023-9f16-3148ab6ff486",
+        "name": "הפיצה של אלי",
+        "description": "פיצריה בעמק שפע",
+        "picture_url": "https://taalmedia.blob.core.windows.net/images/images%2FSite%20media/%D7%A4%D7%99%D7%A6%D7%94%20%D7%A9%D7%9C%20%D7%90%D7%9C%D7%99.jpg?sp=racwd&st=2023-08-10T08:40:14Z&se=2024-10-08T16:40:14Z&spr=https&sv=2022-11-02&sr=c&sig=uIxq4iCGXN%2FwOy3vcLS38S8tE8YF60kMgbLX5QY1dPM%3D",
+        "audio_url": null,
+        "qr_code_url": null
+      }
+    ]
+  }
