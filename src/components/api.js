@@ -120,17 +120,21 @@ export const getingDataRoutes = async () => {
 export const getingDataPlaces = async () => {
   let allPlaces;
   console.log("geting data Places");
-
-  await get(azureConfig.getPlaces).then((res) => {
-    console.log("getPlaces", res);
-  });
-
-  return allPlaces;
+  try {
+    await get(azureConfig.getPlaces).then((res) => {
+      console.log("getPlaces", res.data);
+      allPlaces = res.data
+    });
+    return allPlaces
+  } catch (error) {
+    console.error(error)
+    return null;
+  }
 };
 
 export const getingTasksById = async (taskid) => {
   let taskinfo;
-  console.log(taskid);
+  // console.log(taskid);
   try {
     await get(azureConfig.getTasks+"/"+taskid).then((res) => {
       // console.log("task info", res.data);

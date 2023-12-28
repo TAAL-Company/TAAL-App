@@ -230,6 +230,7 @@ export default function Sites(props) {
 
       setAllNodeRoutes(nodeRouteAdapter(await getingDataRoutes()));
       setAllNodePlaces(nodePlacesAdapter(await getingDataPlaces()));
+      console.log("pass");
     } catch (error) {
       console.log("Error");
       console.error(error.message);
