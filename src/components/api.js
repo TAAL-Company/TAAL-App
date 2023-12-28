@@ -89,23 +89,32 @@ export const getingDataUsers = async () => {
   let allUsers;
   // console.log('geting data routes', `${wpConfig}/wp-json/wp/v2/routes/`)
   console.log("geting data users");
-
-  await get(azureConfig.getUsers).then((res) => {
-    console.log("getUsers", res);
-  });
-
-  return allUsers;
+  try {
+    await get(azureConfig.getUsers).then((res) => {
+      console.log("getUsers", res.data);
+      allUsers = res.data
+    });
+    return allUsers
+  } catch (error) {
+    console.error(error)
+    return null;
+  }
+  
 };
 
 export const getingDataRoutes = async () => {
   let allRoutes;
   console.log("geting data Routes");
-
-  await get(azureConfig.getRoutes).then((res) => {
-    console.log("getRoutes", res);
-  });
-
-  return allRoutes;
+  try {
+    await get(azureConfig.getRoutes).then((res) => {
+      console.log("getRoutes", res.data);
+      allRoutes = res.data
+    });
+    return allRoutes
+  } catch (error) {
+    console.error(error)
+    return null;
+  }
 };
 
 export const getingDataPlaces = async () => {
@@ -118,6 +127,21 @@ export const getingDataPlaces = async () => {
 
   return allPlaces;
 };
+
+export const getingTasksById = async (taskid) => {
+  let taskinfo;
+  console.log(taskid);
+  try {
+    await get(azureConfig.getTasks+"/"+taskid).then((res) => {
+      // console.log("task info", res.data);
+      taskinfo = res.data
+    });
+    return taskinfo
+  } catch (error) {
+    console.error(error)
+    return null;
+  }
+}
 
 // export const getingDataRoutes = async () => {
 //   let allRoutes;

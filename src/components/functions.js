@@ -1,5 +1,7 @@
-import noRoute from "./NO-Route.json";
-import wpRoute from "./WP-Route.json";
+// import noRoute from "./NO-Route.json";
+// import wpRoute from "./WP-Route.json";
+import { getingTasksById } from "./api";
+
 
 export const isLoggedIn = () => {
 	return localStorage.getItem('token');
@@ -34,24 +36,145 @@ export const internetConnection = () => {
 }
 
 export const nodeRouteAdapter = (routedata) => {
-	// wpRoute.id=noRoute.id
-	// wpRoute.title=noRoute.name
-	// wpRoute.=noRoute.picture_url --- ??
-	// wpRoute.places=noRoute.sites --- ?? 
+	let noderoutedata = [];
+	routedata.forEach((route) => {
 
-	// ----users---
-	// wpRoute.acf.users[0].ID = noRoute.students[0].id
-	// wpRoute.acf.users[0]. = noRoute.students[0].coachId --- ??
-	// wpRoute.acf.users[0].user_email = noRoute.students[0].email
-	// wpRoute.acf.users[0].display_name = noRoute.students[0].name
-	// wpRoute.acf.users[0]. = noRoute.students[0].phone --- ??
-	// wpRoute.acf.users[0].user_avatar = noRoute.students[0].picture_url
-	// wpRoute.acf.users[0]. = noRoute.students[0].role --- ??
-	// wpRoute.acf.users[0].user_nicename = noRoute.students[0].user_name
+		let wpRoute = {
+			"id": 0,
+			"date": "",
+			"date_gmt": "",
+			"guid": {
+				"rendered": "https:\/\/taal.tech\/?post_type=routes&#038;p=2936"
+			},
+			"modified": "",
+			"modified_gmt": "",
+			"slug": "",
+			"status": "publish",
+			"type": "routes",
+			"link": "https:\/\/taal.tech\/routes",
+			"title": {
+				"rendered": ""
+			},
+			"content": {
+				"rendered": "",
+				"protected": false
+			},
+			"featured_media": 0,
+			"parent": 0,
+			"template": "",
+			"meta": [
 
-	// ----tasks----
-	// wpRoute.acf.tasks[0]. = noRoute.tasks[0]. -- ?? need a loop 
-	console.log("route data", routedata);
+			],
+			"places": [
+				217
+			],
+			"acf": {
+				"tasks": [],
+				"users": [],
+				"my_site": ""
+			},
+			"_links": {
+				"self": [
+					{
+						"href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/routes\/2936"
+					}
+				],
+				"collection": [
+					{
+						"href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/routes"
+					}
+				],
+				"about": [
+					{
+						"href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/types\/routes"
+					}
+				],
+				"wp:attachment": [
+					{
+						"href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/media?parent=2936"
+					}
+				],
+				"wp:term": [
+					{
+						"taxonomy": "places",
+						"embeddable": true,
+						"href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/places?post=2936"
+					}
+				],
+				"curies": [
+					{
+						"name": "wp",
+						"href": "https:\/\/api.w.org\/{rel}",
+						"templated": true
+					}
+				]
+			}
+		}
+		let user = {
+			"ID": 0,
+			"user_firstname": "",
+			"user_lastname": "",
+			"nickname": "",
+			"user_nicename": "",
+			"display_name": "",
+			"user_email": "",
+			"user_url": "",
+			"user_registered": "",
+			"user_description": "",
+			"user_avatar": "<img alt='' src='https:\/\/secure.gravatar.com\/avatar\/a7543504a4b2e386f27fc80ff2abd03d?s=96&#038;d=mm&#038;r=g' srcset='https:\/\/secure.gravatar.com\/avatar\/a7543504a4b2e386f27fc80ff2abd03d?s=192&#038;d=mm&#038;r=g 2x' class='avatar avatar-96 photo' height='96' width='96' loading='lazy' decoding='async'\/>"
+		}
+		let tasks = {
+			"ID": 0,
+			"post_author": "0",
+			"post_date": "",
+			"post_date_gmt": "",
+			"post_content": "",
+			"post_title": "",
+			"post_excerpt": "",
+			"post_status": "publish",
+			"comment_status": "closed",
+			"ping_status": "closed",
+			"post_password": "",
+			"post_name": "",
+			"to_ping": "",
+			"pinged": "",
+			"post_modified": "",
+			"post_modified_gmt": "",
+			"post_content_filtered": "",
+			"post_parent": 0,
+			"guid": "https:\/\/taal.tech\/",
+			"menu_order": 0,
+			"post_type": "tasks",
+			"post_mime_type": "",
+			"comment_count": "0",
+			"filter": "raw"
+		}
+
+		wpRoute.id = route.id
+		wpRoute.title = route.name
+
+		// ----users---
+		route.students.map((student) => {
+			user.ID = student.id
+			user.user_email = student.email
+			user.display_name = student.name
+			user.user_avatar = student.picture_url
+			user.user_nicename = student.user_name
+			wpRoute.acf.users.push(user)
+		})
+
+		// ----tasks----
+		route.tasks.map(async (taskId) => {
+			let tasksbyid = await getingTasksById(taskId.taskId)
+			tasks.ID = tasksbyid.id
+			tasks.post_name = tasksbyid.subtitle
+			tasks.post_title = tasksbyid.title
+			wpRoute.acf.tasks.push(tasks)
+		})
+
+		noderoutedata.push(wpRoute)
+	})
+	console.log("noderoutedata", noderoutedata);
 }
 export const nodePlacesAdapter = (Placesdata) => {
 	console.log("Places data", Placesdata);

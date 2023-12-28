@@ -51,7 +51,7 @@ export default function Sites(props) {
   const [allTasksOfUser, setAllTasksOfUser] = useState([]);
   const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
   const [nodeUser, setNodeUser] = useState({});
-  const [allNodeRoutes, setAllNodeRoutes] = useState([]);
+  const [setAllNodePlaces, setAllNodeRoutes] = useState([]);
 
   const users_ltr = [39, 78];
 
@@ -223,8 +223,10 @@ export default function Sites(props) {
       setAllPlaces(await getingDataPlaces()); //get request for places
 
       const allUsers = await getingDataUsers();
+      console.log("allUsers", allUsers);
       const user = allUsers.find((user) => user.email === "taalworker+121@gmail.com");
       setNodeUser(user);
+      console.log("user : ",user);
 
       setAllNodeRoutes(nodeRouteAdapter(await getingDataRoutes()));
       setAllNodePlaces(nodePlacesAdapter(await getingDataPlaces()));
