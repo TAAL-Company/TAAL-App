@@ -1,0 +1,889 @@
+[
+  {
+    "id": 306,
+    "count": 15,
+    "description": "",
+    "link": "https://taal.tech/places/united-nations-sputnik-hall/",
+    "name": "Accessible Emergency Instructions - United Nations",
+    "slug": "united-nations-sputnik-hall",
+    "taxonomy": "places",
+    "parent": 0,
+    "meta": [],
+    "acf": {
+      "image": {
+        "ID": 3464,
+        "id": 3464,
+        "title": "UNHQ",
+        "filename": "UNHQ.jpg",
+        "filesize": 145293,
+        "url": "https://taal.tech/wp-content/uploads/2023/06/UNHQ.jpg",
+        "link": "https://taal.tech/unhq/",
+        "alt": "",
+        "author": "27",
+        "description": "",
+        "caption": "",
+        "name": "unhq",
+        "status": "inherit",
+        "uploaded_to": 0,
+        "date": "2023-06-11 13:42:03",
+        "modified": "2023-06-11 13:42:03",
+        "menu_order": 0,
+        "mime_type": "image/jpeg",
+        "type": "image",
+        "subtype": "jpeg",
+        "icon": "https://taal.tech/wp-includes/images/media/default.png",
+        "width": 952,
+        "height": 648,
+        "sizes": {
+          "thumbnail": "https://taal.tech/wp-content/uploads/2023/06/UNHQ-150x150.jpg",
+          "thumbnail-width": 150,
+          "thumbnail-height": 150,
+          "medium": "https://taal.tech/wp-content/uploads/2023/06/UNHQ-300x204.jpg",
+          "medium-width": 300,
+          "medium-height": 204,
+          "medium_large": "https://taal.tech/wp-content/uploads/2023/06/UNHQ-768x523.jpg",
+          "medium_large-width": 750,
+          "medium_large-height": 511,
+          "large": "https://taal.tech/wp-content/uploads/2023/06/UNHQ.jpg",
+          "large-width": 750,
+          "large-height": 511,
+          "1536x1536": "https://taal.tech/wp-content/uploads/2023/06/UNHQ.jpg",
+          "1536x1536-width": 952,
+          "1536x1536-height": 648,
+          "2048x2048": "https://taal.tech/wp-content/uploads/2023/06/UNHQ.jpg",
+          "2048x2048-width": 952,
+          "2048x2048-height": 648,
+          "post-thumbnail": "https://taal.tech/wp-content/uploads/2023/06/UNHQ.jpg",
+          "post-thumbnail-width": 952,
+          "post-thumbnail-height": 648
+        }
+      },
+      "audio": {
+        "ID": 3431,
+        "id": 3431,
+        "title": "UN NYC",
+        "filename": "UN-NYC.mp3",
+        "filesize": 38394,
+        "url": "https://taal.tech/wp-content/uploads/2023/06/UN-NYC.mp3",
+        "link": "https://taal.tech/un-nyc/",
+        "alt": "",
+        "author": "27",
+        "description": "\"UN NYC\".",
+        "caption": "",
+        "name": "un-nyc",
+        "status": "inherit",
+        "uploaded_to": 0,
+        "date": "2023-06-11 11:35:56",
+        "modified": "2023-06-11 11:36:00",
+        "menu_order": 0,
+        "mime_type": "audio/mpeg",
+        "type": "audio",
+        "subtype": "mpeg",
+        "icon": "https://taal.tech/wp-includes/images/media/audio.png"
+      },
+      "defaultPath": "",
+      "qr": false
+    },
+    "_links": {
+      "self": [{ "href": "https://taal.tech/wp-json/wp/v2/places/306" }],
+      "collection": [{ "href": "https://taal.tech/wp-json/wp/v2/places" }],
+      "about": [
+        { "href": "https://taal.tech/wp-json/wp/v2/taxonomies/places" }
+      ],
+      "wp:post_type": [
+        { "href": "https://taal.tech/wp-json/wp/v2/tasks?places=306" },
+        { "href": "https://taal.tech/wp-json/wp/v2/routes?places=306" }
+      ],
+      "curies": [
+        { "name": "wp", "href": "https://api.w.org/{rel}", "templated": true }
+      ]
+    }
+  },
+  {
+    "id": 6,
+    "count": 6,
+    "description": "\u05d7\u05e0\u05d5\u05ea \u05de\u05d6\u05d5\u05df \u05d1\u05e8\u05d7\u05d5\u05d1 \u05e1\u05d5\u05e7\u05d5\u05dc\u05d5\u05d1 \u05d4\u05d5\u05d3 \u05d4\u05e9\u05e8\u05d5\u05df",
+    "link": "https://taal.tech/places/ampm-%d7%9e%d7%92%d7%93%d7%99%d7%90%d7%9c/",
+    "name": "AmPm \u05de\u05d2\u05d3\u05d9\u05d0\u05dc",
+    "slug": "ampm-%d7%9e%d7%92%d7%93%d7%99%d7%90%d7%9c",
+    "taxonomy": "places",
+    "parent": 0,
+    "meta": [],
+    "acf": {
+      "image": {
+        "ID": 482,
+        "id": 482,
+        "title": "IMG_20201218_123553",
+        "filename": "IMG_20201218_123553.jpg",
+        "filesize": 123053,
+        "url": "https://taal.tech/wp-content/uploads/2021/07/IMG_20201218_123553.jpg",
+        "link": "https://taal.tech/img_20201218_123553/",
+        "alt": "",
+        "author": "13",
+        "description": "",
+        "caption": "",
+        "name": "img_20201218_123553",
+        "status": "inherit",
+        "uploaded_to": 0,
+        "date": "2021-07-18 12:01:25",
+        "modified": "2021-07-18 12:02:36",
+        "menu_order": 0,
+        "mime_type": "image/jpeg",
+        "type": "image",
+        "subtype": "jpeg",
+        "icon": "https://taal.tech/wp-includes/images/media/default.png",
+        "width": 800,
+        "height": 600,
+        "sizes": {
+          "thumbnail": "https://taal.tech/wp-content/uploads/2021/07/IMG_20201218_123553-150x150.jpg",
+          "thumbnail-width": 150,
+          "thumbnail-height": 150,
+          "medium": "https://taal.tech/wp-content/uploads/2021/07/IMG_20201218_123553-300x225.jpg",
+          "medium-width": 300,
+          "medium-height": 225,
+          "medium_large": "https://taal.tech/wp-content/uploads/2021/07/IMG_20201218_123553-768x576.jpg",
+          "medium_large-width": 750,
+          "medium_large-height": 563,
+          "large": "https://taal.tech/wp-content/uploads/2021/07/IMG_20201218_123553.jpg",
+          "large-width": 750,
+          "large-height": 563,
+          "1536x1536": "https://taal.tech/wp-content/uploads/2021/07/IMG_20201218_123553.jpg",
+          "1536x1536-width": 800,
+          "1536x1536-height": 600,
+          "2048x2048": "https://taal.tech/wp-content/uploads/2021/07/IMG_20201218_123553.jpg",
+          "2048x2048-width": 800,
+          "2048x2048-height": 600,
+          "post-thumbnail": "https://taal.tech/wp-content/uploads/2021/07/IMG_20201218_123553.jpg",
+          "post-thumbnail-width": 800,
+          "post-thumbnail-height": 600
+        }
+      },
+      "audio": {
+        "ID": 493,
+        "id": 493,
+        "title": "ampm magdiel",
+        "filename": "ampm-magdiel.mp3",
+        "filesize": 63405,
+        "url": "https://taal.tech/wp-content/uploads/2021/07/ampm-magdiel.mp3",
+        "link": "https://taal.tech/ampm-magdiel/",
+        "alt": "",
+        "author": "13",
+        "description": "\"ampm magdiel\".",
+        "caption": "",
+        "name": "ampm-magdiel",
+        "status": "inherit",
+        "uploaded_to": 0,
+        "date": "2021-07-18 12:06:17",
+        "modified": "2021-07-18 12:09:33",
+        "menu_order": 0,
+        "mime_type": "audio/mpeg",
+        "type": "audio",
+        "subtype": "mpeg",
+        "icon": "https://taal.tech/wp-includes/images/media/audio.png"
+      },
+      "defaultPath": "",
+      "qr": {
+        "ID": 500,
+        "id": 500,
+        "title": "am_PM_magdiel_6 QR",
+        "filename": "am_PM_magdiel_6.png",
+        "filesize": 2972,
+        "url": "https://taal.tech/wp-content/uploads/2021/07/am_PM_magdiel_6.png",
+        "link": "https://taal.tech/am_pm_magdiel_6/",
+        "alt": "",
+        "author": "13",
+        "description": "",
+        "caption": "",
+        "name": "am_pm_magdiel_6",
+        "status": "inherit",
+        "uploaded_to": 0,
+        "date": "2021-07-18 12:10:29",
+        "modified": "2021-08-23 09:25:53",
+        "menu_order": 0,
+        "mime_type": "image/png",
+        "type": "image",
+        "subtype": "png",
+        "icon": "https://taal.tech/wp-includes/images/media/default.png",
+        "width": 200,
+        "height": 200,
+        "sizes": {
+          "thumbnail": "https://taal.tech/wp-content/uploads/2021/07/am_PM_magdiel_6-150x150.png",
+          "thumbnail-width": 150,
+          "thumbnail-height": 150,
+          "medium": "https://taal.tech/wp-content/uploads/2021/07/am_PM_magdiel_6.png",
+          "medium-width": 200,
+          "medium-height": 200,
+          "medium_large": "https://taal.tech/wp-content/uploads/2021/07/am_PM_magdiel_6.png",
+          "medium_large-width": 200,
+          "medium_large-height": 200,
+          "large": "https://taal.tech/wp-content/uploads/2021/07/am_PM_magdiel_6.png",
+          "large-width": 200,
+          "large-height": 200,
+          "1536x1536": "https://taal.tech/wp-content/uploads/2021/07/am_PM_magdiel_6.png",
+          "1536x1536-width": 200,
+          "1536x1536-height": 200,
+          "2048x2048": "https://taal.tech/wp-content/uploads/2021/07/am_PM_magdiel_6.png",
+          "2048x2048-width": 200,
+          "2048x2048-height": 200,
+          "post-thumbnail": "https://taal.tech/wp-content/uploads/2021/07/am_PM_magdiel_6.png",
+          "post-thumbnail-width": 200,
+          "post-thumbnail-height": 200
+        }
+      }
+    },
+    "_links": {
+      "self": [{ "href": "https://taal.tech/wp-json/wp/v2/places/6" }],
+      "collection": [{ "href": "https://taal.tech/wp-json/wp/v2/places" }],
+      "about": [
+        { "href": "https://taal.tech/wp-json/wp/v2/taxonomies/places" }
+      ],
+      "wp:post_type": [
+        { "href": "https://taal.tech/wp-json/wp/v2/tasks?places=6" },
+        { "href": "https://taal.tech/wp-json/wp/v2/routes?places=6" }
+      ],
+      "curies": [
+        { "name": "wp", "href": "https://api.w.org/{rel}", "templated": true }
+      ]
+    }
+  },
+  {
+    "id": 302,
+    "count": 4,
+    "description": "",
+    "link": "https://taal.tech/places/cloak-room/",
+    "name": "Cloak Room",
+    "slug": "cloak-room",
+    "taxonomy": "places",
+    "parent": 300,
+    "meta": [],
+    "acf": {
+      "image": {
+        "ID": 3294,
+        "id": 3294,
+        "title": "WhatsApp Image 2023-02-22 at 14.33.42",
+        "filename": "WhatsApp-Image-2023-02-22-at-14.33.42-4.jpeg",
+        "filesize": 13891,
+        "url": "https://taal.tech/wp-content/uploads/2023/02/WhatsApp-Image-2023-02-22-at-14.33.42-4.jpeg",
+        "link": "https://taal.tech/whatsapp-image-2023-02-22-at-14-33-42-4/",
+        "alt": "",
+        "author": "27",
+        "description": "",
+        "caption": "",
+        "name": "whatsapp-image-2023-02-22-at-14-33-42-4",
+        "status": "inherit",
+        "uploaded_to": 0,
+        "date": "2023-02-22 12:51:52",
+        "modified": "2023-02-22 12:51:52",
+        "menu_order": 0,
+        "mime_type": "image/jpeg",
+        "type": "image",
+        "subtype": "jpeg",
+        "icon": "https://taal.tech/wp-includes/images/media/default.png",
+        "width": 702,
+        "height": 324,
+        "sizes": {
+          "thumbnail": "https://taal.tech/wp-content/uploads/2023/02/WhatsApp-Image-2023-02-22-at-14.33.42-4-150x150.jpeg",
+          "thumbnail-width": 150,
+          "thumbnail-height": 150,
+          "medium": "https://taal.tech/wp-content/uploads/2023/02/WhatsApp-Image-2023-02-22-at-14.33.42-4-300x138.jpeg",
+          "medium-width": 300,
+          "medium-height": 138,
+          "medium_large": "https://taal.tech/wp-content/uploads/2023/02/WhatsApp-Image-2023-02-22-at-14.33.42-4.jpeg",
+          "medium_large-width": 702,
+          "medium_large-height": 324,
+          "large": "https://taal.tech/wp-content/uploads/2023/02/WhatsApp-Image-2023-02-22-at-14.33.42-4.jpeg",
+          "large-width": 702,
+          "large-height": 324,
+          "1536x1536": "https://taal.tech/wp-content/uploads/2023/02/WhatsApp-Image-2023-02-22-at-14.33.42-4.jpeg",
+          "1536x1536-width": 702,
+          "1536x1536-height": 324,
+          "2048x2048": "https://taal.tech/wp-content/uploads/2023/02/WhatsApp-Image-2023-02-22-at-14.33.42-4.jpeg",
+          "2048x2048-width": 702,
+          "2048x2048-height": 324,
+          "post-thumbnail": "https://taal.tech/wp-content/uploads/2023/02/WhatsApp-Image-2023-02-22-at-14.33.42-4.jpeg",
+          "post-thumbnail-width": 702,
+          "post-thumbnail-height": 324
+        }
+      },
+      "audio": false,
+      "defaultPath": "",
+      "qr": false
+    },
+    "_links": {
+      "self": [{ "href": "https://taal.tech/wp-json/wp/v2/places/302" }],
+      "collection": [{ "href": "https://taal.tech/wp-json/wp/v2/places" }],
+      "about": [
+        { "href": "https://taal.tech/wp-json/wp/v2/taxonomies/places" }
+      ],
+      "up": [
+        {
+          "embeddable": true,
+          "href": "https://taal.tech/wp-json/wp/v2/places/300"
+        }
+      ],
+      "wp:post_type": [
+        { "href": "https://taal.tech/wp-json/wp/v2/tasks?places=302" },
+        { "href": "https://taal.tech/wp-json/wp/v2/routes?places=302" }
+      ],
+      "curies": [
+        { "name": "wp", "href": "https://api.w.org/{rel}", "templated": true }
+      ]
+    }
+  },
+  {
+    "id": 308,
+    "count": 15,
+    "description": "",
+    "link": "https://taal.tech/places/in-case-of-emergency/",
+    "name": "In case of Emergency",
+    "slug": "in-case-of-emergency",
+    "taxonomy": "places",
+    "parent": 306,
+    "meta": [],
+    "acf": { "image": false, "audio": false, "defaultPath": "", "qr": false },
+    "_links": {
+      "self": [{ "href": "https://taal.tech/wp-json/wp/v2/places/308" }],
+      "collection": [{ "href": "https://taal.tech/wp-json/wp/v2/places" }],
+      "about": [
+        { "href": "https://taal.tech/wp-json/wp/v2/taxonomies/places" }
+      ],
+      "up": [
+        {
+          "embeddable": true,
+          "href": "https://taal.tech/wp-json/wp/v2/places/306"
+        }
+      ],
+      "wp:post_type": [
+        { "href": "https://taal.tech/wp-json/wp/v2/tasks?places=308" },
+        { "href": "https://taal.tech/wp-json/wp/v2/routes?places=308" }
+      ],
+      "curies": [
+        { "name": "wp", "href": "https://api.w.org/{rel}", "templated": true }
+      ]
+    }
+  },
+  {
+    "id": 304,
+    "count": 1,
+    "description": "",
+    "link": "https://taal.tech/places/reception-booth/",
+    "name": "Reception Booth",
+    "slug": "reception-booth",
+    "taxonomy": "places",
+    "parent": 300,
+    "meta": [],
+    "acf": {
+      "image": {
+        "ID": 3321,
+        "id": 3321,
+        "title": "IMG_20230222_131541",
+        "filename": "IMG_20230222_131541-scaled.jpg",
+        "filesize": 230774,
+        "url": "https://taal.tech/wp-content/uploads/2023/02/IMG_20230222_131541-scaled.jpg",
+        "link": "https://taal.tech/img_20230222_131541/",
+        "alt": "",
+        "author": "27",
+        "description": "",
+        "caption": "",
+        "name": "img_20230222_131541",
+        "status": "inherit",
+        "uploaded_to": 0,
+        "date": "2023-02-23 07:51:57",
+        "modified": "2023-02-23 07:51:57",
+        "menu_order": 0,
+        "mime_type": "image/jpeg",
+        "type": "image",
+        "subtype": "jpeg",
+        "icon": "https://taal.tech/wp-includes/images/media/default.png",
+        "width": 2560,
+        "height": 1182,
+        "sizes": {
+          "thumbnail": "https://taal.tech/wp-content/uploads/2023/02/IMG_20230222_131541-150x150.jpg",
+          "thumbnail-width": 150,
+          "thumbnail-height": 150,
+          "medium": "https://taal.tech/wp-content/uploads/2023/02/IMG_20230222_131541-300x138.jpg",
+          "medium-width": 300,
+          "medium-height": 138,
+          "medium_large": "https://taal.tech/wp-content/uploads/2023/02/IMG_20230222_131541-768x354.jpg",
+          "medium_large-width": 750,
+          "medium_large-height": 346,
+          "large": "https://taal.tech/wp-content/uploads/2023/02/IMG_20230222_131541-1024x473.jpg",
+          "large-width": 750,
+          "large-height": 346,
+          "1536x1536": "https://taal.tech/wp-content/uploads/2023/02/IMG_20230222_131541-1536x709.jpg",
+          "1536x1536-width": 1536,
+          "1536x1536-height": 709,
+          "2048x2048": "https://taal.tech/wp-content/uploads/2023/02/IMG_20230222_131541-2048x945.jpg",
+          "2048x2048-width": 2048,
+          "2048x2048-height": 945,
+          "post-thumbnail": "https://taal.tech/wp-content/uploads/2023/02/IMG_20230222_131541-1568x724.jpg",
+          "post-thumbnail-width": 1568,
+          "post-thumbnail-height": 724
+        }
+      },
+      "audio": false,
+      "defaultPath": "",
+      "qr": false
+    },
+    "_links": {
+      "self": [{ "href": "https://taal.tech/wp-json/wp/v2/places/304" }],
+      "collection": [{ "href": "https://taal.tech/wp-json/wp/v2/places" }],
+      "about": [
+        { "href": "https://taal.tech/wp-json/wp/v2/taxonomies/places" }
+      ],
+      "up": [
+        {
+          "embeddable": true,
+          "href": "https://taal.tech/wp-json/wp/v2/places/300"
+        }
+      ],
+      "wp:post_type": [
+        { "href": "https://taal.tech/wp-json/wp/v2/tasks?places=304" },
+        { "href": "https://taal.tech/wp-json/wp/v2/routes?places=304" }
+      ],
+      "curies": [
+        { "name": "wp", "href": "https://api.w.org/{rel}", "templated": true }
+      ]
+    }
+  },
+  {
+    "id": 300,
+    "count": 7,
+    "description": "",
+    "link": "https://taal.tech/places/zero-project-conference/",
+    "name": "Zero Project Conference",
+    "slug": "zero-project-conference",
+    "taxonomy": "places",
+    "parent": 0,
+    "meta": [],
+    "acf": {
+      "image": {
+        "ID": 3293,
+        "id": 3293,
+        "title": "zero project site",
+        "filename": "zero-project-site.jpeg",
+        "filesize": 34862,
+        "url": "https://taal.tech/wp-content/uploads/2023/02/zero-project-site.jpeg",
+        "link": "https://taal.tech/zero-project-site/",
+        "alt": "",
+        "author": "27",
+        "description": "",
+        "caption": "",
+        "name": "zero-project-site",
+        "status": "inherit",
+        "uploaded_to": 0,
+        "date": "2023-02-22 12:49:18",
+        "modified": "2023-02-22 12:49:18",
+        "menu_order": 0,
+        "mime_type": "image/jpeg",
+        "type": "image",
+        "subtype": "jpeg",
+        "icon": "https://taal.tech/wp-includes/images/media/default.png",
+        "width": 800,
+        "height": 748,
+        "sizes": {
+          "thumbnail": "https://taal.tech/wp-content/uploads/2023/02/zero-project-site-150x150.jpeg",
+          "thumbnail-width": 150,
+          "thumbnail-height": 150,
+          "medium": "https://taal.tech/wp-content/uploads/2023/02/zero-project-site-300x281.jpeg",
+          "medium-width": 300,
+          "medium-height": 281,
+          "medium_large": "https://taal.tech/wp-content/uploads/2023/02/zero-project-site-768x718.jpeg",
+          "medium_large-width": 750,
+          "medium_large-height": 701,
+          "large": "https://taal.tech/wp-content/uploads/2023/02/zero-project-site.jpeg",
+          "large-width": 750,
+          "large-height": 701,
+          "1536x1536": "https://taal.tech/wp-content/uploads/2023/02/zero-project-site.jpeg",
+          "1536x1536-width": 800,
+          "1536x1536-height": 748,
+          "2048x2048": "https://taal.tech/wp-content/uploads/2023/02/zero-project-site.jpeg",
+          "2048x2048-width": 800,
+          "2048x2048-height": 748,
+          "post-thumbnail": "https://taal.tech/wp-content/uploads/2023/02/zero-project-site.jpeg",
+          "post-thumbnail-width": 800,
+          "post-thumbnail-height": 748
+        }
+      },
+      "audio": false,
+      "defaultPath": "",
+      "qr": false
+    },
+    "_links": {
+      "self": [{ "href": "https://taal.tech/wp-json/wp/v2/places/300" }],
+      "collection": [{ "href": "https://taal.tech/wp-json/wp/v2/places" }],
+      "about": [
+        { "href": "https://taal.tech/wp-json/wp/v2/taxonomies/places" }
+      ],
+      "wp:post_type": [
+        { "href": "https://taal.tech/wp-json/wp/v2/tasks?places=300" },
+        { "href": "https://taal.tech/wp-json/wp/v2/routes?places=300" }
+      ],
+      "curies": [
+        { "name": "wp", "href": "https://api.w.org/{rel}", "templated": true }
+      ]
+    }
+  },
+  {
+    "id": 258,
+    "count": 67,
+    "description": "",
+    "link": "https://taal.tech/places/%d7%90%d7%99%d7%9b%d7%99%d7%9c%d7%95%d7%91-%d7%9e%d7%a2%d7%91%d7%93%d7%aa-%d7%9e%d7%91%d7%97%d7%a0%d7%95%d7%aa/",
+    "name": "\u05d0\u05d9\u05db\u05d9\u05dc\u05d5\u05d1 \u05de\u05e2\u05d1\u05d3\u05ea \u05de\u05d1\u05d7\u05e0\u05d5\u05ea",
+    "slug": "%d7%90%d7%99%d7%9b%d7%99%d7%9c%d7%95%d7%91-%d7%9e%d7%a2%d7%91%d7%93%d7%aa-%d7%9e%d7%91%d7%97%d7%a0%d7%95%d7%aa",
+    "taxonomy": "places",
+    "parent": 0,
+    "meta": [],
+    "acf": {
+      "image": {
+        "ID": 2327,
+        "id": 2327,
+        "title": "\u05d0\u05d9\u05db\u05d9\u05dc\u05d5\u05d1",
+        "filename": "OIP.jpg",
+        "filesize": 24420,
+        "url": "https://taal.tech/wp-content/uploads/2022/12/OIP.jpg",
+        "link": "https://taal.tech/oip/",
+        "alt": "",
+        "author": "52",
+        "description": "",
+        "caption": "",
+        "name": "oip",
+        "status": "inherit",
+        "uploaded_to": 0,
+        "date": "2022-12-08 15:11:11",
+        "modified": "2022-12-12 20:17:39",
+        "menu_order": 0,
+        "mime_type": "image/jpeg",
+        "type": "image",
+        "subtype": "jpeg",
+        "icon": "https://taal.tech/wp-includes/images/media/default.png",
+        "width": 393,
+        "height": 222,
+        "sizes": {
+          "thumbnail": "https://taal.tech/wp-content/uploads/2022/12/OIP-150x150.jpg",
+          "thumbnail-width": 150,
+          "thumbnail-height": 150,
+          "medium": "https://taal.tech/wp-content/uploads/2022/12/OIP-300x169.jpg",
+          "medium-width": 300,
+          "medium-height": 169,
+          "medium_large": "https://taal.tech/wp-content/uploads/2022/12/OIP.jpg",
+          "medium_large-width": 393,
+          "medium_large-height": 222,
+          "large": "https://taal.tech/wp-content/uploads/2022/12/OIP.jpg",
+          "large-width": 393,
+          "large-height": 222,
+          "1536x1536": "https://taal.tech/wp-content/uploads/2022/12/OIP.jpg",
+          "1536x1536-width": 393,
+          "1536x1536-height": 222,
+          "2048x2048": "https://taal.tech/wp-content/uploads/2022/12/OIP.jpg",
+          "2048x2048-width": 393,
+          "2048x2048-height": 222,
+          "post-thumbnail": "https://taal.tech/wp-content/uploads/2022/12/OIP.jpg",
+          "post-thumbnail-width": 393,
+          "post-thumbnail-height": 222
+        }
+      },
+      "audio": false,
+      "defaultPath": "",
+      "qr": false
+    },
+    "_links": {
+      "self": [{ "href": "https://taal.tech/wp-json/wp/v2/places/258" }],
+      "collection": [{ "href": "https://taal.tech/wp-json/wp/v2/places" }],
+      "about": [
+        { "href": "https://taal.tech/wp-json/wp/v2/taxonomies/places" }
+      ],
+      "wp:post_type": [
+        { "href": "https://taal.tech/wp-json/wp/v2/tasks?places=258" },
+        { "href": "https://taal.tech/wp-json/wp/v2/routes?places=258" }
+      ],
+      "curies": [
+        { "name": "wp", "href": "https://api.w.org/{rel}", "templated": true }
+      ]
+    }
+  },
+  {
+    "id": 253,
+    "count": 75,
+    "description": "",
+    "link": "https://taal.tech/places/%d7%90%d7%99%d7%9b%d7%99%d7%9c%d7%95%d7%91-%d7%9e%d7%a2%d7%91%d7%93%d7%aa-%d7%9e%d7%97%d7%a7%d7%a8/",
+    "name": "\u05d0\u05d9\u05db\u05d9\u05dc\u05d5\u05d1 \u05de\u05e2\u05d1\u05d3\u05ea \u05de\u05d7\u05e7\u05e8",
+    "slug": "%d7%90%d7%99%d7%9b%d7%99%d7%9c%d7%95%d7%91-%d7%9e%d7%a2%d7%91%d7%93%d7%aa-%d7%9e%d7%97%d7%a7%d7%a8",
+    "taxonomy": "places",
+    "parent": 0,
+    "meta": [],
+    "acf": {
+      "image": {
+        "ID": 2327,
+        "id": 2327,
+        "title": "\u05d0\u05d9\u05db\u05d9\u05dc\u05d5\u05d1",
+        "filename": "OIP.jpg",
+        "filesize": 24420,
+        "url": "https://taal.tech/wp-content/uploads/2022/12/OIP.jpg",
+        "link": "https://taal.tech/oip/",
+        "alt": "",
+        "author": "52",
+        "description": "",
+        "caption": "",
+        "name": "oip",
+        "status": "inherit",
+        "uploaded_to": 0,
+        "date": "2022-12-08 15:11:11",
+        "modified": "2022-12-12 20:17:39",
+        "menu_order": 0,
+        "mime_type": "image/jpeg",
+        "type": "image",
+        "subtype": "jpeg",
+        "icon": "https://taal.tech/wp-includes/images/media/default.png",
+        "width": 393,
+        "height": 222,
+        "sizes": {
+          "thumbnail": "https://taal.tech/wp-content/uploads/2022/12/OIP-150x150.jpg",
+          "thumbnail-width": 150,
+          "thumbnail-height": 150,
+          "medium": "https://taal.tech/wp-content/uploads/2022/12/OIP-300x169.jpg",
+          "medium-width": 300,
+          "medium-height": 169,
+          "medium_large": "https://taal.tech/wp-content/uploads/2022/12/OIP.jpg",
+          "medium_large-width": 393,
+          "medium_large-height": 222,
+          "large": "https://taal.tech/wp-content/uploads/2022/12/OIP.jpg",
+          "large-width": 393,
+          "large-height": 222,
+          "1536x1536": "https://taal.tech/wp-content/uploads/2022/12/OIP.jpg",
+          "1536x1536-width": 393,
+          "1536x1536-height": 222,
+          "2048x2048": "https://taal.tech/wp-content/uploads/2022/12/OIP.jpg",
+          "2048x2048-width": 393,
+          "2048x2048-height": 222,
+          "post-thumbnail": "https://taal.tech/wp-content/uploads/2022/12/OIP.jpg",
+          "post-thumbnail-width": 393,
+          "post-thumbnail-height": 222
+        }
+      },
+      "audio": {
+        "ID": 2013,
+        "id": 2013,
+        "title": "AZTLV-floor_sweeps-HE",
+        "filename": "AZTLV-floor_sweeps-HE.mp3",
+        "filesize": 9215,
+        "url": "https://taal.tech/wp-content/uploads/2022/11/AZTLV-floor_sweeps-HE.mp3",
+        "link": "https://taal.tech/tasks/%d7%90%d7%95%d7%a1%d7%a4%d7%99%d7%9d-%d7%a9%d7%a7%d7%99%d7%95%d7%aa-%d7%95%d7%97%d7%a4%d7%a6%d7%99%d7%9d-duplicate-1/aztlv-floor_sweeps-he-2/",
+        "alt": "",
+        "author": "32",
+        "description": "\"AZTLV-floor_sweeps-HE\" \u05de\u05ea\u05d5\u05da AZTLV \u05de\u05d0\u05ea Eyal Engel. \u05e9\u05d5\u05d7\u05e8\u05e8 \u05d1: 2022.",
+        "caption": "",
+        "name": "aztlv-floor_sweeps-he-2",
+        "status": "inherit",
+        "uploaded_to": 1879,
+        "date": "2022-11-28 11:45:27",
+        "modified": "2022-12-07 15:33:35",
+        "menu_order": 0,
+        "mime_type": "audio/mpeg",
+        "type": "audio",
+        "subtype": "mpeg",
+        "icon": "https://taal.tech/wp-includes/images/media/audio.png"
+      },
+      "defaultPath": "",
+      "qr": false
+    },
+    "_links": {
+      "self": [{ "href": "https://taal.tech/wp-json/wp/v2/places/253" }],
+      "collection": [{ "href": "https://taal.tech/wp-json/wp/v2/places" }],
+      "about": [
+        { "href": "https://taal.tech/wp-json/wp/v2/taxonomies/places" }
+      ],
+      "wp:post_type": [
+        { "href": "https://taal.tech/wp-json/wp/v2/tasks?places=253" },
+        { "href": "https://taal.tech/wp-json/wp/v2/routes?places=253" }
+      ],
+      "curies": [
+        { "name": "wp", "href": "https://api.w.org/{rel}", "templated": true }
+      ]
+    }
+  },
+  {
+    "id": 229,
+    "count": 10,
+    "description": "",
+    "link": "https://taal.tech/places/%d7%90%d7%99%d7%a1%d7%95%d7%a3-%d7%90%d7%95%d7%a8%d7%92%d7%a0%d7%99-%d7%a9%d7%95%d7%a4%d7%a8%d7%a1%d7%9c/",
+    "name": "\u05d0\u05d9\u05e1\u05d5\u05e3 \u05d0\u05d5\u05e8\u05d2\u05e0\u05d9 \u05e9\u05d5\u05e4\u05e8\u05e1\u05dc",
+    "slug": "%d7%90%d7%99%d7%a1%d7%95%d7%a3-%d7%90%d7%95%d7%a8%d7%92%d7%a0%d7%99-%d7%a9%d7%95%d7%a4%d7%a8%d7%a1%d7%9c",
+    "taxonomy": "places",
+    "parent": 217,
+    "meta": [],
+    "acf": {
+      "image": {
+        "ID": 1765,
+        "id": 1765,
+        "title": "IMG_20220921_094741",
+        "filename": "IMG_20220921_094741.jpg",
+        "filesize": 176240,
+        "url": "https://taal.tech/wp-content/uploads/2022/11/IMG_20220921_094741.jpg",
+        "link": "https://taal.tech/tasks/%d7%94%d7%95%d7%9c%d7%9b%d7%99%d7%9d-%d7%9c%d7%90%d7%99%d7%a1%d7%95%d7%a3-%d7%90%d7%95%d7%a8%d7%92%d7%a0%d7%99-%d7%a9%d7%95%d7%a4%d7%a8%d7%a1%d7%9c/img_20220921_094741/",
+        "alt": "",
+        "author": "27",
+        "description": "",
+        "caption": "",
+        "name": "img_20220921_094741",
+        "status": "inherit",
+        "uploaded_to": 1766,
+        "date": "2022-11-08 20:32:00",
+        "modified": "2022-11-08 20:38:43",
+        "menu_order": 0,
+        "mime_type": "image/jpeg",
+        "type": "image",
+        "subtype": "jpeg",
+        "icon": "https://taal.tech/wp-includes/images/media/default.png",
+        "width": 1404,
+        "height": 648,
+        "sizes": {
+          "thumbnail": "https://taal.tech/wp-content/uploads/2022/11/IMG_20220921_094741-150x150.jpg",
+          "thumbnail-width": 150,
+          "thumbnail-height": 150,
+          "medium": "https://taal.tech/wp-content/uploads/2022/11/IMG_20220921_094741-300x138.jpg",
+          "medium-width": 300,
+          "medium-height": 138,
+          "medium_large": "https://taal.tech/wp-content/uploads/2022/11/IMG_20220921_094741-768x354.jpg",
+          "medium_large-width": 750,
+          "medium_large-height": 346,
+          "large": "https://taal.tech/wp-content/uploads/2022/11/IMG_20220921_094741-1024x473.jpg",
+          "large-width": 750,
+          "large-height": 346,
+          "1536x1536": "https://taal.tech/wp-content/uploads/2022/11/IMG_20220921_094741.jpg",
+          "1536x1536-width": 1404,
+          "1536x1536-height": 648,
+          "2048x2048": "https://taal.tech/wp-content/uploads/2022/11/IMG_20220921_094741.jpg",
+          "2048x2048-width": 1404,
+          "2048x2048-height": 648,
+          "post-thumbnail": "https://taal.tech/wp-content/uploads/2022/11/IMG_20220921_094741.jpg",
+          "post-thumbnail-width": 1404,
+          "post-thumbnail-height": 648
+        }
+      },
+      "audio": {
+        "ID": 1708,
+        "id": 1708,
+        "title": "AZTLV-take_a_nylon_cart-HE",
+        "filename": "AZTLV-take_a_nylon_cart-HE.wav",
+        "filesize": 274704,
+        "url": "https://taal.tech/wp-content/uploads/2022/11/AZTLV-take_a_nylon_cart-HE.wav",
+        "link": "https://taal.tech/tasks/%d7%9c%d7%95%d7%a7%d7%97%d7%99%d7%9d-%d7%a2%d7%92%d7%9c%d7%aa-%d7%a0%d7%99%d7%99%d7%9c%d7%95%d7%a0%d7%99%d7%9d/aztlv-take_a_nylon_cart-he/",
+        "alt": "",
+        "author": "27",
+        "description": "\"AZTLV-take_a_nylon_cart-HE\" \u05de\u05ea\u05d5\u05da AZTLV \u05de\u05d0\u05ea Eyal Engel. \u05e9\u05d5\u05d7\u05e8\u05e8 \u05d1: 2022. \u05e9\u05d9\u05e8 55.",
+        "caption": "",
+        "name": "aztlv-take_a_nylon_cart-he",
+        "status": "inherit",
+        "uploaded_to": 1706,
+        "date": "2022-11-08 17:22:10",
+        "modified": "2022-11-08 20:32:40",
+        "menu_order": 0,
+        "mime_type": "audio/wav",
+        "type": "audio",
+        "subtype": "wav",
+        "icon": "https://taal.tech/wp-includes/images/media/audio.png"
+      },
+      "defaultPath": "",
+      "qr": false
+    },
+    "_links": {
+      "self": [{ "href": "https://taal.tech/wp-json/wp/v2/places/229" }],
+      "collection": [{ "href": "https://taal.tech/wp-json/wp/v2/places" }],
+      "about": [
+        { "href": "https://taal.tech/wp-json/wp/v2/taxonomies/places" }
+      ],
+      "up": [
+        {
+          "embeddable": true,
+          "href": "https://taal.tech/wp-json/wp/v2/places/217"
+        }
+      ],
+      "wp:post_type": [
+        { "href": "https://taal.tech/wp-json/wp/v2/tasks?places=229" },
+        { "href": "https://taal.tech/wp-json/wp/v2/routes?places=229" }
+      ],
+      "curies": [
+        { "name": "wp", "href": "https://api.w.org/{rel}", "templated": true }
+      ]
+    }
+  },
+  {
+    "id": 262,
+    "count": 53,
+    "description": "",
+    "link": "https://taal.tech/places/%d7%90%d7%a8%d7%95%d7%9e%d7%94-%d7%9b%d7%a4%d7%b4%d7%a1-%d7%99%d7%a8%d7%95%d7%a7%d7%94/",
+    "name": "\u05d0\u05e8\u05d5\u05de\u05d4 \u05db\u05e4\u05f4\u05e1 \u05d9\u05e8\u05d5\u05e7\u05d4",
+    "slug": "%d7%90%d7%a8%d7%95%d7%9e%d7%94-%d7%9b%d7%a4%d7%b4%d7%a1-%d7%99%d7%a8%d7%95%d7%a7%d7%94",
+    "taxonomy": "places",
+    "parent": 0,
+    "meta": [],
+    "acf": {
+      "image": {
+        "ID": 2760,
+        "id": 2760,
+        "title": "\u05db\u05d5\u05ea\u05e8\u05ea - \u05d0\u05e8\u05d5\u05de\u05d4 \u05db\u05e4\u05e1 \u05d9\u05e8\u05d5\u05e7\u05d4",
+        "filename": "IMG_20220823_101044.jpg",
+        "filesize": 140889,
+        "url": "https://taal.tech/wp-content/uploads/2022/12/IMG_20220823_101044.jpg",
+        "link": "https://taal.tech/tasks/%d7%94%d7%a4%d7%a1%d7%a7%d7%94/img_20220823_101044/",
+        "alt": "",
+        "author": "53",
+        "description": "",
+        "caption": "",
+        "name": "img_20220823_101044",
+        "status": "inherit",
+        "uploaded_to": 2784,
+        "date": "2022-12-14 11:56:27",
+        "modified": "2022-12-14 12:13:35",
+        "menu_order": 0,
+        "mime_type": "image/jpeg",
+        "type": "image",
+        "subtype": "jpeg",
+        "icon": "https://taal.tech/wp-includes/images/media/default.png",
+        "width": 952,
+        "height": 439,
+        "sizes": {
+          "thumbnail": "https://taal.tech/wp-content/uploads/2022/12/IMG_20220823_101044-150x150.jpg",
+          "thumbnail-width": 150,
+          "thumbnail-height": 150,
+          "medium": "https://taal.tech/wp-content/uploads/2022/12/IMG_20220823_101044-300x138.jpg",
+          "medium-width": 300,
+          "medium-height": 138,
+          "medium_large": "https://taal.tech/wp-content/uploads/2022/12/IMG_20220823_101044-768x354.jpg",
+          "medium_large-width": 750,
+          "medium_large-height": 346,
+          "large": "https://taal.tech/wp-content/uploads/2022/12/IMG_20220823_101044.jpg",
+          "large-width": 750,
+          "large-height": 346,
+          "1536x1536": "https://taal.tech/wp-content/uploads/2022/12/IMG_20220823_101044.jpg",
+          "1536x1536-width": 952,
+          "1536x1536-height": 439,
+          "2048x2048": "https://taal.tech/wp-content/uploads/2022/12/IMG_20220823_101044.jpg",
+          "2048x2048-width": 952,
+          "2048x2048-height": 439,
+          "post-thumbnail": "https://taal.tech/wp-content/uploads/2022/12/IMG_20220823_101044.jpg",
+          "post-thumbnail-width": 952,
+          "post-thumbnail-height": 439
+        }
+      },
+      "audio": false,
+      "defaultPath": "",
+      "qr": false
+    },
+    "_links": {
+      "self": [{ "href": "https://taal.tech/wp-json/wp/v2/places/262" }],
+      "collection": [{ "href": "https://taal.tech/wp-json/wp/v2/places" }],
+      "about": [
+        { "href": "https://taal.tech/wp-json/wp/v2/taxonomies/places" }
+      ],
+      "wp:post_type": [
+        { "href": "https://taal.tech/wp-json/wp/v2/tasks?places=262" },
+        { "href": "https://taal.tech/wp-json/wp/v2/routes?places=262" }
+      ],
+      "curies": [
+        { "name": "wp", "href": "https://api.w.org/{rel}", "templated": true }
+      ]
+    }
+  }
+]
