@@ -1,0 +1,21 @@
+{
+    "id": "18e229dc-9a68-4dab-bfba-b69d310d6669",
+    "name": "אתר חדש ",
+    "description": "אתר חדש של מבחן",
+    "picture_url": "https://taalmedia.blob.core.windows.net/images/images%2FSite%20media/store%20image.jpeg?sp=racwd&st=2023-08-10T08:40:14Z&se=2024-10-08T16:40:14Z&spr=https&sv=2022-11-02&sr=c&sig=uIxq4iCGXN%2FwOy3vcLS38S8tE8YF60kMgbLX5QY1dPM%3D",
+    "audio_url": null,
+    "qr_code_url": null,
+    "editors": [],
+    "students": [],
+    "tasks": [
+        {
+            "id": "ab6c6aec-3308-4fad-933f-422259147421",
+            "title": "המשימה הראשונה",
+            "subtitle": "המשימה הראשונה",
+            "multi_language_description": "{}",
+            "estimatedTimeSeconds": 20,
+            "picture_url": null,
+            "audio_url": null
+        }
+    ]
+}

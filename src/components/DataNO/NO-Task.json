@@ -1,0 +1,40 @@
+{
+    "id": "b34e6df8-2a7a-4f87-a50b-21a418598cf2",
+    "title": "מוציאים בצק מהמקרר",
+    "subtitle": "משימה 2 ",
+    "multi_language_description": "{}",
+    "estimatedTimeSeconds": 15,
+    "picture_url": null,
+    "audio_url": null,
+    "stations": [
+      {
+        "id": "c6a6728a-36a0-4ea8-b713-8c0f9793ce5b",
+        "title": "הכנת בצק",
+        "subtitle": "הכנת בצק",
+        "parentSiteId": "9fcb753c-28f4-4023-9f16-3148ab6ff486",
+        "audio_url": null
+      }
+    ],
+    "alternativeTasks": [
+      
+    ],
+    "tasksAlternativeTo": [
+      
+    ],
+    "subtasks": [
+      
+    ],
+    "parentTasks": [
+      
+    ],
+    "sites": [
+      {
+        "id": "9fcb753c-28f4-4023-9f16-3148ab6ff486",
+        "name": "הפיצה של אלי",
+        "description": "פיצריה בעמק שפע",
+        "picture_url": "https://taalmedia.blob.core.windows.net/images/images%2FSite%20media/%D7%A4%D7%99%D7%A6%D7%94%20%D7%A9%D7%9C%20%D7%90%D7%9C%D7%99.jpg?sp=racwd&st=2023-08-10T08:40:14Z&se=2024-10-08T16:40:14Z&spr=https&sv=2022-11-02&sr=c&sig=uIxq4iCGXN%2FwOy3vcLS38S8tE8YF60kMgbLX5QY1dPM%3D",
+        "audio_url": null,
+        "qr_code_url": null
+      }
+    ]
+  }
