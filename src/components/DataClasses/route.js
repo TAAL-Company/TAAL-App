@@ -17,7 +17,7 @@ const wpRouteFromNoRoute = (noRoute) => {
         user.user_nicename = student.user_name
         usersInWP.push(user)
     })
-
+   
     // ----tasks----
     let tasksInWP=[]
     noRoute.tasks.map(async (taskId) => {
@@ -25,7 +25,7 @@ const wpRouteFromNoRoute = (noRoute) => {
         tasks.ID = tasksbyid.id
         tasks.post_name = tasksbyid.subtitle
         tasks.post_title = tasksbyid.title
-        tasksInWP.push(tasks)
+        tasksInWP.push({ ...tasks })
     })
 
     return ({
