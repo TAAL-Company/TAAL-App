@@ -220,3 +220,25 @@ export const getingTasksById = async (taskid) => {
         return null;
     }
 }
+
+export const getingDataTasksFromNodejs = async (setCompleted, setnumOfTasks) => {
+    let allTasks;
+    console.log("geting data Tasks");
+    try {
+        await get(azureConfig.getTasks).then((res) => {
+            console.log("getTasks", res.data);
+
+            let max_pages = res.data.length;
+            setnumOfTasks(res.data.length)
+
+            let plusToCompleted = 100 / max_pages;
+            setCompleted((prevCompleted) => parseInt(prevCompleted + plusToCompleted));
+
+            allTasks = res.data;
+        });
+        return allTasks
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+};
