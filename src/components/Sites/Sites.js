@@ -11,7 +11,7 @@ import { navigate } from "@reach/router";
 import styled from "styled-components";
 import wpConfig from "../../wp-config";
 import Navbar from "../Nav/Navbar";
-import { getingDataTasks, getingDataRoutes, getingDataPlaces } from "../api";
+import { getingDataTasks, getingDataRoutes, getingDataPlaces, getingDataPlacesFromNodejs, getingDataRoutesFromNodejs, getingDataUsersFromNodejs } from "../api";
 import {
   getPlacesList,
   getTasksList,
@@ -27,7 +27,7 @@ import { Divider } from "../assets/Styles";
 import Spinner from "../assets/Spinner";
 import ProgressBarComp from "../assets/progressBar.js";
 import { useTranslation } from "react-i18next";
-import { internetConnection } from "../functions";
+import { internetConnection, nodeRouteAdapter, nodePlacesAdapter } from "../functions";
 import clientConfig from "../../client-config";
 
 let placesList = [];
@@ -55,6 +55,11 @@ export default function Sites(props) {
   const [allTasksOfUser, setAllTasksOfUser] = useState([]);
   const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
   const users_ltr = [39, 78];
+
+  const [AllNodeRoutes, setAllNodeRoutes] = useState([]);
+  const [AllNodePlaces, setAllNodePlaces] = useState([]);
+  const [nodeUser, setNodeUser] = useState({});
+
 
   useEffect(() => {
     console.log("user_places: ", props.user_places);
@@ -219,6 +224,15 @@ export default function Sites(props) {
   const fetchData = async () => {
     setLoading(true);
     try {
+      const allUsers = await getingDataUsersFromNodejs();
+      console.log("allUsers", allUsers);
+      const user = allUsers.find((user) => user.email === "taalworker+121@gmail.com");
+      setNodeUser(user);
+      console.log("user : ",nodeUser);
+
+      setAllNodeRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
+      setAllNodePlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
+
       setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
       setAllRoutes(await getingDataRoutes()); //get request for routes
       setAllPlaces(await getingDataPlaces()); //get request for places

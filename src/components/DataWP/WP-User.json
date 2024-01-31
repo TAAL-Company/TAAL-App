@@ -1,0 +1,33 @@
+{
+    "id": 13,
+    "name": "\u05d0\u05d9\u05dc\u05e0\u05d4 \u05de\u05d5\u05e9\u05e7\u05d9\u05df",
+    "url": "",
+    "description": "",
+    "link": "https:\/\/taal.tech\/author\/ilana-student\/",
+    "slug": "ilana-student",
+    "avatar_urls": {
+      "24": "https:\/\/secure.gravatar.com\/avatar\/e566dafc0528b5099b5c0a515297a3bd?s=24&d=mm&r=g",
+      "48": "https:\/\/secure.gravatar.com\/avatar\/e566dafc0528b5099b5c0a515297a3bd?s=48&d=mm&r=g",
+      "96": "https:\/\/secure.gravatar.com\/avatar\/e566dafc0528b5099b5c0a515297a3bd?s=96&d=mm&r=g"
+    },
+    "meta": [
+      
+    ],
+    "acf": {
+      "arabic_name": "",
+      "guide": false,
+      "image": false
+    },
+    "_links": {
+      "self": [
+        {
+          "href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/users\/13"
+        }
+      ],
+      "collection": [
+        {
+          "href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/users"
+        }
+      ]
+    }
+  }
