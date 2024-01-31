@@ -1,4 +1,5 @@
 import wpConfig from "../wp-config";
+import azureConfig from "../azure-config";
 import axios from "axios";
 
 //function to publish the data in the 'Data Time' table for each task the user has done
@@ -38,7 +39,6 @@ export const postDataTime = (objTime) => {
 
 };
 
-
 export const get = async (url, header) => {
     try {
         const res = await axios.get(url, header);
@@ -50,9 +50,7 @@ export const get = async (url, header) => {
     }
 };
 
-
-
-export const getingDataTasks = async (setCompleted,setnumOfTasks) => {
+export const getingDataTasks = async (setCompleted, setnumOfTasks) => {
 
     let allTasks;
 
@@ -65,7 +63,7 @@ export const getingDataTasks = async (setCompleted,setnumOfTasks) => {
     }).then((res) => {
         let max_pages = res.headers["x-wp-totalpages"];
         setnumOfTasks(res.headers["x-wp-total"])
-	
+
         let plusToCompleted = 100 / max_pages;
 
         setCompleted((prevCompleted) => parseInt(prevCompleted + plusToCompleted));
@@ -160,3 +158,65 @@ export const getingDataPlaces = async () => {
 
     return allPlaces;
 };
+
+export const getingDataUsersFromNodejs = async () => {
+    let allUsers;
+    // console.log('geting data routes', `${wpConfig}/wp-json/wp/v2/routes/`)
+    console.log("geting data users");
+    try {
+        await get(azureConfig.getUsers).then((res) => {
+            console.log("getUsers", res.data);
+            allUsers = res.data
+        });
+        return allUsers
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+
+};
+
+export const getingDataRoutesFromNodejs = async () => {
+    let allRoutes;
+    console.log("geting data Routes");
+    try {
+        await get(azureConfig.getRoutes).then((res) => {
+            console.log("getRoutes", res.data);
+            allRoutes = res.data
+        });
+        return allRoutes
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+};
+
+export const getingDataPlacesFromNodejs = async () => {
+    let allPlaces;
+    console.log("geting data Places");
+    try {
+        await get(azureConfig.getPlaces).then((res) => {
+            console.log("getPlaces", res.data);
+            allPlaces = res.data
+        });
+        return allPlaces
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+};
+
+export const getingTasksById = async (taskid) => {
+    let taskinfo;
+    // console.log(taskid);
+    try {
+        await get(azureConfig.getTasks + "/" + taskid).then((res) => {
+            // console.log("task info", res.data);
+            taskinfo = res.data
+        });
+        return taskinfo
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+}
