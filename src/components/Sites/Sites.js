@@ -11,7 +11,7 @@ import { navigate } from "@reach/router";
 import styled from "styled-components";
 import wpConfig from "../../wp-config";
 import Navbar from "../Nav/Navbar";
-import { getingDataTasks, getingDataRoutes, getingDataPlaces, getingDataPlacesFromNodejs, getingDataRoutesFromNodejs, getingDataUsersFromNodejs } from "../api";
+import { getingDataTasks, getingDataRoutes, getingDataPlaces, getingDataPlacesFromNodejs, getingDataRoutesFromNodejs, getingDataUsersFromNodejs, getingDataTasksFromNodejs } from "../api";
 import {
   getPlacesList,
   getTasksList,
@@ -58,6 +58,7 @@ export default function Sites(props) {
 
   const [AllNodeRoutes, setAllNodeRoutes] = useState([]);
   const [AllNodePlaces, setAllNodePlaces] = useState([]);
+  const [AllNodeTasks, setAllNodeTasks] = useState([]);
   const [nodeUser, setNodeUser] = useState({});
 
 
@@ -232,6 +233,7 @@ export default function Sites(props) {
 
       setAllNodeRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
       setAllNodePlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
+      setAllNodeTasks(await getingDataTasksFromNodejs());
 
       setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
       setAllRoutes(await getingDataRoutes()); //get request for routes
