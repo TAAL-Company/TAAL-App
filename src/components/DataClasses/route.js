@@ -15,7 +15,7 @@ const wpRouteFromNoRoute = (noRoute) => {
         user.display_name = student.name
         user.user_avatar = student.picture_url
         user.user_nicename = student.user_name
-        usersInWP.push(user)
+        usersInWP.push({ ...user })
     })
    
     // ----tasks----

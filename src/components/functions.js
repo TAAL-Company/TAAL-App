@@ -161,7 +161,7 @@ export const nodeRouteAdapter = (routedata) => {
 			user.display_name = student.name
 			user.user_avatar = student.picture_url
 			user.user_nicename = student.user_name
-			wpRoute.acf.users.push(user)
+			wpRoute.acf.users.push({ ...user })
 		})
 
 		// ----tasks----
@@ -170,7 +170,7 @@ export const nodeRouteAdapter = (routedata) => {
 			tasks.ID = tasksbyid.id
 			tasks.post_name = tasksbyid.subtitle
 			tasks.post_title = tasksbyid.title
-			wpRoute.acf.tasks.push(tasks)
+			wpRoute.acf.tasks.push({ ...tasks })
 		})
 
 		noderoutedata.push(wpRoute)

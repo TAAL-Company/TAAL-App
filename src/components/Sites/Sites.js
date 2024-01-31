@@ -130,7 +130,7 @@ export default function Sites(props) {
     console.log("handleChildImgClick" + typeof site_id);
     console.log("allPlacesOfUser", allPlacesOfUser);
     let site_name = allPlacesOfUser.find(
-      (place) => place.id === parseInt(site_id)
+      (place) => place.id === site_id//(place) => place.id === parseInt(site_id)
     );
     localStorage.setItem("site_title", site_name.name);
 
@@ -229,7 +229,7 @@ export default function Sites(props) {
       console.log("allUsers", allUsers);
       const user = allUsers.find((user) => user.email === "taalworker+121@gmail.com");
       setNodeUser(user);
-      console.log("user : ",nodeUser);
+      console.log("nodeUser : ",user);
 
       setAllNodeRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
       setAllNodePlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
@@ -279,12 +279,17 @@ export default function Sites(props) {
     console.log("allRoutes", allRoutes);
     console.log("allTasks", allTasks);
     console.log("allPlaces", allPlaces);
+
+    console.log("AllNodeRoutes", AllNodeRoutes);
+    console.log("allTasks", AllNodeTasks);
+    console.log("allPlaces", AllNodePlaces);
+
     clearCache();
 
-    let allRoutesOfUserTemp = allRoutes.filter((route) => {
+    let allRoutesOfUserTemp = AllNodeRoutes.filter((route) => {// allRoutes
       if (route.acf.users) {
         let usersArray = Object.values(route.acf.users);
-        let userExists = usersArray.find((user) => "" + user.ID === userId);
+        let userExists = usersArray.find((user) => user.user_email === "taalworker+121@gmail.com");// let userExists = usersArray.find((user) => "" + user.ID === userId);
         if (userExists !== undefined) return route;
       }
     });
@@ -296,7 +301,7 @@ export default function Sites(props) {
 
     allRoutesOfUserTemp.forEach((route) => {
       route.places.forEach((item) => {
-        let temp = allPlaces.find((place) => place.id === item);
+        let temp = AllNodePlaces.find((place) => place.id === item);// allPlaces
         console.log("temp", temp);
         if (temp.parent === 0 && !idOfUserPlaces.includes(temp.id)) {
           //place.parent === 0 is Site and not station
