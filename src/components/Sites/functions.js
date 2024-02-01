@@ -102,6 +102,7 @@ export const extractPathForSite = (
     let currentTask = alltasks.find(taskTemp => taskTemp.id === task.ID)
 
     // if (currentTask.places.includes(parseInt(siteID))) {
+      console.log("currentTask.places.length",currentTask);
       let endIndex = currentTask.places.length - 1;
       cleanList.push(currentTask);
 

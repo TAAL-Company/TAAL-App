@@ -27,7 +27,7 @@ import { Divider } from "../assets/Styles";
 import Spinner from "../assets/Spinner";
 import ProgressBarComp from "../assets/progressBar.js";
 import { useTranslation } from "react-i18next";
-import { internetConnection, nodeRouteAdapter, nodePlacesAdapter } from "../functions";
+import { internetConnection, nodeRouteAdapter, nodePlacesAdapter, nodeTasksAdapter } from "../functions";
 import clientConfig from "../../client-config";
 
 let placesList = [];
@@ -130,7 +130,8 @@ export default function Sites(props) {
     console.log("handleChildImgClick" + typeof site_id);
     console.log("allPlacesOfUser", allPlacesOfUser);
     let site_name = allPlacesOfUser.find(
-      (place) => place.id === site_id//(place) => place.id === parseInt(site_id)
+      //(place) => place.id === parseInt(site_id)//(place) => place.id === parseInt(site_id) --> (place) => place.id === site_id
+      (place) => place.id === site_id // nodejs
     );
     localStorage.setItem("site_title", site_name.name);
 
@@ -156,7 +157,7 @@ export default function Sites(props) {
       routesOfUserInTheSite[0].acf.tasks
     );
     let [separateList, cleanList] = extractPathForSite(
-      allTasks,
+      allTasks,//allTasks, --> AllNodeTasks,
       routesOfUserInTheSite[0].acf.tasks,
       site_id
       // tempTransformObject
@@ -229,15 +230,20 @@ export default function Sites(props) {
       console.log("allUsers", allUsers);
       const user = allUsers.find((user) => user.email === "taalworker+121@gmail.com");
       setNodeUser(user);
-      console.log("nodeUser : ",user);
+      console.log("nodeUser : ", user);
 
       setAllNodeRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
       setAllNodePlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
-      setAllNodeTasks(await getingDataTasksFromNodejs());
+      setAllNodeTasks(nodeTasksAdapter(await getingDataTasksFromNodejs(setCompleted, setnumOfTasks)));
 
-      setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
-      setAllRoutes(await getingDataRoutes()); //get request for routes
-      setAllPlaces(await getingDataPlaces()); //get request for places
+      // setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
+      // setAllRoutes(await getingDataRoutes()); //get request for routes
+      // setAllPlaces(await getingDataPlaces()); //get request for places
+
+      setAllRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
+      setAllPlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
+      setAllTasks(nodeTasksAdapter(await getingDataTasksFromNodejs(setCompleted, setnumOfTasks)));
+
     } catch (error) {
       console.log("Error");
       console.error(error.message);
@@ -286,10 +292,12 @@ export default function Sites(props) {
 
     clearCache();
 
-    let allRoutesOfUserTemp = AllNodeRoutes.filter((route) => {// allRoutes
+    let allRoutesOfUserTemp = allRoutes.filter((route) => {// allRoutes --> AllNodeRoutes
       if (route.acf.users) {
         let usersArray = Object.values(route.acf.users);
-        let userExists = usersArray.find((user) => user.user_email === "taalworker+121@gmail.com");// let userExists = usersArray.find((user) => "" + user.ID === userId);
+        // let userExists = usersArray.find((user) => "" + user.ID === userId);// --> let userExists = usersArray.find((user) => user.user_email === "taalworker+121@gmail.com");
+        let userExists = usersArray.find((user) => user.user_email === "taalworker+121@gmail.com");// nodejs
+        
         if (userExists !== undefined) return route;
       }
     });
@@ -301,7 +309,7 @@ export default function Sites(props) {
 
     allRoutesOfUserTemp.forEach((route) => {
       route.places.forEach((item) => {
-        let temp = AllNodePlaces.find((place) => place.id === item);// allPlaces
+        let temp = allPlaces.find((place) => place.id === item);// allPlaces --> AllNodePlaces
         console.log("temp", temp);
         if (temp.parent === 0 && !idOfUserPlaces.includes(temp.id)) {
           //place.parent === 0 is Site and not station
