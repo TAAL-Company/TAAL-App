@@ -50,9 +50,6 @@ export default function Sites(props) {
   const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
   const users_ltr = [39, 78];
 
-  const [allOldRoutes, setAllOldRoutes] = useState([]);
-  const [allOldPlaces, setAllOldPlaces] = useState([]);
-  const [allOldTasks, setAllOldTasks] = useState([]);
   const [nodeUser, setNodeUser] = useState({});
 
 
@@ -124,8 +121,7 @@ export default function Sites(props) {
     console.log("handleChildImgClick" + typeof site_id);
     console.log("allPlacesOfUser", allPlacesOfUser);
     let site_name = allPlacesOfUser.find(
-      //(place) => place.id === parseInt(site_id)//(place) => place.id === parseInt(site_id) --> (place) => place.id === site_id
-      (place) => place.id === site_id // nodejs
+      IS_NODE ? (place) => place.id === site_id : place.id === parseInt(site_id)
     );
     localStorage.setItem("site_title", site_name.name);
 
@@ -226,13 +222,15 @@ export default function Sites(props) {
       setNodeUser(user);
       console.log("nodeUser : ", user);
 
-      setAllOldTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
-      setAllOldRoutes(await getingDataRoutes()); //get request for routes
-      setAllOldPlaces(await getingDataPlaces()); //get request for places
-
-      setAllRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
-      setAllPlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
-      setAllTasks(nodeTasksAdapter(await getingDataTasksFromNodejs(setCompleted, setnumOfTasks)));
+      if (IS_NODE) {
+        setAllRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
+        setAllPlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
+        setAllTasks(nodeTasksAdapter(await getingDataTasksFromNodejs(setCompleted, setnumOfTasks)));
+      } else {
+        setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
+        setAllRoutes(await getingDataRoutes()); //get request for routes
+        setAllPlaces(await getingDataPlaces()); //get request for places  
+      }
 
     } catch (error) {
       console.log("Error");
@@ -276,17 +274,13 @@ export default function Sites(props) {
     console.log("allTasks", allTasks);
     console.log("allPlaces", allPlaces);
 
-    console.log("AllOldRoutes", allOldRoutes);
-    console.log("allOldTasks", allOldTasks);
-    console.log("allOldPlaces", allOldPlaces);
-
     clearCache();
 
     let allRoutesOfUserTemp = allRoutes.filter((route) => {// allRoutes --> AllNodeRoutes
       if (route.acf.users) {
         let usersArray = Object.values(route.acf.users);
-        // let userExists = usersArray.find((user) => "" + user.ID === userId);// 
-        let userExists = usersArray.find((user) => user.user_email === userEmail) ||
+        let userExists = !IS_NODE ? usersArray.find((user) => "" + user.ID === userId) : undefined;
+        userExists = userExists || usersArray.find((user) => user.user_email === userEmail) ||
           usersArray.find((user) => user.user_email === "taalworker+121@gmail.com");// nodejs
         
         if (userExists !== undefined) return route;
