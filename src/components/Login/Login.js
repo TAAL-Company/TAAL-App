@@ -11,6 +11,8 @@ import { RiKey2Line } from "react-icons/ri";
 import LogoLogin from "../../images/LogoLoginWhite.png";
 
 import wpConfig from "../../wp-config";
+import { IS_NODE } from "../Sites/Sites";
+import { getingDataUsersFromNodejs } from "../api";
 //redux
 // import Spinner from "../assets/Spinner";
 
@@ -60,7 +62,7 @@ class Login extends React.Component {
     this.setState({ loading: true }, () => {
       axios
         .post(`${siteUrl}wp-json/jwt-auth/v1/token`, loginData)
-        .then((res) => {
+        .then(async (res) => {
           if (undefined === res.data.token) {
             this.setState({ error: res.data.message, loading: false });
             return;
@@ -74,7 +76,13 @@ class Login extends React.Component {
           localStorage.setItem("token", token);
           localStorage.setItem("userName", user_nicename);
           localStorage.setItem("userID", user_ID);
-          localStorage.setItem("userEmail", user_email);
+
+          if (IS_NODE) {
+            const allUsers = await getingDataUsersFromNodejs();
+            const email = "taalworker+121@gmail.com"; // allUsers.some((user) => user.email === user_email) ? user_email : "taalworker+121@gmail.com";
+            console.log("allUsers", allUsers, email);
+            localStorage.setItem("userEmail", email);
+          }
 
           // get user acf fields
           axios

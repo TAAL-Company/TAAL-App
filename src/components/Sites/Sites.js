@@ -6,7 +6,7 @@ import { navigate } from "@reach/router";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import Navbar from "../Nav/Navbar";
-import { getingDataPlaces, getingDataPlacesFromNodejs, getingDataRoutes, getingDataRoutesFromNodejs, getingDataTasks, getingDataTasksFromNodejs, getingDataUsersFromNodejs } from "../api";
+import { getingDataPlaces, getingDataPlacesFromNodejs, getingDataRoutes, getingDataRoutesFromNodejs, getingDataTasks, getingDataTasksFromNodejs } from "../api";
 import ProgressBarComp from "../assets/progressBar.js";
 import { handleLogout, internetConnection, isLoggedIn, nodePlacesAdapter, nodeRouteAdapter, nodeTasksAdapter } from "../functions";
 import "./Sites.css";
@@ -21,17 +21,17 @@ import {
   trasformObject
 } from "./functions";
 
+export const IS_NODE = true;
+
 let placesList = [];
 let tasksList = [];
 
 let routesInfo, taskInformation;
 
-const IS_NODE = false;
-
 export default function Sites(props) {
   const { user, user_places, userTasks } = props;
   const [userId, setUserId] = useState(localStorage.getItem("userID"));
-  const [userEmail, setUserEmail] = useState(localStorage.getItem("userEmail"));
+  const [userEmail, setUserEmail] = useState("taalworker+121@gmail.com" || localStorage.getItem("userEmail"));
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(true);
   const [lineLength, setLineLength] = useState(52);
@@ -121,7 +121,7 @@ export default function Sites(props) {
     console.log("handleChildImgClick" + typeof site_id);
     console.log("allPlacesOfUser", allPlacesOfUser);
     let site_name = allPlacesOfUser.find(
-      IS_NODE ? (place) => place.id === site_id : place.id === parseInt(site_id)
+      (place) => IS_NODE ? place.id === site_id : place.id === parseInt(site_id)
     );
     localStorage.setItem("site_title", site_name.name);
 
@@ -153,6 +153,7 @@ export default function Sites(props) {
       // tempTransformObject
     );
 
+    console.log('separateList', separateList);
     props.actions.visitPlaces(site_id);
     props.actions.changeCurrentTasks(separateList);
     props.actions.changeCurrentTasksList(cleanList);
@@ -216,12 +217,6 @@ export default function Sites(props) {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const allUsers = await getingDataUsersFromNodejs();
-      console.log("allUsers", allUsers);
-      const user = allUsers.find((user) => user.email === "taalworker+121@gmail.com");
-      setNodeUser(user);
-      console.log("nodeUser : ", user);
-
       if (IS_NODE) {
         setAllRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
         setAllPlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
@@ -275,14 +270,19 @@ export default function Sites(props) {
     console.log("allPlaces", allPlaces);
 
     clearCache();
+    let email = userEmail;
+    if (IS_NODE) {
+      email = "taalworker+121@gmail.com";
+      localStorage.setItem("userEmail", email);
+    }
 
     let allRoutesOfUserTemp = allRoutes.filter((route) => {// allRoutes --> AllNodeRoutes
       if (route.acf.users) {
         let usersArray = Object.values(route.acf.users);
         let userExists = !IS_NODE ? usersArray.find((user) => "" + user.ID === userId) : undefined;
-        userExists = userExists || usersArray.find((user) => user.user_email === userEmail) ||
-          usersArray.find((user) => user.user_email === "taalworker+121@gmail.com");// nodejs
-        
+        if (IS_NODE) {
+          userExists = usersArray.find((user) => user.user_email === email);
+        }
         if (userExists !== undefined) return route;
       }
     });
@@ -315,7 +315,7 @@ export default function Sites(props) {
     console.log("after x routesInfo : ", routesInfo);
     console.log("after x taskInformation: ", taskInformation);
 
-    let userRoutes = await getUserTasksFromRouteList(allRoutes, userId);
+    let userRoutes = await getUserTasksFromRouteList(allRoutes, userId, userEmail);
 
     console.log("after  userRoutes: ", userRoutes);
 
@@ -329,6 +329,7 @@ export default function Sites(props) {
 
     let temp1 = getPlacesList(placesList, newTaskList);
 
+    console.log('getPlacesList', temp1);
     props.actions.changePlaces(temp1, dateRef.current);
     if (temp1.length < 2) setLineLength(0);
     else if (temp1.length === 2) setLineLength(32);

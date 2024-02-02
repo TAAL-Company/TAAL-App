@@ -30,7 +30,9 @@ const wpRouteFromNoRoute = (noRoute) => {
 
     return ({
         id: noRoute.id,
-        title: noRoute.name,
+        title: {
+            rendered: noRoute.name || '',
+        },
 
         places: PlaceSiteInWP,
 

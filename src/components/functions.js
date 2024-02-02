@@ -147,7 +147,7 @@ export const nodeRouteAdapter = (routedata) => {
 		}
 
 		wpRoute.id = route.id
-		wpRoute.title = route.name
+		wpRoute.title.rendered = route.name || '';
 
 		// ----places/sites---
 		route.sites.map(async (PlaceSiteId) => {
@@ -518,8 +518,8 @@ export const nodeTasksAdapter = (Tasksdata) => {
 		}
 
 		wpTasks.id=Taskdata.id
-		wpTasks.title=Taskdata.title.rendered
-		wpTasks.content.rendered=Taskdata.subtitle
+		wpTasks.title.rendered= Taskdata.title.rendered || '';
+		wpTasks.content.rendered= Taskdata.subtitle || '';
 		wpTasks.acf.Estimated_time=Taskdata.estimatedTimeSeconds
 		wpTasks.acf.max_time=Taskdata.estimatedTimeSeconds
 		wpTasks.acf.image.url=Taskdata.picture_url
