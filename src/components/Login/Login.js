@@ -1,22 +1,18 @@
-import React from "react";
 import { Redirect } from "@reach/router";
 import axios from "axios";
+import React from "react";
+import Modal from "react-modal";
 import clientConfig from "../../client-config";
 import "./Login.css";
-import Modal from "react-modal";
 
-import LogoLogin from "../../images/LogoLoginWhite.png";
+import { AiFillCloseCircle } from "react-icons/ai";
 import { FaRegUser } from "react-icons/fa";
 import { RiKey2Line } from "react-icons/ri";
-import { AiFillCloseCircle } from "react-icons/ai";
+import LogoLogin from "../../images/LogoLoginWhite.png";
 
 import wpConfig from "../../wp-config";
 //redux
-import { connect, Provider } from "react-redux";
-import { bindActionCreators } from "redux";
-import configureStore from "../../store/configureStore";
 // import Spinner from "../assets/Spinner";
-import { LogoModal } from '../assets/icons';
 
 
 
@@ -78,6 +74,7 @@ class Login extends React.Component {
           localStorage.setItem("token", token);
           localStorage.setItem("userName", user_nicename);
           localStorage.setItem("userID", user_ID);
+          localStorage.setItem("userEmail", user_email);
 
           // get user acf fields
           axios

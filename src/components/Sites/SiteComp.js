@@ -1,9 +1,7 @@
-import React, { Component } from "react";
-import { BsFillVolumeUpFill } from "react-icons/bs";
+import React from "react";
+import playIcon from "../../images/playIcon.svg";
 import AudioIcon from "../assets/AudioIcon";
 import "./SiteComp.css";
-import styled from "styled-components";
-import playIcon from "../../images/playIcon.svg";
 import "./SiteCompStyle.css";
 
 export default function SiteComp(props) {
@@ -20,9 +18,9 @@ export default function SiteComp(props) {
   const userId = localStorage.getItem("userID");
   const users_ltr = [39, 78];
 
-  function handleImgClick() {
+  function handleStartRoute() {
     try {
-      console.log(props.id);
+      console.log('handleStartRoute', props.id);
       localStorage.setItem("site_id", props.id);
       props.onImgClick();
     } catch {
@@ -53,7 +51,7 @@ export default function SiteComp(props) {
 
           {users_ltr.includes(parseInt(userId)) ? (
             <>
-              <div className="startButtonWarpper" onClick={handleImgClick}>
+              <div className="startButtonWarpper" onClick={handleStartRoute}>
                 <div
                   className="startButtonText"
                   style={{ borderRadius: "6px 0px 0px 6px" }}
@@ -70,7 +68,7 @@ export default function SiteComp(props) {
             </>
           ) : (
             <>
-              <div className="startButtonWarpper" onClick={handleImgClick}>
+              <div className="startButtonWarpper" onClick={handleStartRoute}>
                 <div
                   className="startButtonText"
                   style={{ borderRadius: "0px 6px 6px 0px" }}

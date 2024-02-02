@@ -1,43 +1,37 @@
-import React, { useState, useEffect, useRef } from "react";
-import SiteComp from "./SiteComp.js";
-import Carousel, { consts } from "react-elastic-carousel";
 import axios from "axios/index";
-import BarcodeReader from "./BarcodeReader";
+import React, { useEffect, useRef, useState } from "react";
+import SiteComp from "./SiteComp.js";
 // import BarcodeComp from './BarcodeComp'
-import AudioIcon from "../assets/AudioIcon";
-import "./Sites.css";
-import { isLoggedIn, handleLogout } from "../functions";
 import { navigate } from "@reach/router";
-import styled from "styled-components";
-import wpConfig from "../../wp-config";
-import Navbar from "../Nav/Navbar";
-import { getingDataTasks, getingDataRoutes, getingDataPlaces, getingDataPlacesFromNodejs, getingDataRoutesFromNodejs, getingDataUsersFromNodejs, getingDataTasksFromNodejs } from "../api";
-import {
-  getPlacesList,
-  getTasksList,
-  trasformObject,
-  transformArrayOfObjects,
-  extractPathForSite,
-  getUserTasksFromRouteList,
-  addStationDetailsToTask,
-  getRoutesOfUser,
-  getRoutesOfUserInTheSite,
-} from "./functions";
-import { Divider } from "../assets/Styles";
-import Spinner from "../assets/Spinner";
-import ProgressBarComp from "../assets/progressBar.js";
 import { useTranslation } from "react-i18next";
-import { internetConnection, nodeRouteAdapter, nodePlacesAdapter, nodeTasksAdapter } from "../functions";
-import clientConfig from "../../client-config";
+import styled from "styled-components";
+import Navbar from "../Nav/Navbar";
+import { getingDataPlaces, getingDataPlacesFromNodejs, getingDataRoutes, getingDataRoutesFromNodejs, getingDataTasks, getingDataTasksFromNodejs, getingDataUsersFromNodejs } from "../api";
+import ProgressBarComp from "../assets/progressBar.js";
+import { handleLogout, internetConnection, isLoggedIn, nodePlacesAdapter, nodeRouteAdapter, nodeTasksAdapter } from "../functions";
+import "./Sites.css";
+import {
+  addStationDetailsToTask,
+  extractPathForSite,
+  getPlacesList,
+  getRoutesOfUserInTheSite,
+  getTasksList,
+  getUserTasksFromRouteList,
+  transformArrayOfObjects,
+  trasformObject
+} from "./functions";
 
 let placesList = [];
 let tasksList = [];
 
 let routesInfo, taskInformation;
 
+const IS_NODE = false;
+
 export default function Sites(props) {
   const { user, user_places, userTasks } = props;
   const [userId, setUserId] = useState(localStorage.getItem("userID"));
+  const [userEmail, setUserEmail] = useState(localStorage.getItem("userEmail"));
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(true);
   const [lineLength, setLineLength] = useState(52);
@@ -56,9 +50,9 @@ export default function Sites(props) {
   const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
   const users_ltr = [39, 78];
 
-  const [AllNodeRoutes, setAllNodeRoutes] = useState([]);
-  const [AllNodePlaces, setAllNodePlaces] = useState([]);
-  const [AllNodeTasks, setAllNodeTasks] = useState([]);
+  const [allOldRoutes, setAllOldRoutes] = useState([]);
+  const [allOldPlaces, setAllOldPlaces] = useState([]);
+  const [allOldTasks, setAllOldTasks] = useState([]);
   const [nodeUser, setNodeUser] = useState({});
 
 
@@ -232,13 +226,9 @@ export default function Sites(props) {
       setNodeUser(user);
       console.log("nodeUser : ", user);
 
-      setAllNodeRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
-      setAllNodePlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
-      setAllNodeTasks(nodeTasksAdapter(await getingDataTasksFromNodejs(setCompleted, setnumOfTasks)));
-
-      // setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
-      // setAllRoutes(await getingDataRoutes()); //get request for routes
-      // setAllPlaces(await getingDataPlaces()); //get request for places
+      setAllOldTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
+      setAllOldRoutes(await getingDataRoutes()); //get request for routes
+      setAllOldPlaces(await getingDataPlaces()); //get request for places
 
       setAllRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
       setAllPlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
@@ -286,24 +276,25 @@ export default function Sites(props) {
     console.log("allTasks", allTasks);
     console.log("allPlaces", allPlaces);
 
-    console.log("AllNodeRoutes", AllNodeRoutes);
-    console.log("allTasks", AllNodeTasks);
-    console.log("allPlaces", AllNodePlaces);
+    console.log("AllOldRoutes", allOldRoutes);
+    console.log("allOldTasks", allOldTasks);
+    console.log("allOldPlaces", allOldPlaces);
 
     clearCache();
 
     let allRoutesOfUserTemp = allRoutes.filter((route) => {// allRoutes --> AllNodeRoutes
       if (route.acf.users) {
         let usersArray = Object.values(route.acf.users);
-        // let userExists = usersArray.find((user) => "" + user.ID === userId);// --> let userExists = usersArray.find((user) => user.user_email === "taalworker+121@gmail.com");
-        let userExists = usersArray.find((user) => user.user_email === "taalworker+121@gmail.com");// nodejs
+        // let userExists = usersArray.find((user) => "" + user.ID === userId);// 
+        let userExists = usersArray.find((user) => user.user_email === userEmail) ||
+          usersArray.find((user) => user.user_email === "taalworker+121@gmail.com");// nodejs
         
         if (userExists !== undefined) return route;
       }
     });
 
     setAllRoutesOfUser(allRoutesOfUserTemp);
-    console.log(allRoutesOfUserTemp);
+    console.log('allRoutesOfUserTemp', allRoutesOfUserTemp);
 
     let idOfUserPlaces = [];
 
