@@ -1,6 +1,5 @@
 import { all } from "core-js/fn/promise";
 import { stringify } from "qs";
-
 /*
     The function gets - full: all tasks data , partial: the user's tasks 
     and returns a new array of tasks
@@ -158,27 +157,29 @@ export const extractPathForSite = (
 //   return [listForExec, cleanList];
 // };
 
-export const getUserTasksFromRouteList = (routesInfo, userID) =>
+export const getUserTasksFromRouteList = (routesInfo, userID, userEmail) => {
 
-  // console.log("userID: " + userID);
+  console.log('getUserTasksFromRouteList')
+  // console.log("getUserTasksFromRouteList" + userID);
   // console.log("routesInfo: " + routesInfo);
 
-  new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const list = routesInfo.reduce((accu, curr) => {
       if (curr.acf.users) {
         curr.acf.users.forEach((element) => {
           //console.log('Success?', element.ID.toString() === userID.toString());
 
-          if (element.ID.toString() === userID) {
+          if (element.ID.toString() === userID || element.user_email === userEmail) {
             accu.push(curr.acf.tasks);
           }
         });
       }
       return accu;
     }, []);
-    resolve(list);
+    resolve(list || []);
     reject([]);
   });
+}
 
 export const addStationDetailsToTask = (userTasks, place) => {
 

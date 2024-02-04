@@ -1,34 +1,27 @@
-import React, { useState, useEffect, useRef } from "react";
-import SiteComp from "./SiteComp.js";
-import Carousel, { consts } from "react-elastic-carousel";
 import axios from "axios/index";
-import BarcodeReader from "./BarcodeReader";
+import React, { useEffect, useRef, useState } from "react";
+import SiteComp from "./SiteComp.js";
 // import BarcodeComp from './BarcodeComp'
-import AudioIcon from "../assets/AudioIcon";
-import "./Sites.css";
-import { isLoggedIn, handleLogout } from "../functions";
 import { navigate } from "@reach/router";
-import styled from "styled-components";
-import wpConfig from "../../wp-config";
-import Navbar from "../Nav/Navbar";
-import { getingDataTasks, getingDataRoutes, getingDataPlaces, getingDataPlacesFromNodejs, getingDataRoutesFromNodejs, getingDataUsersFromNodejs, getingDataTasksFromNodejs } from "../api";
-import {
-  getPlacesList,
-  getTasksList,
-  trasformObject,
-  transformArrayOfObjects,
-  extractPathForSite,
-  getUserTasksFromRouteList,
-  addStationDetailsToTask,
-  getRoutesOfUser,
-  getRoutesOfUserInTheSite,
-} from "./functions";
-import { Divider } from "../assets/Styles";
-import Spinner from "../assets/Spinner";
-import ProgressBarComp from "../assets/progressBar.js";
 import { useTranslation } from "react-i18next";
-import { internetConnection, nodeRouteAdapter, nodePlacesAdapter, nodeTasksAdapter } from "../functions";
-import clientConfig from "../../client-config";
+import styled from "styled-components";
+import Navbar from "../Nav/Navbar";
+import { getingDataPlaces, getingDataPlacesFromNodejs, getingDataRoutes, getingDataRoutesFromNodejs, getingDataTasks, getingDataTasksFromNodejs } from "../api";
+import ProgressBarComp from "../assets/progressBar.js";
+import { handleLogout, internetConnection, isLoggedIn, nodePlacesAdapter, nodeRouteAdapter, nodeTasksAdapter } from "../functions";
+import "./Sites.css";
+import {
+  addStationDetailsToTask,
+  extractPathForSite,
+  getPlacesList,
+  getRoutesOfUserInTheSite,
+  getTasksList,
+  getUserTasksFromRouteList,
+  transformArrayOfObjects,
+  trasformObject
+} from "./functions";
+
+export const IS_NODE = true;
 
 let placesList = [];
 let tasksList = [];
@@ -38,6 +31,7 @@ let routesInfo, taskInformation;
 export default function Sites(props) {
   const { user, user_places, userTasks } = props;
   const [userId, setUserId] = useState(localStorage.getItem("userID"));
+  const [userEmail, setUserEmail] = useState("taalworker+121@gmail.com" || localStorage.getItem("userEmail"));
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(true);
   const [lineLength, setLineLength] = useState(52);
@@ -56,9 +50,6 @@ export default function Sites(props) {
   const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
   const users_ltr = [39, 78];
 
-  const [AllNodeRoutes, setAllNodeRoutes] = useState([]);
-  const [AllNodePlaces, setAllNodePlaces] = useState([]);
-  const [AllNodeTasks, setAllNodeTasks] = useState([]);
   const [nodeUser, setNodeUser] = useState({});
 
 
@@ -130,8 +121,7 @@ export default function Sites(props) {
     console.log("handleChildImgClick" + typeof site_id);
     console.log("allPlacesOfUser", allPlacesOfUser);
     let site_name = allPlacesOfUser.find(
-      //(place) => place.id === parseInt(site_id)//(place) => place.id === parseInt(site_id) --> (place) => place.id === site_id
-      (place) => place.id === site_id // nodejs
+      (place) => IS_NODE ? place.id === site_id : place.id === parseInt(site_id)
     );
     localStorage.setItem("site_title", site_name.name);
 
@@ -163,6 +153,7 @@ export default function Sites(props) {
       // tempTransformObject
     );
 
+    console.log('separateList', separateList);
     props.actions.visitPlaces(site_id);
     props.actions.changeCurrentTasks(separateList);
     props.actions.changeCurrentTasksList(cleanList);
@@ -226,23 +217,15 @@ export default function Sites(props) {
   const fetchData = async () => {
     setLoading(true);
     try {
-      const allUsers = await getingDataUsersFromNodejs();
-      console.log("allUsers", allUsers);
-      const user = allUsers.find((user) => user.email === "taalworker+121@gmail.com");
-      setNodeUser(user);
-      console.log("nodeUser : ", user);
-
-      setAllNodeRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
-      setAllNodePlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
-      setAllNodeTasks(nodeTasksAdapter(await getingDataTasksFromNodejs(setCompleted, setnumOfTasks)));
-
-      // setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
-      // setAllRoutes(await getingDataRoutes()); //get request for routes
-      // setAllPlaces(await getingDataPlaces()); //get request for places
-
-      setAllRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
-      setAllPlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
-      setAllTasks(nodeTasksAdapter(await getingDataTasksFromNodejs(setCompleted, setnumOfTasks)));
+      if (IS_NODE) {
+        setAllRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
+        setAllPlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
+        setAllTasks(nodeTasksAdapter(await getingDataTasksFromNodejs(setCompleted, setnumOfTasks)));
+      } else {
+        setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
+        setAllRoutes(await getingDataRoutes()); //get request for routes
+        setAllPlaces(await getingDataPlaces()); //get request for places  
+      }
 
     } catch (error) {
       console.log("Error");
@@ -286,24 +269,26 @@ export default function Sites(props) {
     console.log("allTasks", allTasks);
     console.log("allPlaces", allPlaces);
 
-    console.log("AllNodeRoutes", AllNodeRoutes);
-    console.log("allTasks", AllNodeTasks);
-    console.log("allPlaces", AllNodePlaces);
-
     clearCache();
+    let email = userEmail;
+    if (IS_NODE) {
+      email = "taalworker+121@gmail.com";
+      localStorage.setItem("userEmail", email);
+    }
 
     let allRoutesOfUserTemp = allRoutes.filter((route) => {// allRoutes --> AllNodeRoutes
       if (route.acf.users) {
         let usersArray = Object.values(route.acf.users);
-        // let userExists = usersArray.find((user) => "" + user.ID === userId);// --> let userExists = usersArray.find((user) => user.user_email === "taalworker+121@gmail.com");
-        let userExists = usersArray.find((user) => user.user_email === "taalworker+121@gmail.com");// nodejs
-        
+        let userExists = !IS_NODE ? usersArray.find((user) => "" + user.ID === userId) : undefined;
+        if (IS_NODE) {
+          userExists = usersArray.find((user) => user.user_email === email);
+        }
         if (userExists !== undefined) return route;
       }
     });
 
     setAllRoutesOfUser(allRoutesOfUserTemp);
-    console.log(allRoutesOfUserTemp);
+    console.log('allRoutesOfUserTemp', allRoutesOfUserTemp);
 
     let idOfUserPlaces = [];
 
@@ -330,7 +315,7 @@ export default function Sites(props) {
     console.log("after x routesInfo : ", routesInfo);
     console.log("after x taskInformation: ", taskInformation);
 
-    let userRoutes = await getUserTasksFromRouteList(allRoutes, userId);
+    let userRoutes = await getUserTasksFromRouteList(allRoutes, userId, userEmail);
 
     console.log("after  userRoutes: ", userRoutes);
 
@@ -344,6 +329,7 @@ export default function Sites(props) {
 
     let temp1 = getPlacesList(placesList, newTaskList);
 
+    console.log('getPlacesList', temp1);
     props.actions.changePlaces(temp1, dateRef.current);
     if (temp1.length < 2) setLineLength(0);
     else if (temp1.length === 2) setLineLength(32);

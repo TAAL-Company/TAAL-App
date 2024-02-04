@@ -1,19 +1,18 @@
-import React, { useState, useEffect, useRef, Fragment } from "react";
-import TaskComp from "./TaskComp";
-import "./Tasks.css";
-import Navbar from "../Nav/Navbar.js";
-import "regenerator-runtime/runtime.js";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
-import styled from "styled-components";
 import Slider from "react-slick";
 import { useSwipeable } from "react-swipeable";
-import BackIcon from "../assets/BackIcon";
-import { storeInitialData, getLineHeight } from "./functions";
+import "regenerator-runtime/runtime.js";
+import styled from "styled-components";
+import Navbar from "../Nav/Navbar.js";
 import AudioIcon from "../assets/AudioIcon";
-import FinishModal from "./FinishModal";
+import BackIcon from "../assets/BackIcon";
+import { handleLogout, isLoggedIn } from "../functions";
 import BlueArrow from "./BlueArrow";
-import { parseContent } from "./functions";
-import { isLoggedIn, handleLogout } from "../functions";
+import FinishModal from "./FinishModal";
+import TaskComp from "./TaskComp";
+import "./Tasks.css";
+import { getLineHeight, parseContent, storeInitialData } from "./functions";
 Modal.setAppElement("body");
 
 const initialState = {
@@ -493,7 +492,7 @@ function Tasks(props) {
                       imgUrl={
                         item.acf && item.acf.image ? item.acf.image.url : false
                       }
-                      title={item.title && item.title.rendered.split("&")[0]}
+                      title={item.title && (item.title.rendered || '').split("&")[0]}
                       content={item.content && item.content.rendered}
                       didFinished={item.didFinish}
                       audioUrl={

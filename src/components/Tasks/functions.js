@@ -26,10 +26,9 @@ export const getLineHeight = (currentIndex) => {
 }
 
 export const parseContent = (text) => {
-    if (text !== "" && text.split('<p>')[1]) {
+    if (!!text && text.split('<p>')[1]) {
         const cleanText = text.split('<p>')[1].split('</p>')[0]
         return cleanText.replaceAll("&#8217;", "'").replaceAll("&#8211;", "-")
     }
-    else
-        return text.replaceAll("&#8217;", "'").replaceAll("&#8211;", "-")
+    return (text || '').replaceAll("&#8217;", "'").replaceAll("&#8211;", "-")
 }
