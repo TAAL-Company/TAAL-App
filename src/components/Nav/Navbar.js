@@ -193,14 +193,14 @@ function Navbar(props) {
                   {/* <div hidden={true} className="nav-item">
                     <NavLink to={`/Sites/${userName}`}>Sites</NavLink>
                   </div> */}
-                  <div hidden={true} className="nav-item">
+                  {/* <div hidden={true} className="nav-item">
                     <button
                       onClick={handleLogout}
                       className="btn btn-secondary ml-3"
                     >
                       Logout
                     </button>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="nav-item Profile ProfileContent">
                   <div
@@ -212,10 +212,11 @@ function Navbar(props) {
                   >
                     <button
                       onClick={handleLogout}
+                      className="btn btn-secondary ml-3"
                       style={{
                         background: "rgb(37,111,161)",
-                        borderWidth: 0,
-                        color: "rgb(37,111,161)",
+                        borderWidth: 1,
+                        // color: "rgb(37,111,161)",
                       }}
                     >
                       Logout
