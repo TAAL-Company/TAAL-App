@@ -518,8 +518,8 @@ export const nodeTasksAdapter = (Tasksdata) => {
 		}
 
 		wpTasks.id=Taskdata.id
-		wpTasks.title.rendered= Taskdata.title.rendered || '';
-		wpTasks.content.rendered= Taskdata.subtitle || '';
+		wpTasks.title.rendered= Taskdata.title;
+		wpTasks.content.rendered= Taskdata.subtitle;
 		wpTasks.acf.Estimated_time=Taskdata.estimatedTimeSeconds
 		wpTasks.acf.max_time=Taskdata.estimatedTimeSeconds
 		wpTasks.acf.image.url=Taskdata.picture_url
