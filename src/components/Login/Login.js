@@ -81,6 +81,18 @@ class Login extends React.Component {
             const allUsers = await getingDataUsersFromNodejs();
             
             const email =  allUsers.some((user) => user.email ===  this.state.userEmail) ? this.state.userEmail : "taalworker+121@gmail.com";
+
+            const UserNODEid = allUsers.find((user) => {
+              if(user.email === email){
+                return user
+              }else{
+                return null 
+              }
+            });
+
+            localStorage.setItem("UserNODEid", UserNODEid.id);
+            console.log("UserNODEid", UserNODEid);
+
             console.log("userEmail", this.state.userEmail,user_email,email);
             console.log("allUsers", allUsers, email);
             localStorage.setItem("userEmail", email);
