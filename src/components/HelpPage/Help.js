@@ -27,8 +27,13 @@ function Help(props) {
   const userNameApi = process.env.USERNAME_ACCESSKEY;
   const passwordApi = process.env.PASSWORD_ACCESSKEY;
 
-  console.log("user_places.places_location: " + user_places.places_location);
-  console.log("len: " + user_places.user_places.length);
+  console.log("props ", props);
+  console.log("user_places.user_places[-1] ", user_places.user_places[-1]);//error
+  console.log("user_places.places_location ", user_places.places_location," - user_tasks.task_location ",user_tasks.task_location );
+
+  
+  console.log("user_places.places_location: " + user_places.places_location);//-1
+  console.log("len: " + user_places.user_places.length);//1
   console.log("task_location: " + user_tasks.task_location);
   console.log("user_places: " + user_places.user_places);
   console.log("username hebrew" + user.user.hebrewName);
@@ -85,13 +90,13 @@ function Help(props) {
           setState({
             ...state,
             action: "My next place:",
-            site: user_places.user_places[user_places.places_location].name,
+            site: user_places.user_places[user_places.places_location]?.name || '',
           });
         } else {
           setState({
             ...state,
             action: "המיקום הבא שלי:",
-            site: user_places.user_places[user_places.places_location].name,
+            site: user_places.user_places[user_places.places_location]?.name || '',
           });
         }
       }

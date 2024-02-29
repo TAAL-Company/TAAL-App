@@ -31,7 +31,7 @@ let routesInfo, taskInformation;
 export default function Sites(props) {
   const { user, user_places, userTasks } = props;
   const [userId, setUserId] = useState(localStorage.getItem("userID"));
-  const [userEmail, setUserEmail] = useState("taalworker+121@gmail.com" || localStorage.getItem("userEmail"));
+  const [userEmail, setUserEmail] = useState( localStorage.getItem("userEmail"));//"taalworker+121@gmail.com" ||
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(true);
   const [lineLength, setLineLength] = useState(52);
@@ -272,8 +272,8 @@ export default function Sites(props) {
     clearCache();
     let email = userEmail;
     if (IS_NODE) {
-      email = "taalworker+121@gmail.com";
-      localStorage.setItem("userEmail", email);
+      //email = "taalworker+121@gmail.com";
+      //localStorage.setItem("userEmail", email);
     }
 
     let allRoutesOfUserTemp = allRoutes.filter((route) => {// allRoutes --> AllNodeRoutes

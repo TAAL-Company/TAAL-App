@@ -6,7 +6,7 @@ import clientConfig from "../../client-config";
 import "./Login.css";
 
 import { AiFillCloseCircle } from "react-icons/ai";
-import { FaRegUser } from "react-icons/fa";
+import { FaRegUser ,FaAt } from "react-icons/fa";
 import { RiKey2Line } from "react-icons/ri";
 import LogoLogin from "../../images/LogoLoginWhite.png";
 
@@ -79,14 +79,27 @@ class Login extends React.Component {
 
           if (IS_NODE) {
             const allUsers = await getingDataUsersFromNodejs();
-            const email = "taalworker+121@gmail.com"; // allUsers.some((user) => user.email === user_email) ? user_email : "taalworker+121@gmail.com";
+            
+            const email =  allUsers.some((user) => user.email ===  this.state.userEmail) ? this.state.userEmail : "taalworker+121@gmail.com";
+
+            const UserNODEid = allUsers.find((user) => {
+              if(user.email === email){
+                return user
+              }else{
+                return null 
+              }
+            });
+
+            localStorage.setItem("UserNODEid", UserNODEid.id);
+            console.log("UserNODEid", UserNODEid);
+
+            console.log("userEmail", this.state.userEmail,user_email,email);
             console.log("allUsers", allUsers, email);
             localStorage.setItem("userEmail", email);
           }
 
           // get user acf fields
-          axios
-            .get(wpConfig.getUser, {
+          axios.get(wpConfig.getUser, {
               headers: {
                 Authorization: "Bearer " + token,
               },
@@ -158,7 +171,7 @@ class Login extends React.Component {
     },
   };
   render() {
-    const { username, password, userNiceName, loggedIn, error, loading } =
+    const { username, password,userEmail, userNiceName, loggedIn, error, loading } =
       this.state;
 
     const user = userNiceName ? userNiceName : localStorage.getItem("userName");
@@ -190,6 +203,20 @@ class Login extends React.Component {
                 name="username"
                 placeholder="שם משתמש اسم المستخدم"
                 value={username}
+                onChange={this.handleOnChange}
+              />
+            </label>
+            <br />
+            <label className="form-group">
+              <div className="icon">
+                <FaAt />
+              </div>
+              <input
+                type="email"
+                className="form-control"
+                name="userEmail"
+                placeholder="דואר אלקטרוני بريد الكتروني"
+                value={userEmail}
                 onChange={this.handleOnChange}
               />
             </label>
