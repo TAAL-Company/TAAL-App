@@ -347,7 +347,8 @@ function Tasks(props) {
         <div className="containerTasks">
           <div className="center grayBar">
             <Text>
-              {allData[currIndex] && allData[currIndex].stationDetails ? allData[currIndex].stationDetails.name : ""}
+              {/* {allData[currIndex] && allData[currIndex].stationDetails ? allData[currIndex].stationDetails.name : ""} */}
+              {allData[currIndex]?.stationDetails?.name || ''}
             </Text>
           </div>
           <Connector
