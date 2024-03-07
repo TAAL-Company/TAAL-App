@@ -17,7 +17,14 @@ import axios from "axios";
 
 function Help(props) {
   const { user_tasks, user_places, user } = props;
-  const currentTaskName = user_tasks.task_location || "";
+  const currentTaskjson = user_tasks.current_tasks_list.find(tasks_list) || ""; 
+  function tasks_list(task) {
+    return task.title.rendered == user_tasks.task_location;
+  }
+
+  // const currentTaskStation = currentTaskjson?.stationDetails?.name || "";
+
+  const currentTaskName = currentTaskjson?.content?.rendered || ""; //user_tasks.task_location || "";
   const [isOpen, setIsOpen] = useState(false);
   const [action, setAction] = useState("");
   const [state, setState] = useState({
@@ -90,13 +97,13 @@ function Help(props) {
           setState({
             ...state,
             action: "My next place:",
-            site: user_places.user_places[user_places.places_location]?.name || '',
+            site: user_places.user_places[user_places.places_location]?.name || '',// currentTaskStation,
           });
         } else {
           setState({
             ...state,
             action: "המיקום הבא שלי:",
-            site: user_places.user_places[user_places.places_location]?.name || '',
+            site: user_places.user_places[user_places.places_location]?.name || '',//currentTaskStation,
           });
         }
       }
