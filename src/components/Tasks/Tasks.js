@@ -12,7 +12,7 @@ import BlueArrow from "./BlueArrow";
 import FinishModal from "./FinishModal";
 import TaskComp from "./TaskComp";
 import "./Tasks.css";
-import { getLineHeight, parseContent, storeInitialData } from "./functions";
+import { getLineHeight, parseContent, storeInitialData, getTimeDifferenceInSeconds } from "./functions";
 Modal.setAppElement("body");
 
 const initialState = {
@@ -53,8 +53,19 @@ function Tasks(props) {
 
   const goBack = () => sliderRef.current.slickPrev();
 
+  const [canSwipe, setCanSwipe] = useState(false);
+
+  useEffect(() => {
+    setCanSwipe(false);
+    const estimatedTime = allData[currIndex]?.acf?.Estimated_time;
+      setTimeout(() => {
+        setCanSwipe(true);
+      }, estimatedTime * 1000); // Convert seconds to milliseconds
+  }, [currIndex]);
+
   const handleSwipe = useSwipeable({
     onSwiped: () => {
+      if (canSwipe) {
       if (screen.width > 1020) {
         if (currIndex === 0) {
           props.actions.completeTask(
@@ -71,6 +82,7 @@ function Tasks(props) {
           setModalOpen(true);
         }
       }
+    }
     },
   });
 

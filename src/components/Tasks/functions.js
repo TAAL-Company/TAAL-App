@@ -49,3 +49,17 @@ export const getTimeInUTC = () => {
     let utcFormattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
     return utcFormattedDate
 }
+
+export const getTimeDifferenceInSeconds = (time1, time2) => {
+    // Parse the timestamps into Date objects
+    let date1 = new Date(time1);
+    let date2 = new Date(time2);
+
+    let timeStart = date1.getUTCSeconds();
+    let timeEnd = date2.getUTCSeconds();
+
+    // Calculate the difference between the two times in seconds
+    let timeDifferenceInSeconds = Math.abs(timeEnd - timeStart);
+
+    return timeDifferenceInSeconds;
+}
