@@ -12,7 +12,7 @@ import BlueArrow from "./BlueArrow";
 import FinishModal from "./FinishModal";
 import TaskComp from "./TaskComp";
 import "./Tasks.css";
-import { getLineHeight, parseContent, storeInitialData, getTimeDifferenceInSeconds } from "./functions";
+import { getLineHeight, parseContent, storeInitialData } from "./functions";
 Modal.setAppElement("body");
 
 const initialState = {
