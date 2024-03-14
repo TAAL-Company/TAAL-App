@@ -58,9 +58,10 @@ function Tasks(props) {
   useEffect(() => {
     setCanSwipe(false);
     const estimatedTime = allData[currIndex]?.acf?.Estimated_time;
-      setTimeout(() => {
-        setCanSwipe(true);
-      }, estimatedTime * 1000); // Convert seconds to milliseconds
+    const timeoutID = setTimeout(() => {
+      setCanSwipe(true);
+    }, estimatedTime * 1000); // Convert seconds to milliseconds
+    return () => clearTimeout(timeoutID);
   }, [currIndex]);
 
   const handleSwipe = useSwipeable({
