@@ -13,6 +13,8 @@ import FinishModal from "./FinishModal";
 import TaskComp from "./TaskComp";
 import "./Tasks.css";
 import { getLineHeight, parseContent, storeInitialData } from "./functions";
+import Swal from "sweetalert2";
+
 Modal.setAppElement("body");
 
 const initialState = {
@@ -83,6 +85,28 @@ function Tasks(props) {
           setModalOpen(true);
         }
       }
+    }else{
+      let timerInterval;
+      Swal.fire({
+        title: "הזמן לא נגמר.",
+        width: 600,
+        icon: "warning",
+        padding: "3em",
+        color: "#000000",
+        showConfirmButton: false,
+        timer: 1500,
+        backdrop: `
+          rgba(255, 193, 91,0.4)
+          no-repeat
+        `,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        },
+        willClose: () => {
+          clearInterval(timerInterval);
+        }
+      });
     }
     },
   });
