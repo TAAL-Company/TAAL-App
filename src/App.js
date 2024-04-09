@@ -19,14 +19,16 @@ import { clientConfig } from "./client-config";
 import SuperTokens, { SuperTokensWrapper } from "supertokens-auth-react";
 import EmailPassword from "supertokens-auth-react/recipe/emailpassword";
 import Session from "supertokens-auth-react/recipe/session";
-
+import { getSuperTokensRoutesForReactRouterDom } from "supertokens-auth-react/ui";
+import { EmailPasswordPreBuiltUI } from "supertokens-auth-react/recipe/emailpassword/prebuiltui";
+import * as reactRouterDom from "react-router-dom";
 
 SuperTokens.init({
 	appInfo: {
 		// learn more about this on https://supertokens.com/docs/emailpassword/appinfo
 		appName: "TAAL",
-		apiDomain: clientConfig.baseUrl,
-		websiteDomain: "http://localhost:8080/",//https://taalapp.z6.web.core.windows.net/
+		apiDomain: "https://prod-web-app0da5905.azurewebsites.net",
+		websiteDomain: "http://localhost:8080",//https://taalapp.z6.web.core.windows.net/
 		apiBasePath: "/auth",
 		websiteBasePath: "/auth",
 	},
