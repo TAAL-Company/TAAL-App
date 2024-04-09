@@ -59,7 +59,7 @@ function Login(props) {
     };
 
     setLoading(true);
-    axios
+    // axios
     // .post(`${siteUrl}wp-json/jwt-auth/v1/token`, loginData)
     axios.get(siteUrl + '/auth/token', {
       headers: {
