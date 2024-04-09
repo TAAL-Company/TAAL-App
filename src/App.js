@@ -14,21 +14,45 @@ import { changePlaces, visitPlaces } from './redux/actions/places'
 import { changeTasks, addTasks, changeCurrentTasks, completeTask, changeCurrentTask, changeCurrentTasksList } from './redux/actions/tasks'
 import { PersistGate } from 'redux-persist/integration/react'
 
+import { clientConfig } from "./client-config";
+//  SuperTokens
+import SuperTokens, { SuperTokensWrapper } from "supertokens-auth-react";
+import EmailPassword from "supertokens-auth-react/recipe/emailpassword";
+import Session from "supertokens-auth-react/recipe/session";
+
+
+SuperTokens.init({
+	appInfo: {
+		// learn more about this on https://supertokens.com/docs/emailpassword/appinfo
+		appName: "TAAL",
+		apiDomain: clientConfig.baseUrl,
+		websiteDomain: "http://localhost:8080/",//https://taalapp.z6.web.core.windows.net/
+		apiBasePath: "/auth",
+		websiteBasePath: "/auth",
+	},
+	recipeList: [
+		EmailPassword.init(),
+		Session.init()
+	]
+});
 
 // test
 function App() {
 
 	return (
-		<Provider store={store}>
-			<PersistGate loading={null} persistor={persistor}>
-				<Router>
-					<LoginConnected path="/" />
-					<SitesConnected path="/Sites/:username" />
-					<HelpConnected path="/Help/:username" />
-					<TasksConnected path="/Tasks/:username" />
-				</Router>
-			</PersistGate>
-		</Provider>
+		<SuperTokensWrapper>
+			<Provider store={store}>
+				<PersistGate loading={null} persistor={persistor}>
+					<Router>
+						{getSuperTokensRoutesForReactRouterDom(reactRouterDom, [EmailPasswordPreBuiltUI])}
+						<LoginConnected path="/" />
+						<SitesConnected path="/Sites/:username" />
+						<HelpConnected path="/Help/:username" />
+						<TasksConnected path="/Tasks/:username" />
+					</Router>
+				</PersistGate>
+			</Provider>
+		</SuperTokensWrapper>
 	);
 }
 
