@@ -115,7 +115,8 @@ export default function Sites(props) {
   //   }
   // };
 
-  async function handleChildImgClick() {
+  async function handleChildImgClick(index) {
+    console.log("handleChildImgClick", index);
     const site_id = localStorage.getItem("site_id");
     console.log("Child img clicked");
     console.log("handleChildImgClick" + typeof site_id);
@@ -137,18 +138,15 @@ export default function Sites(props) {
 
     console.log("routesOfUserInTheSite", routesOfUserInTheSite);
 
-    localStorage.setItem(
-      "route_title",
-      routesOfUserInTheSite[0].title.rendered
-    );
-    localStorage.setItem("route_id", routesOfUserInTheSite[0].id);
+    localStorage.setItem("route_title",routesOfUserInTheSite[index].title.rendered);
+    localStorage.setItem("route_id", routesOfUserInTheSite[index].id);
 
     let tempTransformObject = await trasformObject(
-      routesOfUserInTheSite[0].acf.tasks
+      routesOfUserInTheSite[index].acf.tasks
     );
     let [separateList, cleanList] = extractPathForSite(
       allTasks,//allTasks, --> AllNodeTasks,
-      routesOfUserInTheSite[0].acf.tasks,
+      routesOfUserInTheSite[index].acf.tasks,
       site_id
       // tempTransformObject
     );
@@ -293,10 +291,11 @@ export default function Sites(props) {
     let idOfUserPlaces = [];
 
     allRoutesOfUserTemp.forEach((route) => {
+      console.log("route ---- ", route);
       route.places.forEach((item) => {
         let temp = allPlaces.find((place) => place.id === item);// allPlaces --> AllNodePlaces
-        console.log("temp", temp);
-        if (temp.parent === 0 && !idOfUserPlaces.includes(temp.id)) {
+        console.log("idOfUserPlaces", idOfUserPlaces );
+        if (temp.parent === 0 ) {//&& !idOfUserPlaces.includes(temp.id)
           //place.parent === 0 is Site and not station
           setAllPlacesOfUser((prevState) => prevState.concat([temp]));
           idOfUserPlaces.push(item);
@@ -304,8 +303,7 @@ export default function Sites(props) {
       });
     });
 
-    console.log("idOfUserPlaces");
-    console.log(idOfUserPlaces);
+    console.log("idOfUserPlaces",idOfUserPlaces);
 
     placesList = await trasformObject(allPlaces);
     routesInfo = await transformArrayOfObjects(allRoutes);
@@ -429,10 +427,11 @@ export default function Sites(props) {
                   onChange={onChangeSite}
                 > */}
                 <div className="allPlacesOfUser">
+                  {console.log("allPlacesOfUser : --- ", allPlacesOfUser)}
                   {allPlacesOfUser.map((item, index) => {
                     return (
                       <SiteComp
-                        key={item.id}
+                        key={item.id+index}
                         id={item.id}
                         name={item.name}
                         imgUrl={
@@ -441,7 +440,7 @@ export default function Sites(props) {
                         didVisit={
                           isCurrentSite(index) ? "current" : item.didVisit
                         }
-                        onImgClick={handleChildImgClick}
+                        onImgClick={() => handleChildImgClick(index)}
                         value={0}
                         audioUrl={
                           item.acf && item.acf.audio ? item.acf.audio.url : ""
