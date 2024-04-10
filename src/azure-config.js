@@ -2,6 +2,7 @@ import clientConfig from "./client-config";
 const azureConfig = {
   siteUrl: clientConfig.baseUrl,
   getUsers: `${clientConfig.baseUrl}/students`,
+  loginUser: `${clientConfig.baseUrl}/students/login`,
   getRoutes: `${clientConfig.baseUrl}/routes`,
   getTasks: `${clientConfig.baseUrl}/tasks`,
   getPlaces: `${clientConfig.baseUrl}/sites`,//sites not places
