@@ -14,6 +14,26 @@ import { changePlaces, visitPlaces } from './redux/actions/places'
 import { changeTasks, addTasks, changeCurrentTasks, completeTask, changeCurrentTask, changeCurrentTasksList } from './redux/actions/tasks'
 import { PersistGate } from 'redux-persist/integration/react'
 
+import { clientConfig } from "./client-config";
+//  SuperTokens
+import SuperTokens from "supertokens-auth-react";
+import EmailPassword from "supertokens-auth-react/recipe/emailpassword";
+import Session from "supertokens-auth-react/recipe/session";
+
+SuperTokens.init({
+	appInfo: {
+		// learn more about this on https://supertokens.com/docs/emailpassword/appinfo
+		appName: "TAAL",
+		apiDomain: "http://localhost:3000",
+		websiteDomain: "http://localhost:8080",//https://taalapp.z6.web.core.windows.net/
+		apiBasePath: "/auth",
+		websiteBasePath: "/",
+	},
+	recipeList: [
+		EmailPassword.init(),
+		Session.init()
+	]
+});
 
 // test
 function App() {

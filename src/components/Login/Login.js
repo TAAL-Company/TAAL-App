@@ -13,6 +13,8 @@ import LogoLogin from "../../images/LogoLoginWhite.png";
 import wpConfig from "../../wp-config";
 import { IS_NODE } from "../Sites/Sites";
 import { getingDataUsersFromNodejs, loginUser } from "../api";
+import { signIn } from "supertokens-auth-react/recipe/emailpassword";
+
 //redux
 // import Spinner from "../assets/Spinner";
 
@@ -49,6 +51,22 @@ function Login(props) {
     setLoading(true);
 
     try {
+      const signInResponse = await signIn({
+        formFields: [{
+          id: "email",
+          value: "outdate03+student@gmail.com"
+        }, {
+          id: "password",
+          value: "outdate03+student@gmail1"
+        }]
+      })
+      console.log('signInResponse', signInResponse);
+      if (signInResponse.status !== "OK") {
+        setError("server error. please try again later");
+        setLoading(false);
+        return;
+      }
+
       const loggedInUser = await loginUser({ user_name: username, phone: password });
       console.log("loggedInUser", loggedInUser);
       if (!loggedInUser) {
@@ -59,29 +77,29 @@ function Login(props) {
 
       console.log(typeof token);
 
-      sessionStorage.setItem("token", loggedInUser2.id);
-      localStorage.setItem("token", loggedInUser2.id);
+      sessionStorage.setItem("token", loggedInUser.id);
+      localStorage.setItem("token", loggedInUser.id);
       localStorage.setItem("userName", username);
-      localStorage.setItem("userID", loggedInUser2.id);
+      localStorage.setItem("userID", loggedInUser.id);
 
 
-      const email = allUsers.some((user) => user.email === userEmail) ? userEmail : "taalworker+121@gmail.com";
+      // const email = allUsers.some((user) => user.email === userEmail) ? userEmail : "taalworker+121@gmail.com";
 
-      localStorage.setItem("UserNODEid", loggedInUser2.id);
-      localStorage.setItem("userEmail", loggedInUser2.email);
+      localStorage.setItem("UserNODEid", loggedInUser.id);
+      localStorage.setItem("userEmail", loggedInUser.email);
 
       console.log("res:");
       console.log(res);
-      localStorage.setItem("guidphone", loggedInUser2.GuidPhone);
+      localStorage.setItem("guidphone", loggedInUser.GuidPhone);
 
 
-      const extraData = loggedInUser2.acf ? loggedInUser2.acf : [];
+      const extraData = loggedInUser2.acf ? loggedInUser.acf : [];
       props.actions.changeUser({
         imgPath: loggedInUser2.picture_url || '',
         username: username,
         isLoggedIn: true,
-        id: loggedInUser2.id,
-        phone: loggedInUser2.phone || "",
+        id: loggedInUser.id,
+        phone: loggedInUser.phone || "",
         arabicName: "",
         guideName: "",
         hebrewName: username,

@@ -23,4 +23,4 @@ npm i
 
 npm run dev
 
-localhost:8080 (or localhost:8081 if needed)
+localhost:8080 (or localhost:8080 if needed)
