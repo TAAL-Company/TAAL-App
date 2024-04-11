@@ -1,18 +1,18 @@
 import { Redirect } from "@reach/router";
 import axios from "axios";
-import React , { useState } from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import clientConfig from "../../client-config";
 import "./Login.css";
 
 import { AiFillCloseCircle } from "react-icons/ai";
-import { FaRegUser ,FaAt } from "react-icons/fa";
+import { FaRegUser, FaAt } from "react-icons/fa";
 import { RiKey2Line } from "react-icons/ri";
 import LogoLogin from "../../images/LogoLoginWhite.png";
 
 import wpConfig from "../../wp-config";
 import { IS_NODE } from "../Sites/Sites";
-import { getingDataUsersFromNodejs } from "../api";
+import { getingDataUsersFromNodejs, loginUser } from "../api";
 //redux
 // import Spinner from "../assets/Spinner";
 
@@ -41,99 +41,62 @@ function Login(props) {
     __html: data,
   });
 
-  const onFormSubmit = (event) => {
+  const onFormSubmit = async (event) => {
     event.preventDefault();
 
     const siteUrl = clientConfig.siteUrl;
 
-    const loginData = {
-      username: username,
-      password: password,
-    };
-
     setLoading(true);
-    axios
-      .post(`${siteUrl}wp-json/jwt-auth/v1/token`, loginData)
-      .then(async (res) => {
-        if (undefined === res.data.token) {
-          setError(res.data.message);
-          setLoading(false);
-          return;
-        }
 
-        const { token, user_nicename, user_email, user_ID } = res.data;
-        console.log(typeof token);
-
-        sessionStorage.setItem("token", token);
-        localStorage.setItem("token", token);
-        localStorage.setItem("userName", user_nicename);
-        localStorage.setItem("userID", user_ID);
-
-        if (IS_NODE) {
-          const allUsers = await getingDataUsersFromNodejs();
-          
-          const email =  allUsers.some((user) => user.email ===  userEmail) ? userEmail : "taalworker+121@gmail.com";
-
-          const UserNODEid = allUsers.find((user) => {
-            if(user.email === email){
-              return user
-            }else{
-              return null 
-            }
-          });
-
-          localStorage.setItem("UserNODEid", UserNODEid.id);
-          console.log("UserNODEid", UserNODEid);
-
-          console.log("userEmail", userEmail,user_email,email);
-          console.log("allUsers", allUsers, email);
-          localStorage.setItem("userEmail", email);
-        }
-
-        axios.get(wpConfig.getUser, {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          })
-          .then((res) => {
-            console.log("res:");
-            console.log(res);
-            localStorage.setItem("guidphone", res.data.acf.guide_phone);
-
-
-            const extraData = res.data.acf ? res.data.acf : [];
-            props.actions.changeUser({
-              imgPath:
-                extraData.image && extraData.image.url
-                  ? extraData.image.url
-                  : null,
-              username: user_nicename,
-              isLoggedIn: true,
-              id: user_ID,
-              phone: extraData.phone || "",
-              arabicName: extraData.arabic_name || "",
-              guideName:
-                extraData.guide && extraData.guide.display_name
-                  ? extraData.guide.display_name
-                  : "",
-              hebrewName: res.data.name,
-              GuidPhone:
-                extraData.guide && extraData.guide.user_description
-                  ? extraData.guide.user_description
-                  : "",
-            });
-
-            setLoading(false);
-            setUserNiceName(user_nicename);
-            setUserEmail(user_email);
-            setLoggedIn(true);
-          })
-          .catch((err) => console.error(err));
-      })
-      .catch((err) => {
-        setError(err.response.data.message);
+    try {
+      const loggedInUser = await loginUser({ user_name: username, phone: password });
+      console.log("loggedInUser", loggedInUser);
+      if (!loggedInUser) {
+        setError("שם משתמש או סיסמה שגויים");
         setLoading(false);
+        return;
+      }
+
+      console.log(typeof token);
+
+      sessionStorage.setItem("token", loggedInUser2.id);
+      localStorage.setItem("token", loggedInUser2.id);
+      localStorage.setItem("userName", username);
+      localStorage.setItem("userID", loggedInUser2.id);
+
+
+      const email = allUsers.some((user) => user.email === userEmail) ? userEmail : "taalworker+121@gmail.com";
+
+      localStorage.setItem("UserNODEid", loggedInUser2.id);
+      localStorage.setItem("userEmail", loggedInUser2.email);
+
+      console.log("res:");
+      console.log(res);
+      localStorage.setItem("guidphone", loggedInUser2.GuidPhone);
+
+
+      const extraData = loggedInUser2.acf ? loggedInUser2.acf : [];
+      props.actions.changeUser({
+        imgPath: loggedInUser2.picture_url || '',
+        username: username,
+        isLoggedIn: true,
+        id: loggedInUser2.id,
+        phone: loggedInUser2.phone || "",
+        arabicName: "",
+        guideName: "",
+        hebrewName: username,
+        GuidPhone: "",
       });
+
+      setUserNiceName(user_nicename);
+      setUserEmail(user_email);
+      setLoggedIn(true);
+    } catch (error) {
+      console.error('error', error);
+      setError("שם משתמש או סיסמה שגויים");
+    }
+    setLoading(false);
+
   };
 
   const handleOnChange = (event) => {
@@ -177,7 +140,7 @@ function Login(props) {
           />
         )}
         <div className="logo">
-          <img alt={"login logo"} src={LogoLogin} style={{maxWidth: "250px"}} />
+          <img alt={"login logo"} src={LogoLogin} style={{ maxWidth: "250px" }} />
         </div>
         <form onSubmit={onFormSubmit}>
           <label className="form-group">
