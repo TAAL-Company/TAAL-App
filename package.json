@@ -6,7 +6,6 @@
   "scripts": {
     "webpack-dev-server": "webpack-dev-server",
     "dev": "webpack-dev-server --mode=development",
-    "start": "webpack-dev-server --mode=development",
     "prod": "webpack --mode=production",
     "build": "webpack --mode production --output-path dist"
   },

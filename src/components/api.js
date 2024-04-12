@@ -195,22 +195,6 @@ export const getingDataUsersFromNodejs = async () => {
 
 };
 
-const corsHeader = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept"
-};
-
-export const loginUser = async (loginBodyData) => {
-    let loginUser;
-    console.log("geting data users");
-    try {
-        const res = await axios.post(azureConfig.loginUser, loginBodyData, corsHeader); //body and header shuld be an object
-        return res.data;
-    } catch (e) {
-        console.log(e);
-    }
-}
-
 export const getingDataRoutesFromNodejs = async () => {
     let allRoutes;
     console.log("geting data Routes");
