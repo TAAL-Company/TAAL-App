@@ -152,6 +152,7 @@ export default function Sites(props) {
     );
 
     console.log('separateList', separateList);
+    console.log('site_id', site_id);
     props.actions.visitPlaces(site_id);
     props.actions.changeCurrentTasks(separateList);
     props.actions.changeCurrentTasksList(cleanList);
@@ -440,7 +441,7 @@ export default function Sites(props) {
                         didVisit={
                           isCurrentSite(index) ? "current" : item.didVisit
                         }
-                        onImgClick={() => handleChildImgClick(index)}
+                        onImgClick={() => handleChildImgClick(0)}
                         value={0}
                         audioUrl={
                           item.acf && item.acf.audio ? item.acf.audio.url : ""
