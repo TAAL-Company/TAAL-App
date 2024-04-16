@@ -48,6 +48,7 @@ export default function Sites(props) {
   const [allRoutesOfUser, setAllRoutesOfUser] = useState([]);
   const [allTasksOfUser, setAllTasksOfUser] = useState([]);
   const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
+  const [AllPlacesOfUserwithroutes, setAllPlacesOfUserwithroutes] = useState([]);
   const users_ltr = [39, 78];
 
   const [nodeUser, setNodeUser] = useState({});
@@ -299,6 +300,7 @@ export default function Sites(props) {
         if (temp.parent === 0 ) {//&& !idOfUserPlaces.includes(temp.id)
           //place.parent === 0 is Site and not station
           setAllPlacesOfUser((prevState) => prevState.concat([temp]));
+          setAllPlacesOfUserwithroutes((prevState) => prevState.concat([{ ...temp, route }]));
           idOfUserPlaces.push(item);
         }
       });
@@ -429,7 +431,8 @@ export default function Sites(props) {
                 > */}
                 <div className="allPlacesOfUser">
                   {console.log("allPlacesOfUser : --- ", allPlacesOfUser)}
-                  {allPlacesOfUser.map((item, index) => {
+                  {console.log("AllPlacesOfUserwithroutes : --- ", AllPlacesOfUserwithroutes)}
+                  {AllPlacesOfUserwithroutes.map((item, index) => {
                     return (
                       <SiteComp
                         key={item.id+index}
@@ -441,7 +444,8 @@ export default function Sites(props) {
                         didVisit={
                           isCurrentSite(index) ? "current" : item.didVisit
                         }
-                        onImgClick={() => handleChildImgClick(0)}
+                        rouetname={item.route.title.rendered}
+                        onImgClick={() => handleChildImgClick(index)}
                         value={0}
                         audioUrl={
                           item.acf && item.acf.audio ? item.acf.audio.url : ""

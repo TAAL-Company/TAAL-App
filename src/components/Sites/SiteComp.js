@@ -47,6 +47,7 @@ export default function SiteComp(props) {
           </div>
           <div className="textBox">
             <p className="siteTxt">{props.name}</p>
+            <p className="siteTxt">{props.rouetname}</p>
           </div>
 
           {users_ltr.includes(parseInt(userId)) ? (
