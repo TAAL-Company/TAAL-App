@@ -1,18 +1,18 @@
 import { Redirect } from "@reach/router";
 import axios from "axios";
-import React , { useState } from "react";
+import React, { useState } from "react";
 import Modal from "react-modal";
 import clientConfig from "../../client-config";
 import "./Login.css";
 
 import { AiFillCloseCircle } from "react-icons/ai";
-import { FaRegUser ,FaAt } from "react-icons/fa";
+import { FaRegUser, FaAt } from "react-icons/fa";
 import { RiKey2Line } from "react-icons/ri";
 import LogoLogin from "../../images/LogoLoginWhite.png";
 
 import wpConfig from "../../wp-config";
 import { IS_NODE } from "../Sites/Sites";
-import { getingDataUsersFromNodejs } from "../api";
+import { getingDataUsersFromNodejs, loginUser } from "../api";
 //redux
 // import Spinner from "../assets/Spinner";
 
@@ -41,99 +41,156 @@ function Login(props) {
     __html: data,
   });
 
-  const onFormSubmit = (event) => {
+  const onFormSubmit = async (event) => {
     event.preventDefault();
 
-    const siteUrl = clientConfig.siteUrl;
-
-    const loginData = {
-      username: username,
-      password: password,
+    setLoading(true);
+    const res = { // wp login
+      data: {
+        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGFhbC50ZWNoIiwiaWF0IjoxNzEzMzc5MjEzLCJuYmYiOjE3MTMzNzkyMTMsImV4cCI6MTcxNTk3MTIxMywiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMjAifX19.pp1e68ABpbfUT7PKmUHcQQlNE4LR6Hxuf-mygYifUW8",
+        "user_email": "ilanimax+801@gmail.com",
+        "user_nicename": "sara-levy",
+        "user_display_name": "שרה לוי",
+        "user_ID": "20",
+        "acf": {
+          "ID": "20",
+          "user_login": "Sara Levy",
+          "user_pass": "$P$BeYMG.BS6V.CqLiEWPCDBz0/YwsNE1.",
+          "user_nicename": "sara-levy",
+          "user_email": "ilanimax+801@gmail.com",
+          "user_url": "",
+          "user_registered": "2021-07-27 13:46:00",
+          "user_activation_key": "",
+          "user_status": "0",
+          "display_name": "שרה לוי"
+        }
+      }
     };
 
-    setLoading(true);
-    axios
-      .post(`${siteUrl}wp-json/jwt-auth/v1/token`, loginData)
-      .then(async (res) => {
-        if (undefined === res.data.token) {
-          setError(res.data.message);
-          setLoading(false);
-          return;
+    const loggedInUser = await loginUser({ user_name: username, phone: password });
+    if (!loggedInUser) {
+      setError("שם משתמש או סיסמה שגויים");
+      setLoading(false);
+      return;
+    }
+
+    const loggedInUser2 = {
+      "id": "78c4941a-4b31-4b91-a039-5dba27fafbff",
+      "user_name": "TW1",
+      "email": "taalworker+1@gmail.com",
+      "name": "תמר לוי",
+      "phone": "1234",
+      "picture_url": null,
+      "role": "STUDENT",
+      "coachId": null,
+      "cognitiveProfile": {
+        "id": "3594ef80-a0a5-4fbd-9798-2071c5d31b58",
+        "remark": null,
+        "studentId": "78c4941a-4b31-4b91-a039-5dba27fafbff",
+        "value": [],
+      },
+      "coach": null,
+      "routes": [],
+      "tasks": [],
+      "sites": []
+    }
+
+    const { token, user_nicename, user_email, user_ID } = res.data;
+
+    sessionStorage.setItem("token", res.data.token);
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("userName", loggedInUser.name);
+    localStorage.setItem("userID", loggedInUser.id);
+
+    if (IS_NODE) {
+      const allUsers = await getingDataUsersFromNodejs();
+
+      const email = loggedInUser.email; // allUsers.some((user) => user.email === userEmail) ? userEmail : "taalworker+121@gmail.com";
+
+      const UserNODEid = allUsers.find((user) => {
+        if (user.email === email) {
+          return user
+        } else {
+          return null
         }
-
-        const { token, user_nicename, user_email, user_ID } = res.data;
-        console.log(typeof token);
-
-        sessionStorage.setItem("token", token);
-        localStorage.setItem("token", token);
-        localStorage.setItem("userName", user_nicename);
-        localStorage.setItem("userID", user_ID);
-
-        if (IS_NODE) {
-          const allUsers = await getingDataUsersFromNodejs();
-          
-          const email =  allUsers.some((user) => user.email ===  userEmail) ? userEmail : "taalworker+121@gmail.com";
-
-          const UserNODEid = allUsers.find((user) => {
-            if(user.email === email){
-              return user
-            }else{
-              return null 
-            }
-          });
-
-          localStorage.setItem("UserNODEid", UserNODEid.id);
-          console.log("UserNODEid", UserNODEid);
-
-          console.log("userEmail", userEmail,user_email,email);
-          console.log("allUsers", allUsers, email);
-          localStorage.setItem("userEmail", email);
-        }
-
-        axios.get(wpConfig.getUser, {
-            headers: {
-              Authorization: "Bearer " + token,
-            },
-          })
-          .then((res) => {
-            console.log("res:");
-            console.log(res);
-            localStorage.setItem("guidphone", res.data.acf.guide_phone);
-
-
-            const extraData = res.data.acf ? res.data.acf : [];
-            props.actions.changeUser({
-              imgPath:
-                extraData.image && extraData.image.url
-                  ? extraData.image.url
-                  : null,
-              username: user_nicename,
-              isLoggedIn: true,
-              id: user_ID,
-              phone: extraData.phone || "",
-              arabicName: extraData.arabic_name || "",
-              guideName:
-                extraData.guide && extraData.guide.display_name
-                  ? extraData.guide.display_name
-                  : "",
-              hebrewName: res.data.name,
-              GuidPhone:
-                extraData.guide && extraData.guide.user_description
-                  ? extraData.guide.user_description
-                  : "",
-            });
-
-            setLoading(false);
-            setUserNiceName(user_nicename);
-            setUserEmail(user_email);
-            setLoggedIn(true);
-          })
-          .catch((err) => console.error(err));
-      })
-      .catch((err) => {
-        setError(err.response.data.message);
-        setLoading(false);
       });
+
+      localStorage.setItem("UserNODEid", loggedInUser.id);
+      console.log("UserNODEid", loggedInUser.id);
+      localStorage.setItem("userEmail", email);
+    }
+
+    const res2 = {  // get(wpConfig.getUser
+      "id": 20,
+      "name": "שרה לוי",
+      "url": "",
+      "description": "שרה אוהבת לעזור לאנשים",
+      "link": "https://taal.tech/author/sara-levy/",
+      "slug": "sara-levy",
+      "avatar_urls": {
+        "24": "https://secure.gravatar.com/avatar/6f9d8abeea86bfda4ddd2c6ce2129f05?s=24&d=mm&r=g",
+        "48": "https://secure.gravatar.com/avatar/6f9d8abeea86bfda4ddd2c6ce2129f05?s=48&d=mm&r=g",
+        "96": "https://secure.gravatar.com/avatar/6f9d8abeea86bfda4ddd2c6ce2129f05?s=96&d=mm&r=g"
+      },
+      "meta": [],
+      "acf": {
+        "arabic_name": "",
+        "guide": false,
+        "image": false,
+        "risk_profile": "10",
+        "short_term_memory": "20",
+        "middle_term_memory": "11",
+        "long_term_memory": "14",
+        "concentration_and_focus_in_actions": "12",
+        "hearing_level": "41",
+        "vision_level": "33",
+        "guide_phone": "972544643843"
+      },
+      "_links": {
+        "self": [
+          {
+            "href": "https://taal.tech/wp-json/wp/v2/users/20"
+          }
+        ],
+        "collection": [
+          {
+            "href": "https://taal.tech/wp-json/wp/v2/users"
+          }
+        ]
+      }
+    }
+    console.log("res:");
+    console.log(res);
+    localStorage.setItem("guidphone", loggedInUser.phone || res2.acf.guide_phone);
+
+    const extraData = res2.acf ? res2.acf : [];
+    props.actions.changeUser({
+      imgPath:
+        loggedInUser.picture_url ||
+          extraData.image && extraData.image.url
+          ? extraData.image.url
+          : null,
+      username: loggedInUser.name || user_nicename,
+      isLoggedIn: true,
+      id: loggedInUser.id || user_ID,
+      phone: loggedInUser.phone || extraData.phone || "",
+      arabicName: extraData.arabic_name || "",
+      guideName:
+        extraData.guide && extraData.guide.display_name
+          ? extraData.guide.display_name
+          : "",
+      hebrewName: res.data.name,
+      GuidPhone:
+        loggedInUser.phone ||
+          extraData.guide && extraData.guide.user_description
+          ? extraData.guide.user_description
+          : "",
+    });
+
+    setLoading(false);
+    setUserNiceName(loggedInUser.name);
+    setUserEmail(loggedInUser.email);
+    setLoggedIn(true);
   };
 
   const handleOnChange = (event) => {
@@ -177,7 +234,7 @@ function Login(props) {
           />
         )}
         <div className="logo">
-          <img alt={"login logo"} src={LogoLogin} style={{maxWidth: "250px"}} />
+          <img alt={"login logo"} src={LogoLogin} style={{ maxWidth: "250px" }} />
         </div>
         <form onSubmit={onFormSubmit}>
           <label className="form-group">
@@ -194,7 +251,7 @@ function Login(props) {
             />
           </label>
           <br />
-          <label hidden={!IS_ADMIN_VERSION} className="form-group">
+          {/* <label hidden={!IS_ADMIN_VERSION} className="form-group">
             <div className="icon">
               <FaAt />
             </div>
@@ -207,7 +264,7 @@ function Login(props) {
               onChange={handleOnChange}
             />
           </label>
-          <br />
+          <br /> */}
           <label className="form-group">
             <div className="icon">
               {" "}
