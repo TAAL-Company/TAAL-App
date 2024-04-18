@@ -30,6 +30,7 @@ const tasksReducer = (state, action) => {
 };
 
 function Tasks(props) {
+  console.log("Tasks props: ", props);
 
   const { user_tasks } = props;
   const { current_tasks_list, task_current_index } = user_tasks;
@@ -56,9 +57,11 @@ function Tasks(props) {
   const goBack = () => sliderRef.current.slickPrev();
 
   const [canSwipe, setCanSwipe] = useState(false);
+  const [Swipetime, setSwipetime] = useState(0);
 
   useEffect(() => {
     setCanSwipe(false);
+    setSwipetime(Date.now());
     const estimatedTime = allData[currIndex]?.acf?.Estimated_time;
     const timeoutID = setTimeout(() => {
       setCanSwipe(true);
@@ -68,6 +71,8 @@ function Tasks(props) {
 
   const handleSwipe = useSwipeable({
     onSwiped: () => {
+      const estimatedTime = allData[currIndex]?.acf?.Estimated_time;
+      console.log('Swipetime',Swipetime/1000,Date.now()/1000-Swipetime/1000,estimatedTime-(Date.now()/1000-Swipetime/1000));
       if (canSwipe) {
       if (screen.width > 1020) {
         if (currIndex === 0) {
