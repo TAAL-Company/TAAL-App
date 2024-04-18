@@ -34,8 +34,9 @@ export const internetConnection = () => {
 }
 
 export const nodeRouteAdapter = (routedata) => {
+	console.log('routedata',routedata);
 	let noderoutedata = [];
-	routedata.forEach((route) => {
+	routedata.forEach(async (route) => {
 
 		let wpRoute = {
 			"id": 0,
@@ -165,13 +166,13 @@ export const nodeRouteAdapter = (routedata) => {
 		})
 
 		// ----tasks----
-		route.tasks.map(async (taskId) => {
+		await Promise.all(route.tasks.map(async (taskId, index) => {
 			let tasksbyid = await getingTasksById(taskId.taskId)
 			tasks.ID = tasksbyid.id
 			tasks.post_name = tasksbyid.subtitle
 			tasks.post_title = tasksbyid.title
-			wpRoute.acf.tasks.push({ ...tasks })
-		})
+			wpRoute.acf.tasks[index]=({ ...tasks })
+		}));
 
 		noderoutedata.push(wpRoute)
 	})
@@ -517,22 +518,22 @@ export const nodeTasksAdapter = (Tasksdata) => {
 			}
 		}
 
-		wpTasks.id=Taskdata.id
-		wpTasks.title.rendered= Taskdata.title;
-		wpTasks.content.rendered= Taskdata.subtitle;
-		wpTasks.acf.Estimated_time=Taskdata.estimatedTimeSeconds
-		wpTasks.acf.max_time=Taskdata.estimatedTimeSeconds
-		wpTasks.acf.image.url=Taskdata.picture_url
-		wpTasks.acf.image.link=Taskdata.picture_url
-		wpTasks.acf.audio.url=Taskdata.audio_url
-		wpTasks.acf.audio.link=Taskdata.audio_url
-		wpTasks.acf.sub_tasks=Taskdata.subtasks
+		wpTasks.id = Taskdata.id
+		wpTasks.title.rendered = Taskdata.title;
+		wpTasks.content.rendered = Taskdata.subtitle;
+		wpTasks.acf.Estimated_time = Taskdata.estimatedTimeSeconds
+		wpTasks.acf.max_time = Taskdata.estimatedTimeSeconds
+		wpTasks.acf.image.url = Taskdata.picture_url
+		wpTasks.acf.image.link = Taskdata.picture_url
+		wpTasks.acf.audio.url = Taskdata.audio_url
+		wpTasks.acf.audio.link = Taskdata.audio_url
+		wpTasks.acf.sub_tasks = Taskdata.subtasks
 
 		// ----places/sites---
 		Taskdata.sites.map(async (taskId) => {
 			wpTasks.places.push(taskId.id)
 		})
-		
+
 		nodeTasksdata.push({ ...wpTasks })
 	})
 	console.log("nodeTasksdata", nodeTasksdata);
