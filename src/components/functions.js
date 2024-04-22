@@ -166,13 +166,13 @@ export const nodeRouteAdapter = (routedata) => {
 		})
 
 		// ----tasks----
-		await Promise.all(route.tasks.map(async (taskId, index) => {
+		route.tasks.map(async (taskId, index) => {
 			let tasksbyid = await getingTasksById(taskId.taskId)
 			tasks.ID = tasksbyid.id
 			tasks.post_name = tasksbyid.subtitle
 			tasks.post_title = tasksbyid.title
 			wpRoute.acf.tasks[index]=({ ...tasks })
-		}));
+		});
 
 		noderoutedata.push(wpRoute)
 	})
