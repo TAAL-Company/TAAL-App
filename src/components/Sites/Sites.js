@@ -31,7 +31,7 @@ let routesInfo, taskInformation;
 export default function Sites(props) {
   const { user, user_places, userTasks } = props;
   const [userId, setUserId] = useState(localStorage.getItem("userID"));
-  const [userEmail, setUserEmail] = useState( localStorage.getItem("userEmail"));//"taalworker+121@gmail.com" ||
+  const [userEmail, setUserEmail] = useState(localStorage.getItem("userEmail"));//"taalworker+121@gmail.com" ||
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(true);
   const [lineLength, setLineLength] = useState(52);
@@ -121,8 +121,8 @@ export default function Sites(props) {
     const site_id = localStorage.getItem("site_id");
     console.log("Child img clicked");
     console.log("handleChildImgClick" + typeof site_id);
-    console.log("allPlacesOfUser", allPlacesOfUser);
-    let site_name = allPlacesOfUser.find(
+    console.log("allPlacesOfUser", AllPlacesOfUserwithroutes);
+    let site_name = AllPlacesOfUserwithroutes.find(
       (place) => IS_NODE ? place.id === site_id : place.id === parseInt(site_id)
     );
     localStorage.setItem("site_title", site_name.name);
@@ -139,7 +139,7 @@ export default function Sites(props) {
 
     console.log("routesOfUserInTheSite", routesOfUserInTheSite);
 
-    localStorage.setItem("route_title",routesOfUserInTheSite[index].title.rendered);
+    localStorage.setItem("route_title", routesOfUserInTheSite[index].title.rendered);
     localStorage.setItem("route_id", routesOfUserInTheSite[index].id);
 
     let tempTransformObject = await trasformObject(
@@ -291,22 +291,38 @@ export default function Sites(props) {
     console.log('allRoutesOfUserTemp', allRoutesOfUserTemp);
 
     let idOfUserPlaces = [];
+    let counter = 0; // Initialize the counter
+    let lastItemIndexes = {}; // Initialize an object to keep track of the last index of each item
+    let updatedPlacesWithRoutes = []; // Local array to accumulate changes
 
     allRoutesOfUserTemp.forEach((route) => {
       console.log("route ---- ", route);
       route.places.forEach((item) => {
-        let temp = allPlaces.find((place) => place.id === item);// allPlaces --> AllNodePlaces
-        console.log("idOfUserPlaces", idOfUserPlaces );
-        if (temp.parent === 0 ) {//&& !idOfUserPlaces.includes(temp.id)
-          //place.parent === 0 is Site and not station
-          setAllPlacesOfUser((prevState) => prevState.concat([temp]));
-          setAllPlacesOfUserwithroutes((prevState) => prevState.concat([{ ...temp, route }]));
-          idOfUserPlaces.push(item);
+        let temp = allPlaces.find((place) => place.id === item); // allPlaces --> AllNodePlaces
+        console.log("idOfUserPlaces", idOfUserPlaces);
+        if (temp.parent === 0) { // place.parent === 0 is Site and not station
+          // Check if the current item is in the idOfUserPlaces array
+          const existingIndex = idOfUserPlaces.findIndex(place => place.item === item);
+          if (existingIndex !== -1) {
+            // If the item is found in the array, continue counting from the last occurrence
+            counter = lastItemIndexes[item] + 1;
+          } else {
+            // If the item is not found in the array, reset the counter
+            counter = 0;
+          }
+          // Update the last item index
+          lastItemIndexes[item] = counter;
+          updatedPlacesWithRoutes.push({ ...temp, route, counter }); // Accumulate changes in local array
+          // setAllPlacesOfUser((prevState) => prevState.concat([temp]));
+          idOfUserPlaces.push({ item });
         }
       });
     });
 
-    console.log("idOfUserPlaces",idOfUserPlaces);
+    // Update the state once after the loop
+    setAllPlacesOfUserwithroutes(prevState => prevState.concat(updatedPlacesWithRoutes));
+
+    console.log("idOfUserPlaces", idOfUserPlaces);
 
     placesList = await trasformObject(allPlaces);
     routesInfo = await transformArrayOfObjects(allRoutes);
@@ -430,12 +446,13 @@ export default function Sites(props) {
                   onChange={onChangeSite}
                 > */}
                 <div className="allPlacesOfUser">
-                  {console.log("allPlacesOfUser : --- ", allPlacesOfUser)}
+                  {/* {console.log("allPlacesOfUser : --- ", allPlacesOfUser)} */}
                   {console.log("AllPlacesOfUserwithroutes : --- ", AllPlacesOfUserwithroutes)}
                   {AllPlacesOfUserwithroutes.map((item, index) => {
+
                     return (
                       <SiteComp
-                        key={item.id+index}
+                        key={item.id + index}
                         id={item.id}
                         name={item.name}
                         imgUrl={
@@ -445,7 +462,8 @@ export default function Sites(props) {
                           isCurrentSite(index) ? "current" : item.didVisit
                         }
                         rouetname={item.route.title.rendered}
-                        onImgClick={() => handleChildImgClick(index)}
+                        // rouetname={item.counter}
+                        onImgClick={() => handleChildImgClick(item.counter)}
                         value={0}
                         audioUrl={
                           item.acf && item.acf.audio ? item.acf.audio.url : ""
