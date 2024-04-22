@@ -35,7 +35,7 @@ function Tasks(props) {
   const { user_tasks } = props;
   const { current_tasks_list, task_current_index } = user_tasks;
   // const [state, localDispatch] = useReducer(tasksReducer, initialState)
-  const {task_location} = user_tasks;
+  const { task_location } = user_tasks;
 
 
   const getInitialLocation = () => {
@@ -72,47 +72,48 @@ function Tasks(props) {
   const handleSwipe = useSwipeable({
     onSwiped: () => {
       const estimatedTime = allData[currIndex]?.acf?.Estimated_time;
-      console.log('Swipetime',Swipetime/1000,Date.now()/1000-Swipetime/1000,estimatedTime-(Date.now()/1000-Swipetime/1000));
+      console.log('Swipetime', Swipetime / 1000, Date.now() / 1000 - Swipetime / 1000, estimatedTime - (Date.now() / 1000 - Swipetime / 1000));
       if (canSwipe) {
-      if (screen.width > 1020) {
-        if (currIndex === 0) {
-          props.actions.completeTask(
-            allData[currIndex].id,
-            allData.length - 1 - currIndex
-          );
-          setModalOpen(true);
-        } else sliderRef.current.slickGoTo(currIndex - 1);
-      } else {
-        if (currIndex < allData.length - 1) {
-          sliderRef.current.slickNext();
-        } else if (currIndex === allData.length - 1) {
-          props.actions.completeTask(allData[currIndex].id, currIndex);
-          setModalOpen(true);
+        if (screen.width > 1020) {
+          if (currIndex === 0) {
+            props.actions.completeTask(
+              allData[currIndex].id,
+              allData.length - 1 - currIndex
+            );
+            setModalOpen(true);
+          } else sliderRef.current.slickGoTo(currIndex - 1);
+        } else {
+          if (currIndex < allData.length - 1) {
+            sliderRef.current.slickNext();
+          } else if (currIndex === allData.length - 1) {
+            props.actions.completeTask(allData[currIndex].id, currIndex);
+            setModalOpen(true);
+          }
         }
-      }
-    }else{
-      let timerInterval;
-      Swal.fire({
-        title: "הזמן לא נגמר.",
-        width: 600,
-        icon: "warning",
-        padding: "3em",
-        color: "#000000",
-        showConfirmButton: false,
-        timer: 1500,
-        backdrop: `
+      } else {
+        let timerInterval;
+        Swal.fire({
+          title: "הזמן לא נגמר.",
+          width: 600,
+          html: `<p>הזמן נגמר ב ${(estimatedTime - (Date.now() / 1000 - Swipetime / 1000)).toFixed(2)} שניות</p>`,
+          icon: "warning",
+          padding: "3em",
+          color: "#000000",
+          showConfirmButton: false,
+          timer: 1500,
+          backdrop: `
           rgba(255, 193, 91,0.4)
           no-repeat
         `,
-        timerProgressBar: true,
-        didOpen: () => {
-          Swal.showLoading();
-        },
-        willClose: () => {
-          clearInterval(timerInterval);
-        }
-      });
-    }
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          }
+        });
+      }
     },
   });
 
@@ -156,7 +157,7 @@ function Tasks(props) {
 
   // component did mount
   useEffect(() => {
-    if(!isLoggedIn()){
+    if (!isLoggedIn()) {
       handleLogout();
 
     }
@@ -408,7 +409,7 @@ function Tasks(props) {
                   >
                     <TaskComp
                       taskId={item.id}
-                      task_location = {task_location}
+                      task_location={task_location}
 
                       lastOne={modalOpen}
                       imgUrl={
@@ -530,7 +531,7 @@ function Tasks(props) {
                   <div key={index} className={"slide slideHorizontalItem"}>
                     <TaskComp
                       taskId={item.id}
-                      task_location = {task_location}
+                      task_location={task_location}
                       lastOne={modalOpen}
                       imgUrl={
                         item.acf && item.acf.image ? item.acf.image.url : false
