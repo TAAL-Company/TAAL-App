@@ -43,7 +43,7 @@ function Help(props) {
   console.log("len: " + user_places.user_places.length);//1
   console.log("task_location: " + user_tasks.task_location);
   console.log("user_places: " + user_places.user_places);
-  console.log("username hebrew" + user.user.hebrewName);
+  console.log("username hebrew" + user.user?.hebrewName);
   console.log("current task: " + currentTaskName);
 
   const [phoneGuide, setPhoneGuide] = useState("error");
@@ -331,7 +331,8 @@ function Help(props) {
                         ? "https://api.whatsapp.com/send/?phone=" +
                           phoneGuide.toString() +
                           "&text=" +
-                          user.user.hebrewName.toString() +
+                          // user.user?.hebrewName?.toString() +username
+                          user.user.username.toString() +
                           " מתקשה במילוי המשימה " +
                           '"' +
                           currentTaskName.toString() +
@@ -383,7 +384,7 @@ function Help(props) {
                     {/* <div className="popup">
                       <AiFillCloseCircle id="x" onClick={toggleModal} />
                       <div className="ModalMessage">
-                        {user.user.hebrewName + " " + "זקוק/ה לסיוע."}
+                        {user.user?.hebrewName + " " + "זקוק/ה לסיוע."}
                         <br />
                         {"נשלחה הודעה למסייע/ת" +
                           " " +
@@ -424,7 +425,9 @@ function Help(props) {
                         ? "https://api.whatsapp.com/send/?phone=" +
                           phoneGuide.toString() +
                           "&text=" +
-                          user.user.hebrewName.toString() +
+                          // user.user?.hebrewName?.toString() +
+                          user.user.username.toString() +
+                          
                           " מתקשה במילוי המשימה " +
                           '"' +
                           currentTaskName.toString() +
@@ -475,7 +478,8 @@ function Help(props) {
                     <div className="popup">
                       <AiFillCloseCircle id="x" onClick={toggleModal} />
                       <div className="ModalMessage">
-                        {user.user.hebrewName + " " + "זקוק/ה לסיוע."}
+                        {/* {user.user?.hebrewName + " " + "זקוק/ה לסיוע."} */}
+                        {user.user.username + " " + "זקוק/ה לסיוע."}
                         <br />
                         {"נשלחה הודעה למסייע/ת" +
                           " " +

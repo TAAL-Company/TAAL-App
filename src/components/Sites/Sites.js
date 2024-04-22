@@ -30,6 +30,7 @@ let routesInfo, taskInformation;
 
 export default function Sites(props) {
   const { user, user_places, userTasks } = props;
+  console.log("props", props);
   const [userId, setUserId] = useState(localStorage.getItem("userID"));
   const [userEmail, setUserEmail] = useState(localStorage.getItem("userEmail"));//"taalworker+121@gmail.com" ||
   const [loading, setLoading] = useState(false);
@@ -397,12 +398,12 @@ export default function Sites(props) {
             >
               {users_ltr.includes(parseInt(userId)) ? (
                 <>
-                  <h5 className="helloTitle">Hello {user.user.hebrewName} </h5>
+                  <h5 className="helloTitle">Hello {user.user.username} </h5>
                   <h1 className="addText">!Happy to see you</h1>
                 </>
               ) : (
                 <>
-                  <h5 className="helloTitle">{user.user.hebrewName} שלום</h5>{" "}
+                  <h5 className="helloTitle">{user.user.username} שלום</h5>{" "}
                   <h1 className="addText">!שמחים לראותך</h1>
                 </>
               )}

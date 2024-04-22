@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 function Navbar(props) {
   const { origin, user } = props;
   const { hebrewName = "", arabicName = "", imgPath = false } = user;
+
   const userName = getUserName() ? getUserName() : "";
 
   const stress = origin === "Help" ? "StressIconGrey" : "StressIconRed";
@@ -234,9 +235,9 @@ function Navbar(props) {
                           : "7px",
                       }}
                     >
-                      {hebrewName}
+                      {userName}
                     </h5>
-                    {/* <h5>{arabicName}</h5> */}
+                    {/* <h5>{arabicName , hebrewName}</h5> */}
                   </div>
                 </div>
                 <div className="imageFrame">
