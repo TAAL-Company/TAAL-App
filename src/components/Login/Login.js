@@ -161,7 +161,7 @@ function Login(props) {
     }
     console.log("res:");
     console.log(res);
-    localStorage.setItem("guidphone", loggedInUser.phone || res2.acf.guide_phone);
+    localStorage.setItem("guidphone", loggedInUser.coach.phone || res2.acf.guide_phone);
 
     const extraData = res2.acf ? res2.acf : [];
     props.actions.changeUser({
@@ -181,7 +181,7 @@ function Login(props) {
           : "",
       hebrewName: res.data.name,
       GuidPhone:
-        loggedInUser.phone ||
+        loggedInUser.coach.phone ||
           extraData.guide && extraData.guide.user_description
           ? extraData.guide.user_description
           : "",
