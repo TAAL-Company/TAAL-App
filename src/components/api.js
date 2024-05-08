@@ -212,7 +212,12 @@ export const getingDataRoutesFromNodejs = async () => {
     try {
         await get(azureConfig.getRoutes).then((res) => {
             console.log("getRoutes", res.data);
-            allRoutes = res.data
+            allRoutes = res.data.map((route)=>{
+                // console.log(route.tasks);
+                route.tasks.sort((a, b) => a.position - b.position);
+                return route
+              })
+            // allRoutes = res.data
         });
         return allRoutes
     } catch (error) {
