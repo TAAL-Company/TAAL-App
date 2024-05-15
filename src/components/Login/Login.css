@@ -79,6 +79,12 @@
     color: white;
 }
 
+.btnlogout{
+    background: rgb(37, 111, 161);
+    border-color: rgb(37, 111, 161);
+    color: white;
+}
+
 lable{
     height: auto;
     width: 100%;

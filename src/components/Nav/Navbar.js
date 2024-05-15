@@ -213,10 +213,10 @@ function Navbar(props) {
                   >
                     <button
                       onClick={handleLogout}
-                      className="btn btn-secondary ml-3"
+                      className="btnlogout btn-secondary ml-3"
                       style={{
                         background: "rgb(37,111,161)",
-                        borderWidth: 1,
+                        borderWidth: 0,
                         // color: "rgb(37,111,161)",
                       }}
                     >
