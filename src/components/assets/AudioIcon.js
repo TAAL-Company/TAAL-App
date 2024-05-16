@@ -2,10 +2,10 @@ import React from "react";
 import { BsFillVolumeUpFill } from "react-icons/bs";
 import { Square, SquareWrapper } from "../assets/Styles";
 import "./style.css";
+const audio = new Audio();
 
 function AudioIcon(props) {
   const { innerStyle, containerStyle } = props;
-  const audio = new Audio(props.audioUrl);
 
   return (
     <SquareWrapper width={props.width} style={containerStyle}>
@@ -14,8 +14,13 @@ function AudioIcon(props) {
           className=""
           id={props.id ? props.id : ""}
           onClick={() => {
-            audio.play();
-            console.log("change background color");
+            console.log("befor audio play");
+
+            audio.setAttribute('src', props.audioUrl); //change the source
+            audio.load(); //load the new source
+            audio.play(); //play
+
+            console.log("after audio play");
           }}
           style={styles.iconBox}
           aria-label={"audio"}
