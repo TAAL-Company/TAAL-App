@@ -4,7 +4,7 @@ import { postDataTime } from "../api";
 import AudioIcon from "../assets/AudioIcon";
 import CheckIcon from "../assets/CheckIcon";
 import styled from "styled-components";
-import { parseContent,getTimeInUTC } from "./functions";
+import { parseContent, getTimeInUTC } from "./functions";
 import "./taskCompStyle.css";
 
 import { IS_NODE } from "../Sites/Sites";
@@ -179,10 +179,10 @@ export default function TaskComp(props) {
                 : "ltr",
             }}
           >
-            <div style={{ width: "20%", height: "100%" }}>
+            <div style={{ width: "30%", height: "100%", padding: 0 }}>
               <AudioIcon audioUrl={props.audioUrl} />
             </div>
-            <div style={{ height: "100%", width: "79.5%", padding: 0 }}>
+            <div style={{ height: "100%", width: "70%", padding: 0 }}>
               <div
                 className="textTaskComp"
                 style={{
