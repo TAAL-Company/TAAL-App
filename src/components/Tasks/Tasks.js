@@ -334,6 +334,14 @@ function Tasks(props) {
       return "https://globalimpactnetwork.org/wp-content/themes/globalimpact/images/no-image-found-360x250.png";
   };
 
+  const getAudio = () => {
+    console.log("allData[currIndex]", allData[currIndex]?.acf?.audio?.url);
+    if (allData[currIndex] && allData[currIndex].acf.image.url)
+      return allData[currIndex].acf.audio.url;
+    else
+      return "null";
+  };
+
   // get station name for tablet design
   const getStationName = (index) => {
     if (allData && allData[index] && allData[index].stationDetails)
@@ -496,6 +504,9 @@ function Tasks(props) {
               <div className={"audioContainer"}>
                 <AudioIcon
                   width={25}
+                  audioUrl={
+                    getAudio()
+                  }
                   containerStyle={{ alignSelf: "center" }}
                 />
               </div>
