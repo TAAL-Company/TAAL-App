@@ -59,10 +59,29 @@ function Tasks(props) {
   const [canSwipe, setCanSwipe] = useState(false);
   const [Swipetime, setSwipetime] = useState(0);
 
+  // useEffect(() => {
+  //   if (screen.width > 1020)
+  //     setAllData(props.user_tasks.current_tasks_list.slice(0).reverse());
+  //   else setAllData(props.user_tasks.current_tasks_list);
+
+  //   console.log("currIndex", allData);
+  // }, []);
+
   useEffect(() => {
     setCanSwipe(false);
     setSwipetime(Date.now());
-    const estimatedTime = allData[currIndex]?.acf?.Estimated_time;
+    let estimatedTime = allData[currIndex]?.acf?.Estimated_time;
+    if (estimatedTime == undefined) {
+        if (screen.width > 1020)
+          estimatedTime =props.user_tasks.current_tasks_list.slice(0).reverse()[currIndex]?.acf?.Estimated_time;
+        else estimatedTime = props.user_tasks.current_tasks_list[currIndex]?.acf?.Estimated_time;
+    }
+
+    // console.log("currIndex", props.user_tasks.current_tasks_list.slice(0).reverse());
+    // console.log("currIndex", props.user_tasks.current_tasks_list);
+    // console.log("currIndex", currIndex);
+    // console.log("currIndex estimatedTime", estimatedTime);
+
     const timeoutID = setTimeout(() => {
       setCanSwipe(true);
     }, estimatedTime * 1000); // Convert seconds to milliseconds
