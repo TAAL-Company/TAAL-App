@@ -254,8 +254,34 @@ function Tasks(props) {
     }
     //
     else if (arrowDirection === "left" && currIndex !== 0) {
-      sliderRef.current.slickGoTo(currIndex - 1);
-
+      const estimatedTime = allData[currIndex]?.acf?.Estimated_time;
+      console.log('Swipetime', Swipetime / 1000, Date.now() / 1000 - Swipetime / 1000, estimatedTime - (Date.now() / 1000 - Swipetime / 1000));
+      if (canSwipe) {
+        sliderRef.current.slickGoTo(currIndex - 1);
+      } else {
+        let timerInterval;
+        Swal.fire({
+          title: "הזמן לא נגמר.",
+          width: 600,
+          html: `<p>הזמן נגמר ב ${(estimatedTime - (Date.now() / 1000 - Swipetime / 1000)).toFixed(2)} שניות</p>`,
+          icon: "warning",
+          padding: "3em",
+          color: "#000000",
+          showConfirmButton: false,
+          timer: 1500,
+          backdrop: `
+        rgba(255, 193, 91,0.4)
+        no-repeat
+      `,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          }
+        });
+      }
       // if (dateCurrTask - dateLastTask > 3000) {
       //   // start from here
       //   sliderRef.current.slickGoTo(currIndex - 1);
