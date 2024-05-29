@@ -497,7 +497,7 @@ const Connector = styled.hr`
   bottom: ${(props) => (props.bottom ? props.bottom : 0)}vh;
   top: ${(props) => (props.top ? props.top : 54)}vh;
   z-index: 0;
-  @media (min-width: 1024px) {
+  @media (min-width: 672px) {
     width: ${(props) => (props.width ? props.width : 86.5)}vw;
     height: 3px;
     top: ${(props) => (props.top ? props.top : 85)}vh;

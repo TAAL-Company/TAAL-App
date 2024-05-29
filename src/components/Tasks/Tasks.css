@@ -224,7 +224,7 @@
     text-align: right;
 
 }
-@media (max-width: 1000px)  {
+@media (max-width: 672px)  {
 
     .carouselContainer {
         height: 100%;
@@ -357,7 +357,7 @@
         }
     }
 }
-@media (min-width: 1024px) {
+@media (min-width: 672px) {
 
     /* iPad css */
     .wideContainer {

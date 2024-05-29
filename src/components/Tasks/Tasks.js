@@ -31,6 +31,7 @@ const tasksReducer = (state, action) => {
 
 function Tasks(props) {
   console.log("Tasks props: ", props);
+  let screenwidth = 672;//1020 - 1023
 
   const { user_tasks } = props;
   const { current_tasks_list, task_current_index } = user_tasks;
@@ -39,7 +40,7 @@ function Tasks(props) {
 
 
   const getInitialLocation = () => {
-    return screen.width > 1020
+    return screen.width > screenwidth
       ? current_tasks_list.length - 1 - (task_current_index || 0)
       : task_current_index;
   };
@@ -60,7 +61,7 @@ function Tasks(props) {
   const [Swipetime, setSwipetime] = useState(0);
 
   // useEffect(() => {
-  //   if (screen.width > 1020)
+  //   if (screen.width > screenwidth)
   //     setAllData(props.user_tasks.current_tasks_list.slice(0).reverse());
   //   else setAllData(props.user_tasks.current_tasks_list);
 
@@ -72,7 +73,7 @@ function Tasks(props) {
     setSwipetime(Date.now());
     let estimatedTime = allData[currIndex]?.acf?.Estimated_time;
     if (estimatedTime == undefined) {
-        if (screen.width > 1020)
+        if (screen.width > screenwidth)
           estimatedTime =props.user_tasks.current_tasks_list.slice(0).reverse()[currIndex]?.acf?.Estimated_time;
         else estimatedTime = props.user_tasks.current_tasks_list[currIndex]?.acf?.Estimated_time;
     }
@@ -93,7 +94,7 @@ function Tasks(props) {
       const estimatedTime = allData[currIndex]?.acf?.Estimated_time;
       console.log('Swipetime', Swipetime / 1000, Date.now() / 1000 - Swipetime / 1000, estimatedTime - (Date.now() / 1000 - Swipetime / 1000));
       if (canSwipe) {
-        if (screen.width > 1020) {
+        if (screen.width > screenwidth) {
           if (currIndex === 0) {
             props.actions.completeTask(
               allData[currIndex].id,
@@ -162,13 +163,13 @@ function Tasks(props) {
     if (allData[index] && allData[index].id)
       props.actions.completeTask(
         allData[index].id,
-        screen.width > 1023 ? allData.length - 1 - index : index
+        screen.width > screenwidth ? allData.length - 1 - index : index
       );
   };
   const updateCurrentTask = (nextIndex) => {
     props.actions.changeCurrentTask(
       allData[nextIndex].title.rendered,
-      screen.width > 1023 ? allData.length - 1 - nextIndex : nextIndex
+      screen.width > screenwidth ? allData.length - 1 - nextIndex : nextIndex
     );
     prevIndex.current = currIndex;
     setCurrIndex(nextIndex);
@@ -182,12 +183,12 @@ function Tasks(props) {
     }
 
 
-    if (screen.width < 1000 && screen.height) {
+    if (screen.width < screenwidth && screen.height) {
       sliderRef.current.slickGoTo(props.user_tasks.task_current_index);
     }
     // setCurrIndex(props.user_tasks.task_current_index)
     let stations = storeInitialData([...props.user_tasks.current_tasks]);
-    if (screen.width > 1020)
+    if (screen.width > screenwidth)
       setAllData(props.user_tasks.current_tasks_list.slice(0).reverse());
     else setAllData(props.user_tasks.current_tasks_list);
     setStationsData(stations);
@@ -439,7 +440,7 @@ function Tasks(props) {
         sliderRef.current.slickGoTo(currIndex - 1);
     };};</div> */}
       <Navbar origin={"Tasks"} user_data={props.user} />
-      {screen.width < 1000 ? (
+      {screen.width < screenwidth ? (
         <div className="containerTasks">
           <div className="center grayBar">
             <Text>
