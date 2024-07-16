@@ -77,8 +77,9 @@ export default function TaskComp(props) {
       } else if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {
         //If it is not equal to this, then it means that the user has finished the task
         localStorage.setItem("taskIdForApi", objTime.idTask);
-        objTime.currdateAndTime = objTime.startTime;
+        objTime.currdateAndTime = localStorage.getItem("whenAssisted");
         postDataTime(objTime); //api request to wp db
+        localStorage.setItem("whenAssisted","1")
       }
 
       //rest the data to the next tesk:
@@ -109,8 +110,9 @@ export default function TaskComp(props) {
       } else if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {
         //If it is not equal to this, then it means that the user has finished the task
         localStorage.setItem("taskIdForApi", objTime.idTask);
-        objTime.currdateAndTime = objTime.startTime;
+        objTime.currdateAndTime = localStorage.getItem("whenAssisted");
         postDataTime(objTime); //api request to wp db
+        localStorage.setItem("whenAssisted","1")
       }
     }
   }

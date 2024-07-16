@@ -135,7 +135,10 @@ function Navbar(props) {
                         </div>
                       </>
                     ) : (
-                      <NavLink origin={origin} to={`/Help/${userName}`}>
+                      <NavLink origin={origin} onClick={()=>{
+                        localStorage.setItem("whenAssisted","0")
+                        console.log("testing",localStorage.getItem("whenAssisted"))
+                      }} to={`/Help/${userName}`}>
                         <StressIconRed className="StressIcon" src={stress} />
                       </NavLink>
                     )}
