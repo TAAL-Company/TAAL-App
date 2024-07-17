@@ -17,7 +17,14 @@ import axios from "axios";
 
 function Help(props) {
   const { user_tasks, user_places, user } = props;
-  const currentTaskName = user_tasks.task_location || "";
+  const currentTaskjson = user_tasks.current_tasks_list.find(tasks_list) || ""; 
+  function tasks_list(task) {
+    return task.title.rendered == user_tasks.task_location;
+  }
+
+  // const currentTaskStation = currentTaskjson?.stationDetails?.name || "";
+
+  const currentTaskName = currentTaskjson?.content?.rendered || ""; //user_tasks.task_location || "";
   const [isOpen, setIsOpen] = useState(false);
   const [action, setAction] = useState("");
   const [state, setState] = useState({
@@ -27,11 +34,16 @@ function Help(props) {
   const userNameApi = process.env.USERNAME_ACCESSKEY;
   const passwordApi = process.env.PASSWORD_ACCESSKEY;
 
-  console.log("user_places.places_location: " + user_places.places_location);
-  console.log("len: " + user_places.user_places.length);
+  console.log("props ", props);
+  console.log("user_places.user_places[-1] ", user_places.user_places[-1]);//error
+  console.log("user_places.places_location ", user_places.places_location," - user_tasks.task_location ",user_tasks.task_location );
+
+  
+  console.log("user_places.places_location: " + user_places.places_location);//-1
+  console.log("len: " + user_places.user_places.length);//1
   console.log("task_location: " + user_tasks.task_location);
   console.log("user_places: " + user_places.user_places);
-  console.log("username hebrew" + user.user.hebrewName);
+  console.log("username hebrew" + user.user?.hebrewName);
   console.log("current task: " + currentTaskName);
 
   const [phoneGuide, setPhoneGuide] = useState("error");
@@ -85,13 +97,13 @@ function Help(props) {
           setState({
             ...state,
             action: "My next place:",
-            site: user_places.user_places[user_places.places_location].name,
+            site: user_places.user_places[user_places.places_location]?.name || '',// currentTaskStation,
           });
         } else {
           setState({
             ...state,
             action: "המיקום הבא שלי:",
-            site: user_places.user_places[user_places.places_location].name,
+            site: user_places.user_places[user_places.places_location]?.name || '',//currentTaskStation,
           });
         }
       }
@@ -319,7 +331,8 @@ function Help(props) {
                         ? "https://api.whatsapp.com/send/?phone=" +
                           phoneGuide.toString() +
                           "&text=" +
-                          user.user.hebrewName.toString() +
+                          // user.user?.hebrewName?.toString() +username
+                          user.user.username.toString() +
                           " מתקשה במילוי המשימה " +
                           '"' +
                           currentTaskName.toString() +
@@ -371,7 +384,7 @@ function Help(props) {
                     {/* <div className="popup">
                       <AiFillCloseCircle id="x" onClick={toggleModal} />
                       <div className="ModalMessage">
-                        {user.user.hebrewName + " " + "זקוק/ה לסיוע."}
+                        {user.user?.hebrewName + " " + "זקוק/ה לסיוע."}
                         <br />
                         {"נשלחה הודעה למסייע/ת" +
                           " " +
@@ -412,7 +425,9 @@ function Help(props) {
                         ? "https://api.whatsapp.com/send/?phone=" +
                           phoneGuide.toString() +
                           "&text=" +
-                          user.user.hebrewName.toString() +
+                          // user.user?.hebrewName?.toString() +
+                          user.user.username.toString() +
+                          
                           " מתקשה במילוי המשימה " +
                           '"' +
                           currentTaskName.toString() +
@@ -463,7 +478,8 @@ function Help(props) {
                     <div className="popup">
                       <AiFillCloseCircle id="x" onClick={toggleModal} />
                       <div className="ModalMessage">
-                        {user.user.hebrewName + " " + "זקוק/ה לסיוע."}
+                        {/* {user.user?.hebrewName + " " + "זקוק/ה לסיוע."} */}
+                        {user.user.username + " " + "זקוק/ה לסיוע."}
                         <br />
                         {"נשלחה הודעה למסייע/ת" +
                           " " +

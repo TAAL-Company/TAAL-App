@@ -131,7 +131,7 @@ h5 {
   flex-direction: column;
 }
 /*for tablet*/
-@media (min-width: 1024px) {
+@media (min-width: 672px) {
   @media (min-height: 768px) {
     .navbar {
       height: 15%;

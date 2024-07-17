@@ -615,7 +615,7 @@ h2 {
     font-weight: bold;
   }
 }
-@media (min-width: 1024px) {
+@media (min-width: 672px) {
   @media (min-height: 768px) {
     .content-wrap {
       height: 67%;

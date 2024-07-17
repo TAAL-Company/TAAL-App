@@ -1,0 +1,71 @@
+{
+    "id": 0,
+    "date": "",
+    "date_gmt": "",
+    "guid": {
+      "rendered": "https:\/\/taal.tech\/?post_type=routes&#038;p=2936"
+    },
+    "modified": "",
+    "modified_gmt": "",
+    "slug": "",
+    "status": "publish",
+    "type": "routes",
+    "link": "https:\/\/taal.tech\/routes",
+    "title": {
+      "rendered": ""
+    },
+    "content": {
+      "rendered": "",
+      "protected": false
+    },
+    "featured_media": 0,
+    "parent": 0,
+    "template": "",
+    "meta": [
+      
+    ],
+    "places": [
+      217
+    ],
+    "acf": {
+      "tasks": [],
+      "users": [],
+      "my_site": ""
+    },
+    "_links": {
+      "self": [
+        {
+          "href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/routes\/2936"
+        }
+      ],
+      "collection": [
+        {
+          "href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/routes"
+        }
+      ],
+      "about": [
+        {
+          "href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/types\/routes"
+        }
+      ],
+      "wp:attachment": [
+        {
+          "href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/media?parent=2936"
+        }
+      ],
+      "wp:term": [
+        {
+          "taxonomy": "places",
+          "embeddable": true,
+          "href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/places?post=2936"
+        }
+      ],
+      "curies": [
+        {
+          "name": "wp",
+          "href": "https:\/\/api.w.org\/{rel}",
+          "templated": true
+        }
+      ]
+    }
+  }

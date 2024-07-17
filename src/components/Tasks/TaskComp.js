@@ -4,8 +4,10 @@ import { postDataTime } from "../api";
 import AudioIcon from "../assets/AudioIcon";
 import CheckIcon from "../assets/CheckIcon";
 import styled from "styled-components";
-import { parseContent } from "./functions";
+import { parseContent, getTimeInUTC } from "./functions";
 import "./taskCompStyle.css";
+
+import { IS_NODE } from "../Sites/Sites";
 
 //obj for save the Length of time it took the user to do the task
 let objTime = {
@@ -18,22 +20,37 @@ let objTime = {
   route_title: "",
   startTime: "",
   endTime: "",
+  currdateAndTime: "",
 };
 
 export default function TaskComp(props) {
   const [, set_obj_time] = useState(null);
   const [myCurrent, setMyCurrent] = useState();
 
-  const currDate = new Date().toLocaleDateString("en-GB");
-  const currTime = new Date().toLocaleTimeString("en-GB");
+  let dateAndTime = ''
+
+  if (IS_NODE) {
+    dateAndTime = getTimeInUTC();
+  } else {
+    const currDate = new Date().toLocaleDateString("en-GB");
+    const currTime = new Date().toLocaleTimeString("en-GB");
+    dateAndTime = currDate + " " + currTime;
+  }
+
   const routes_ltr = [3271, 3304];
-  let dateAndTime = currDate + " " + currTime;
 
   objTime.userName = localStorage.getItem("userName");
   objTime.site_id = localStorage.getItem("site_id");
   objTime.route_id = localStorage.getItem("route_id");
-  objTime.idUser = localStorage.getItem("userID");
   objTime.route_title = localStorage.getItem("route_title");
+
+  if (IS_NODE) {
+    // "UserNODEid", UserNODEid.id
+    objTime.idUser = localStorage.getItem("UserNODEid");
+  } else {
+    objTime.idUser = localStorage.getItem("userID");
+  }
+
 
   //this if handle publish the data in the 'Data Time' table for each task the user has done
   if (props.index === props.currentIndex) {
@@ -45,9 +62,13 @@ export default function TaskComp(props) {
       localStorage.setItem("taskIdForApi", 0);
     } else if (objTime.idTask !== props.taskId) {
       //Prevents double case
-      const currDate = new Date().toLocaleDateString();
-      const currTime = new Date().toLocaleTimeString();
-      let dateAndTime = currDate + " " + currTime;
+      if (IS_NODE) {
+        dateAndTime = getTimeInUTC();
+      } else {
+        const currDate = new Date().toLocaleDateString("en-GB");
+        const currTime = new Date().toLocaleTimeString("en-GB");
+        dateAndTime = currDate + " " + currTime;
+      }
 
       objTime.endTime = dateAndTime;
 
@@ -56,7 +77,9 @@ export default function TaskComp(props) {
       } else if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {
         //If it is not equal to this, then it means that the user has finished the task
         localStorage.setItem("taskIdForApi", objTime.idTask);
+        objTime.currdateAndTime = localStorage.getItem("whenAssisted");
         postDataTime(objTime); //api request to wp db
+        localStorage.setItem("whenAssisted","1")
       }
 
       //rest the data to the next tesk:
@@ -71,9 +94,13 @@ export default function TaskComp(props) {
       localStorage.getItem("taskIdForApi") != objTime.idTask
     ) {
       //handle the last task
-      const currDate = new Date().toLocaleDateString();
-      const currTime = new Date().toLocaleTimeString();
-      let dateAndTime = currDate + " " + currTime;
+      if (IS_NODE) {
+        dateAndTime = getTimeInUTC();
+      } else {
+        const currDate = new Date().toLocaleDateString("en-GB");
+        const currTime = new Date().toLocaleTimeString("en-GB");
+        dateAndTime = currDate + " " + currTime;
+      }
 
       objTime.endTime = dateAndTime;
 
@@ -83,7 +110,9 @@ export default function TaskComp(props) {
       } else if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {
         //If it is not equal to this, then it means that the user has finished the task
         localStorage.setItem("taskIdForApi", objTime.idTask);
+        objTime.currdateAndTime = localStorage.getItem("whenAssisted");
         postDataTime(objTime); //api request to wp db
+        localStorage.setItem("whenAssisted","1")
       }
     }
   }
@@ -110,8 +139,8 @@ export default function TaskComp(props) {
           height: props.wideCaro
             ? props.wideCaro
             : isFocused()
-            ? "100%"
-            : "60%",
+              ? "100%"
+              : "60%",
           backgroundColor: decideColor(props.didFinished),
         }}
       >
@@ -152,10 +181,10 @@ export default function TaskComp(props) {
                 : "ltr",
             }}
           >
-            <div style={{ width: "20%", height: "100%" }}>
+            <div style={{ width: "30%", height: "100%", padding: 0 }}>
               <AudioIcon audioUrl={props.audioUrl} />
             </div>
-            <div style={{ height: "100%", width: "79.5%", padding: 0 }}>
+            <div style={{ height: "100%", width: "70%", padding: 0 }}>
               <div
                 className="textTaskComp"
                 style={{

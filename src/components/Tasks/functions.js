@@ -26,10 +26,26 @@ export const getLineHeight = (currentIndex) => {
 }
 
 export const parseContent = (text) => {
-    if (text !== "" && text.split('<p>')[1]) {
+    if (!!text && text.split('<p>')[1]) {
         const cleanText = text.split('<p>')[1].split('</p>')[0]
         return cleanText.replaceAll("&#8217;", "'").replaceAll("&#8211;", "-")
     }
-    else
-        return text.replaceAll("&#8217;", "'").replaceAll("&#8211;", "-")
+    return (text || '').replaceAll("&#8217;", "'").replaceAll("&#8211;", "-")
+}
+
+export const getTimeInUTC = () => {
+    let date = new Date();
+
+    // Extract individual components
+    let year = date.getUTCFullYear();
+    let month = String(date.getUTCMonth() + 1).padStart(2, '0');
+    let day = String(date.getUTCDate()).padStart(2, '0');
+    let hours = String(date.getUTCHours()).padStart(2, '0');
+    let minutes = String(date.getUTCMinutes()).padStart(2, '0');
+    let seconds = String(date.getUTCSeconds()).padStart(2, '0');
+    let milliseconds = String(date.getUTCMilliseconds()).padStart(3, '0');
+
+    // Construct the desired format
+    let utcFormattedDate = `${year}-${month}-${day}T${hours}:${minutes}:${seconds}.${milliseconds}Z`;
+    return utcFormattedDate
 }

@@ -1,34 +1,27 @@
-import React, { useState, useEffect, useRef } from "react";
-import SiteComp from "./SiteComp.js";
-import Carousel, { consts } from "react-elastic-carousel";
 import axios from "axios/index";
-import BarcodeReader from "./BarcodeReader";
+import React, { useEffect, useRef, useState } from "react";
+import SiteComp from "./SiteComp.js";
 // import BarcodeComp from './BarcodeComp'
-import AudioIcon from "../assets/AudioIcon";
-import "./Sites.css";
-import { isLoggedIn, handleLogout } from "../functions";
 import { navigate } from "@reach/router";
-import styled from "styled-components";
-import wpConfig from "../../wp-config";
-import Navbar from "../Nav/Navbar";
-import { getingDataTasks, getingDataRoutes, getingDataPlaces } from "../api";
-import {
-  getPlacesList,
-  getTasksList,
-  trasformObject,
-  transformArrayOfObjects,
-  extractPathForSite,
-  getUserTasksFromRouteList,
-  addStationDetailsToTask,
-  getRoutesOfUser,
-  getRoutesOfUserInTheSite,
-} from "./functions";
-import { Divider } from "../assets/Styles";
-import Spinner from "../assets/Spinner";
-import ProgressBarComp from "../assets/progressBar.js";
 import { useTranslation } from "react-i18next";
-import { internetConnection } from "../functions";
-import clientConfig from "../../client-config";
+import styled from "styled-components";
+import Navbar from "../Nav/Navbar";
+import { getingDataPlaces, getingDataPlacesFromNodejs, getingDataRoutes, getingDataRoutesFromNodejs, getingDataTasks, getingDataTasksFromNodejs } from "../api";
+import ProgressBarComp from "../assets/progressBar.js";
+import { handleLogout, internetConnection, isLoggedIn, nodePlacesAdapter, nodeRouteAdapter, nodeTasksAdapter } from "../functions";
+import "./Sites.css";
+import {
+  addStationDetailsToTask,
+  extractPathForSite,
+  getPlacesList,
+  getRoutesOfUserInTheSite,
+  getTasksList,
+  getUserTasksFromRouteList,
+  transformArrayOfObjects,
+  trasformObject
+} from "./functions";
+
+export const IS_NODE = true;
 
 let placesList = [];
 let tasksList = [];
@@ -37,7 +30,9 @@ let routesInfo, taskInformation;
 
 export default function Sites(props) {
   const { user, user_places, userTasks } = props;
+  console.log("props", props);
   const [userId, setUserId] = useState(localStorage.getItem("userID"));
+  const [userEmail, setUserEmail] = useState(localStorage.getItem("userEmail"));//"taalworker+121@gmail.com" ||
   const [loading, setLoading] = useState(false);
   const [scanning, setScanning] = useState(true);
   const [lineLength, setLineLength] = useState(52);
@@ -54,7 +49,11 @@ export default function Sites(props) {
   const [allRoutesOfUser, setAllRoutesOfUser] = useState([]);
   const [allTasksOfUser, setAllTasksOfUser] = useState([]);
   const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
+  const [AllPlacesOfUserwithroutes, setAllPlacesOfUserwithroutes] = useState([]);
   const users_ltr = [39, 78];
+
+  const [nodeUser, setNodeUser] = useState({});
+
 
   useEffect(() => {
     console.log("user_places: ", props.user_places);
@@ -118,13 +117,14 @@ export default function Sites(props) {
   //   }
   // };
 
-  async function handleChildImgClick() {
+  async function handleChildImgClick(index) {
+    console.log("handleChildImgClick", index);
     const site_id = localStorage.getItem("site_id");
     console.log("Child img clicked");
     console.log("handleChildImgClick" + typeof site_id);
-    console.log("allPlacesOfUser", allPlacesOfUser);
-    let site_name = allPlacesOfUser.find(
-      (place) => place.id === parseInt(site_id)
+    console.log("allPlacesOfUser", AllPlacesOfUserwithroutes);
+    let site_name = AllPlacesOfUserwithroutes.find(
+      (place) => IS_NODE ? place.id === site_id : place.id === parseInt(site_id)
     );
     localStorage.setItem("site_title", site_name.name);
 
@@ -140,22 +140,21 @@ export default function Sites(props) {
 
     console.log("routesOfUserInTheSite", routesOfUserInTheSite);
 
-    localStorage.setItem(
-      "route_title",
-      routesOfUserInTheSite[0].title.rendered
-    );
-    localStorage.setItem("route_id", routesOfUserInTheSite[0].id);
+    localStorage.setItem("route_title", routesOfUserInTheSite[index].title.rendered);
+    localStorage.setItem("route_id", routesOfUserInTheSite[index].id);
 
     let tempTransformObject = await trasformObject(
-      routesOfUserInTheSite[0].acf.tasks
+      routesOfUserInTheSite[index].acf.tasks
     );
     let [separateList, cleanList] = extractPathForSite(
-      allTasks,
-      routesOfUserInTheSite[0].acf.tasks,
+      allTasks,//allTasks, --> AllNodeTasks,
+      routesOfUserInTheSite[index].acf.tasks,
       site_id
       // tempTransformObject
     );
 
+    console.log('separateList', separateList);
+    console.log('site_id', site_id);
     props.actions.visitPlaces(site_id);
     props.actions.changeCurrentTasks(separateList);
     props.actions.changeCurrentTasksList(cleanList);
@@ -219,9 +218,16 @@ export default function Sites(props) {
   const fetchData = async () => {
     setLoading(true);
     try {
-      setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
-      setAllRoutes(await getingDataRoutes()); //get request for routes
-      setAllPlaces(await getingDataPlaces()); //get request for places
+      if (IS_NODE) {
+        setAllRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
+        setAllPlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
+        setAllTasks(nodeTasksAdapter(await getingDataTasksFromNodejs(setCompleted, setnumOfTasks)));
+      } else {
+        setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
+        setAllRoutes(await getingDataRoutes()); //get request for routes
+        setAllPlaces(await getingDataPlaces()); //get request for places  
+      }
+
     } catch (error) {
       console.log("Error");
       console.error(error.message);
@@ -263,35 +269,61 @@ export default function Sites(props) {
     console.log("allRoutes", allRoutes);
     console.log("allTasks", allTasks);
     console.log("allPlaces", allPlaces);
-    clearCache();
 
-    let allRoutesOfUserTemp = allRoutes.filter((route) => {
+    clearCache();
+    let email = userEmail;
+    if (IS_NODE) {
+      //email = "taalworker+121@gmail.com";
+      //localStorage.setItem("userEmail", email);
+    }
+
+    let allRoutesOfUserTemp = allRoutes.filter((route) => {// allRoutes --> AllNodeRoutes
       if (route.acf.users) {
         let usersArray = Object.values(route.acf.users);
-        let userExists = usersArray.find((user) => "" + user.ID === userId);
+        let userExists = !IS_NODE ? usersArray.find((user) => "" + user.ID === userId) : undefined;
+        if (IS_NODE) {
+          userExists = usersArray.find((user) => user.user_email === email);
+        }
         if (userExists !== undefined) return route;
       }
     });
 
     setAllRoutesOfUser(allRoutesOfUserTemp);
-    console.log(allRoutesOfUserTemp);
+    console.log('allRoutesOfUserTemp', allRoutesOfUserTemp);
 
     let idOfUserPlaces = [];
+    let counter = 0; // Initialize the counter
+    let lastItemIndexes = {}; // Initialize an object to keep track of the last index of each item
+    let updatedPlacesWithRoutes = []; // Local array to accumulate changes
 
     allRoutesOfUserTemp.forEach((route) => {
+      console.log("route ---- ", route);
       route.places.forEach((item) => {
-        let temp = allPlaces.find((place) => place.id === item);
-        console.log("temp", temp);
-        if (temp.parent === 0 && !idOfUserPlaces.includes(temp.id)) {
-          //place.parent === 0 is Site and not station
-          setAllPlacesOfUser((prevState) => prevState.concat([temp]));
-          idOfUserPlaces.push(item);
+        let temp = allPlaces.find((place) => place.id === item); // allPlaces --> AllNodePlaces
+        console.log("idOfUserPlaces", idOfUserPlaces);
+        if (temp.parent === 0) { // place.parent === 0 is Site and not station
+          // Check if the current item is in the idOfUserPlaces array
+          const existingIndex = idOfUserPlaces.findIndex(place => place.item === item);
+          if (existingIndex !== -1) {
+            // If the item is found in the array, continue counting from the last occurrence
+            counter = lastItemIndexes[item] + 1;
+          } else {
+            // If the item is not found in the array, reset the counter
+            counter = 0;
+          }
+          // Update the last item index
+          lastItemIndexes[item] = counter;
+          updatedPlacesWithRoutes.push({ ...temp, route, counter }); // Accumulate changes in local array
+          // setAllPlacesOfUser((prevState) => prevState.concat([temp]));
+          idOfUserPlaces.push({ item });
         }
       });
     });
 
-    console.log("idOfUserPlaces");
-    console.log(idOfUserPlaces);
+    // Update the state once after the loop
+    setAllPlacesOfUserwithroutes(prevState => prevState.concat(updatedPlacesWithRoutes));
+
+    console.log("idOfUserPlaces", idOfUserPlaces);
 
     placesList = await trasformObject(allPlaces);
     routesInfo = await transformArrayOfObjects(allRoutes);
@@ -301,7 +333,7 @@ export default function Sites(props) {
     console.log("after x routesInfo : ", routesInfo);
     console.log("after x taskInformation: ", taskInformation);
 
-    let userRoutes = await getUserTasksFromRouteList(allRoutes, userId);
+    let userRoutes = await getUserTasksFromRouteList(allRoutes, userId, userEmail);
 
     console.log("after  userRoutes: ", userRoutes);
 
@@ -315,6 +347,7 @@ export default function Sites(props) {
 
     let temp1 = getPlacesList(placesList, newTaskList);
 
+    console.log('getPlacesList', temp1);
     props.actions.changePlaces(temp1, dateRef.current);
     if (temp1.length < 2) setLineLength(0);
     else if (temp1.length === 2) setLineLength(32);
@@ -365,12 +398,12 @@ export default function Sites(props) {
             >
               {users_ltr.includes(parseInt(userId)) ? (
                 <>
-                  <h5 className="helloTitle">Hello {user.user.hebrewName} </h5>
+                  <h5 className="helloTitle">Hello {user.user.username} </h5>
                   <h1 className="addText">!Happy to see you</h1>
                 </>
               ) : (
                 <>
-                  <h5 className="helloTitle">{user.user.hebrewName} שלום</h5>{" "}
+                  <h5 className="helloTitle">{user.user.username} שלום</h5>{" "}
                   <h1 className="addText">!שמחים לראותך</h1>
                 </>
               )}
@@ -414,10 +447,13 @@ export default function Sites(props) {
                   onChange={onChangeSite}
                 > */}
                 <div className="allPlacesOfUser">
-                  {allPlacesOfUser.map((item, index) => {
+                  {/* {console.log("allPlacesOfUser : --- ", allPlacesOfUser)} */}
+                  {console.log("AllPlacesOfUserwithroutes : --- ", AllPlacesOfUserwithroutes)}
+                  {AllPlacesOfUserwithroutes.map((item, index) => {
+
                     return (
                       <SiteComp
-                        key={item.id}
+                        key={item.id + index}
                         id={item.id}
                         name={item.name}
                         imgUrl={
@@ -426,7 +462,9 @@ export default function Sites(props) {
                         didVisit={
                           isCurrentSite(index) ? "current" : item.didVisit
                         }
-                        onImgClick={handleChildImgClick}
+                        rouetname={item.route.title.rendered}
+                        // rouetname={item.counter}
+                        onImgClick={() => handleChildImgClick(item.counter)}
                         value={0}
                         audioUrl={
                           item.acf && item.acf.audio ? item.acf.audio.url : ""
@@ -459,7 +497,7 @@ const Connector = styled.hr`
   bottom: ${(props) => (props.bottom ? props.bottom : 0)}vh;
   top: ${(props) => (props.top ? props.top : 54)}vh;
   z-index: 0;
-  @media (min-width: 1024px) {
+  @media (min-width: 672px) {
     width: ${(props) => (props.width ? props.width : 86.5)}vw;
     height: 3px;
     top: ${(props) => (props.top ? props.top : 85)}vh;

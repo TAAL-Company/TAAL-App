@@ -1,19 +1,20 @@
-import React, { useState, useEffect, useRef, Fragment } from "react";
-import TaskComp from "./TaskComp";
-import "./Tasks.css";
-import Navbar from "../Nav/Navbar.js";
-import "regenerator-runtime/runtime.js";
+import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
-import styled from "styled-components";
 import Slider from "react-slick";
 import { useSwipeable } from "react-swipeable";
-import BackIcon from "../assets/BackIcon";
-import { storeInitialData, getLineHeight } from "./functions";
+import "regenerator-runtime/runtime.js";
+import styled from "styled-components";
+import Navbar from "../Nav/Navbar.js";
 import AudioIcon from "../assets/AudioIcon";
-import FinishModal from "./FinishModal";
+import BackIcon from "../assets/BackIcon";
+import { handleLogout, isLoggedIn } from "../functions";
 import BlueArrow from "./BlueArrow";
-import { parseContent } from "./functions";
-import { isLoggedIn, handleLogout } from "../functions";
+import FinishModal from "./FinishModal";
+import TaskComp from "./TaskComp";
+import "./Tasks.css";
+import { getLineHeight, parseContent, storeInitialData } from "./functions";
+import Swal from "sweetalert2";
+
 Modal.setAppElement("body");
 
 const initialState = {
@@ -29,15 +30,17 @@ const tasksReducer = (state, action) => {
 };
 
 function Tasks(props) {
+  console.log("Tasks props: ", props);
+  let screenwidth = 672;//1020 - 1023
 
   const { user_tasks } = props;
   const { current_tasks_list, task_current_index } = user_tasks;
   // const [state, localDispatch] = useReducer(tasksReducer, initialState)
-  const {task_location} = user_tasks;
+  const { task_location } = user_tasks;
 
 
   const getInitialLocation = () => {
-    return screen.width > 1020
+    return screen.width > screenwidth
       ? current_tasks_list.length - 1 - (task_current_index || 0)
       : task_current_index;
   };
@@ -54,23 +57,82 @@ function Tasks(props) {
 
   const goBack = () => sliderRef.current.slickPrev();
 
+  const [canSwipe, setCanSwipe] = useState(false);
+  const [Swipetime, setSwipetime] = useState(0);
+
+  // useEffect(() => {
+  //   if (screen.width > screenwidth)
+  //     setAllData(props.user_tasks.current_tasks_list.slice(0).reverse());
+  //   else setAllData(props.user_tasks.current_tasks_list);
+
+  //   console.log("currIndex", allData);
+  // }, []);
+
+  useEffect(() => {
+    setCanSwipe(false);
+    setSwipetime(Date.now());
+    let estimatedTime = allData[currIndex]?.acf?.Estimated_time;
+    if (estimatedTime == undefined) {
+        if (screen.width > screenwidth)
+          estimatedTime =props.user_tasks.current_tasks_list.slice(0).reverse()[currIndex]?.acf?.Estimated_time;
+        else estimatedTime = props.user_tasks.current_tasks_list[currIndex]?.acf?.Estimated_time;
+    }
+
+    // console.log("currIndex", props.user_tasks.current_tasks_list.slice(0).reverse());
+    // console.log("currIndex", props.user_tasks.current_tasks_list);
+    // console.log("currIndex", currIndex);
+    // console.log("currIndex estimatedTime", estimatedTime);
+
+    const timeoutID = setTimeout(() => {
+      setCanSwipe(true);
+    }, estimatedTime * 1000); // Convert seconds to milliseconds
+    return () => clearTimeout(timeoutID);
+  }, [currIndex]);
+
   const handleSwipe = useSwipeable({
     onSwiped: () => {
-      if (screen.width > 1020) {
-        if (currIndex === 0) {
-          props.actions.completeTask(
-            allData[currIndex].id,
-            allData.length - 1 - currIndex
-          );
-          setModalOpen(true);
-        } else sliderRef.current.slickGoTo(currIndex - 1);
-      } else {
-        if (currIndex < allData.length - 1) {
-          sliderRef.current.slickNext();
-        } else if (currIndex === allData.length - 1) {
-          props.actions.completeTask(allData[currIndex].id, currIndex);
-          setModalOpen(true);
+      const estimatedTime = allData[currIndex]?.acf?.Estimated_time;
+      console.log('Swipetime', Swipetime / 1000, Date.now() / 1000 - Swipetime / 1000, estimatedTime - (Date.now() / 1000 - Swipetime / 1000));
+      if (canSwipe) {
+        if (screen.width > screenwidth) {
+          if (currIndex === 0) {
+            props.actions.completeTask(
+              allData[currIndex].id,
+              allData.length - 1 - currIndex
+            );
+            setModalOpen(true);
+          } else sliderRef.current.slickGoTo(currIndex - 1);
+        } else {
+          if (currIndex < allData.length - 1) {
+            sliderRef.current.slickNext();
+          } else if (currIndex === allData.length - 1) {
+            props.actions.completeTask(allData[currIndex].id, currIndex);
+            setModalOpen(true);
+          }
         }
+      } else {
+        let timerInterval;
+        Swal.fire({
+          title: "הזמן לא נגמר.",
+          width: 600,
+          html: `<p>הזמן נגמר ב ${(estimatedTime - (Date.now() / 1000 - Swipetime / 1000)).toFixed(2)} שניות</p>`,
+          icon: "warning",
+          padding: "3em",
+          color: "#000000",
+          showConfirmButton: false,
+          timer: 1500,
+          backdrop: `
+          rgba(255, 193, 91,0.4)
+          no-repeat
+        `,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          }
+        });
       }
     },
   });
@@ -101,13 +163,13 @@ function Tasks(props) {
     if (allData[index] && allData[index].id)
       props.actions.completeTask(
         allData[index].id,
-        screen.width > 1023 ? allData.length - 1 - index : index
+        screen.width > screenwidth ? allData.length - 1 - index : index
       );
   };
   const updateCurrentTask = (nextIndex) => {
     props.actions.changeCurrentTask(
       allData[nextIndex].title.rendered,
-      screen.width > 1023 ? allData.length - 1 - nextIndex : nextIndex
+      screen.width > screenwidth ? allData.length - 1 - nextIndex : nextIndex
     );
     prevIndex.current = currIndex;
     setCurrIndex(nextIndex);
@@ -115,18 +177,18 @@ function Tasks(props) {
 
   // component did mount
   useEffect(() => {
-    if(!isLoggedIn()){
+    if (!isLoggedIn()) {
       handleLogout();
 
     }
 
 
-    if (screen.width < 1000 && screen.height) {
+    if (screen.width < screenwidth && screen.height) {
       sliderRef.current.slickGoTo(props.user_tasks.task_current_index);
     }
     // setCurrIndex(props.user_tasks.task_current_index)
     let stations = storeInitialData([...props.user_tasks.current_tasks]);
-    if (screen.width > 1020)
+    if (screen.width > screenwidth)
       setAllData(props.user_tasks.current_tasks_list.slice(0).reverse());
     else setAllData(props.user_tasks.current_tasks_list);
     setStationsData(stations);
@@ -212,8 +274,34 @@ function Tasks(props) {
     }
     //
     else if (arrowDirection === "left" && currIndex !== 0) {
-      sliderRef.current.slickGoTo(currIndex - 1);
-
+      const estimatedTime = allData[currIndex]?.acf?.Estimated_time;
+      console.log('Swipetime', Swipetime / 1000, Date.now() / 1000 - Swipetime / 1000, estimatedTime - (Date.now() / 1000 - Swipetime / 1000));
+      if (canSwipe) {
+        sliderRef.current.slickGoTo(currIndex - 1);
+      } else {
+        let timerInterval;
+        Swal.fire({
+          title: "הזמן לא נגמר.",
+          width: 600,
+          html: `<p>הזמן נגמר ב ${(estimatedTime - (Date.now() / 1000 - Swipetime / 1000)).toFixed(2)} שניות</p>`,
+          icon: "warning",
+          padding: "3em",
+          color: "#000000",
+          showConfirmButton: false,
+          timer: 1500,
+          backdrop: `
+        rgba(255, 193, 91,0.4)
+        no-repeat
+      `,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+          willClose: () => {
+            clearInterval(timerInterval);
+          }
+        });
+      }
       // if (dateCurrTask - dateLastTask > 3000) {
       //   // start from here
       //   sliderRef.current.slickGoTo(currIndex - 1);
@@ -292,6 +380,14 @@ function Tasks(props) {
       return "https://globalimpactnetwork.org/wp-content/themes/globalimpact/images/no-image-found-360x250.png";
   };
 
+  const getAudio = () => {
+    console.log("allData[currIndex]", allData[currIndex]?.acf?.audio?.url);
+    if (allData[currIndex] && allData[currIndex].acf.image.url)
+      return allData[currIndex].acf.audio.url;
+    else
+      return "null";
+  };
+
   // get station name for tablet design
   const getStationName = (index) => {
     if (allData && allData[index] && allData[index].stationDetails)
@@ -344,11 +440,12 @@ function Tasks(props) {
         sliderRef.current.slickGoTo(currIndex - 1);
     };};</div> */}
       <Navbar origin={"Tasks"} user_data={props.user} />
-      {screen.width < 1000 ? (
+      {screen.width < screenwidth ? (
         <div className="containerTasks">
           <div className="center grayBar">
             <Text>
-              {allData[currIndex] ? allData[currIndex].stationDetails.name : ""}
+              {/* {allData[currIndex] && allData[currIndex].stationDetails ? allData[currIndex].stationDetails.name : ""} */}
+              {allData[currIndex]?.stationDetails?.name || ''}
             </Text>
           </div>
           <Connector
@@ -366,7 +463,7 @@ function Tasks(props) {
                   >
                     <TaskComp
                       taskId={item.id}
-                      task_location = {task_location}
+                      task_location={task_location}
 
                       lastOne={modalOpen}
                       imgUrl={
@@ -453,6 +550,9 @@ function Tasks(props) {
               <div className={"audioContainer"}>
                 <AudioIcon
                   width={25}
+                  audioUrl={
+                    getAudio()
+                  }
                   containerStyle={{ alignSelf: "center" }}
                 />
               </div>
@@ -488,12 +588,12 @@ function Tasks(props) {
                   <div key={index} className={"slide slideHorizontalItem"}>
                     <TaskComp
                       taskId={item.id}
-                      task_location = {task_location}
+                      task_location={task_location}
                       lastOne={modalOpen}
                       imgUrl={
                         item.acf && item.acf.image ? item.acf.image.url : false
                       }
-                      title={item.title && item.title.rendered.split("&")[0]}
+                      title={item.title && (item.title.rendered || '').split("&")[0]}
                       content={item.content && item.content.rendered}
                       didFinished={item.didFinish}
                       audioUrl={

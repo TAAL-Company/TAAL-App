@@ -1,0 +1,142 @@
+{
+    "id": 3445,
+    "date": "2023-06-11T14:20:23",
+    "date_gmt": "2023-06-11T12:20:23",
+    "guid": {
+        "rendered": "https:\/\/taal.tech\/?post_type=tasks&#038;p=3445"
+    },
+    "modified": "2023-06-11T14:20:25",
+    "modified_gmt": "2023-06-11T12:20:25",
+    "slug": "down-to-the-lobby",
+    "status": "publish",
+    "type": "tasks",
+    "link": "https:\/\/taal.tech\/tasks\/down-to-the-lobby\/",
+    "title": {
+        "rendered": "Down to the Lobby"
+    },
+    "content": {
+        "rendered": "\n<p>We take the stairs to the lobby<\/p>\n",
+        "protected": false
+    },
+    "featured_media": 0,
+    "template": "",
+    "meta": [],
+    "places": [
+        306,
+        308
+    ],
+    "acf": {
+        "image": {
+            "ID": 3419,
+            "id": 3419,
+            "title": "hallway",
+            "filename": "hallway.jpeg",
+            "filesize": 50760,
+            "url": "https:\/\/taal.tech\/wp-content\/uploads\/2023\/06\/hallway.jpeg",
+            "link": "https:\/\/taal.tech\/tasks\/down-to-the-lobby\/hallway\/",
+            "alt": "",
+            "author": "27",
+            "description": "",
+            "caption": "",
+            "name": "hallway",
+            "status": "inherit",
+            "uploaded_to": 3445,
+            "date": "2023-06-11 11:05:14",
+            "modified": "2023-06-11 12:20:25",
+            "menu_order": 0,
+            "mime_type": "image\/jpeg",
+            "type": "image",
+            "subtype": "jpeg",
+            "icon": "https:\/\/taal.tech\/wp-includes\/images\/media\/default.png",
+            "width": 952,
+            "height": 648,
+            "sizes": {
+                "thumbnail": "https:\/\/taal.tech\/wp-content\/uploads\/2023\/06\/hallway-150x150.jpeg",
+                "thumbnail-width": 150,
+                "thumbnail-height": 150,
+                "medium": "https:\/\/taal.tech\/wp-content\/uploads\/2023\/06\/hallway-300x204.jpeg",
+                "medium-width": 300,
+                "medium-height": 204,
+                "medium_large": "https:\/\/taal.tech\/wp-content\/uploads\/2023\/06\/hallway-768x523.jpeg",
+                "medium_large-width": 750,
+                "medium_large-height": 511,
+                "large": "https:\/\/taal.tech\/wp-content\/uploads\/2023\/06\/hallway.jpeg",
+                "large-width": 750,
+                "large-height": 511,
+                "1536x1536": "https:\/\/taal.tech\/wp-content\/uploads\/2023\/06\/hallway.jpeg",
+                "1536x1536-width": 952,
+                "1536x1536-height": 648,
+                "2048x2048": "https:\/\/taal.tech\/wp-content\/uploads\/2023\/06\/hallway.jpeg",
+                "2048x2048-width": 952,
+                "2048x2048-height": 648,
+                "post-thumbnail": "https:\/\/taal.tech\/wp-content\/uploads\/2023\/06\/hallway.jpeg",
+                "post-thumbnail-width": 952,
+                "post-thumbnail-height": 648
+            }
+        },
+        "audio": {
+            "ID": 3446,
+            "id": 3446,
+            "title": "to the lobby",
+            "filename": "to-the-lobby.mp3",
+            "filesize": 51407,
+            "url": "https:\/\/taal.tech\/wp-content\/uploads\/2023\/06\/to-the-lobby.mp3",
+            "link": "https:\/\/taal.tech\/tasks\/down-to-the-lobby\/to-the-lobby\/",
+            "alt": "",
+            "author": "27",
+            "description": "\"to the lobby\".",
+            "caption": "",
+            "name": "to-the-lobby",
+            "status": "inherit",
+            "uploaded_to": 3445,
+            "date": "2023-06-11 12:20:11",
+            "modified": "2023-06-11 12:20:14",
+            "menu_order": 0,
+            "mime_type": "audio\/mpeg",
+            "type": "audio",
+            "subtype": "mpeg",
+            "icon": "https:\/\/taal.tech\/wp-includes\/images\/media\/audio.png"
+        },
+        "minimum_profile": "0",
+        "max_time": "0",
+        "sub_tasks": "",
+        "sub_task": false,
+        "Estimated_time": "1"
+    },
+    "_links": {
+        "self": [
+            {
+                "href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/tasks\/3445"
+            }
+        ],
+        "collection": [
+            {
+                "href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/tasks"
+            }
+        ],
+        "about": [
+            {
+                "href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/types\/tasks"
+            }
+        ],
+        "wp:attachment": [
+            {
+                "href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/media?parent=3445"
+            }
+        ],
+        "wp:term": [
+            {
+                "taxonomy": "places",
+                "embeddable": true,
+                "href": "https:\/\/taal.tech\/wp-json\/wp\/v2\/places?post=3445"
+            }
+        ],
+        "curies": [
+            {
+                "name": "wp",
+                "href": "https:\/\/api.w.org\/{rel}",
+                "templated": true
+            }
+        ]
+    }
+}

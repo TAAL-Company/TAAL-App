@@ -1,139 +1,205 @@
-import React from "react";
 import { Redirect } from "@reach/router";
 import axios from "axios";
+import React, { useState } from "react";
+import Modal from "react-modal";
 import clientConfig from "../../client-config";
 import "./Login.css";
-import Modal from "react-modal";
 
-import LogoLogin from "../../images/LogoLoginWhite.png";
-import { FaRegUser } from "react-icons/fa";
-import { RiKey2Line } from "react-icons/ri";
 import { AiFillCloseCircle } from "react-icons/ai";
+import { FaRegUser, FaAt } from "react-icons/fa";
+import { RiKey2Line } from "react-icons/ri";
+import LogoLogin from "../../images/LogoLoginWhite.png";
 
 import wpConfig from "../../wp-config";
+import { IS_NODE } from "../Sites/Sites";
+import { getingDataUsersFromNodejs, loginUser } from "../api";
 //redux
-import { connect, Provider } from "react-redux";
-import { bindActionCreators } from "redux";
-import configureStore from "../../store/configureStore";
 // import Spinner from "../assets/Spinner";
-import { LogoModal } from '../assets/icons';
-
-
 
 
 const userNameApi = process.env.REACT_APP_USERNAME_ACCESSKEY;
 const passwordApi = process.env.REACT_APP_PASSWORD_ACCESSKEY;
 const base64encodedData = Buffer.from(`${userNameApi}:${passwordApi}`).toString('base64');
 
-class Login extends React.Component {
-  constructor(props) {
-    super(props);
+function Login(props) {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [userNiceName, setUserNiceName] = useState("");
+  const [userEmail, setUserEmail] = useState("");
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
+  const [IS_ADMIN_VERSION, set_IS_ADMIN_VERSION] = useState(true);
 
-    this.state = {
-      username: "",
-      password: "",
-      userNiceName: "",
-      userEmail: "",
-      loggedIn: false,
-      loading: false,
-      error: "",
-      isOpen: false,
-    };
-  }
 
-  toggleModal = () => {
-    this.setState({
-      isOpen: !this.state.isOpen,
-    });
+  const toggleModal = () => {
+    setIsOpen(!isOpen);
   };
 
-  createMarkup = (data) => ({
+  const createMarkup = (data) => ({
     __html: data,
   });
 
-  onFormSubmit = (event) => {
+  const onFormSubmit = async (event) => {
     event.preventDefault();
 
-    const siteUrl = clientConfig.siteUrl;
-
-    const loginData = {
-      username: this.state.username,
-      password: this.state.password,
+    setLoading(true);
+    const res = { // wp login
+      data: {
+        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGFhbC50ZWNoIiwiaWF0IjoxNzEzMzc5MjEzLCJuYmYiOjE3MTMzNzkyMTMsImV4cCI6MTcxNTk3MTIxMywiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMjAifX19.pp1e68ABpbfUT7PKmUHcQQlNE4LR6Hxuf-mygYifUW8",
+        "user_email": "ilanimax+801@gmail.com",
+        "user_nicename": "sara-levy",
+        "user_display_name": "שרה לוי",
+        "user_ID": "20",
+        "acf": {
+          "ID": "20",
+          "user_login": "Sara Levy",
+          "user_pass": "$P$BeYMG.BS6V.CqLiEWPCDBz0/YwsNE1.",
+          "user_nicename": "sara-levy",
+          "user_email": "ilanimax+801@gmail.com",
+          "user_url": "",
+          "user_registered": "2021-07-27 13:46:00",
+          "user_activation_key": "",
+          "user_status": "0",
+          "display_name": "שרה לוי"
+        }
+      }
     };
 
-    this.setState({ loading: true }, () => {
-      axios
-        .post(`${siteUrl}wp-json/jwt-auth/v1/token`, loginData)
-        .then((res) => {
-          if (undefined === res.data.token) {
-            this.setState({ error: res.data.message, loading: false });
-            return;
+    const loggedInUser = await loginUser({ user_name: username, phone: password });
+    if (!loggedInUser) {
+      setError("שם משתמש או סיסמה שגויים");
+      setLoading(false);
+      return;
+    }
+
+    const loggedInUser2 = {
+      "id": "78c4941a-4b31-4b91-a039-5dba27fafbff",
+      "user_name": "TW1",
+      "email": "taalworker+1@gmail.com",
+      "name": "תמר לוי",
+      "phone": "1234",
+      "picture_url": null,
+      "role": "STUDENT",
+      "coachId": null,
+      "cognitiveProfile": {
+        "id": "3594ef80-a0a5-4fbd-9798-2071c5d31b58",
+        "remark": null,
+        "studentId": "78c4941a-4b31-4b91-a039-5dba27fafbff",
+        "value": [],
+      },
+      "coach": null,
+      "routes": [],
+      "tasks": [],
+      "sites": []
+    }
+
+    const { token, user_nicename, user_email, user_ID } = res.data;
+
+    sessionStorage.setItem("token", res.data.token);
+    localStorage.setItem("token", res.data.token);
+    localStorage.setItem("userName", loggedInUser.name);
+    localStorage.setItem("userID", loggedInUser.id);
+
+    if (IS_NODE) {
+      const allUsers = await getingDataUsersFromNodejs();
+
+      const email = loggedInUser.email; // allUsers.some((user) => user.email === userEmail) ? userEmail : "taalworker+121@gmail.com";
+
+      const UserNODEid = allUsers.find((user) => {
+        if (user.email === email) {
+          return user
+        } else {
+          return null
+        }
+      });
+
+      localStorage.setItem("UserNODEid", loggedInUser.id);
+      console.log("UserNODEid", loggedInUser.id);
+      localStorage.setItem("userEmail", email);
+    }
+
+    const res2 = {  // get(wpConfig.getUser
+      "id": 20,
+      "name": "שרה לוי",
+      "url": "",
+      "description": "שרה אוהבת לעזור לאנשים",
+      "link": "https://taal.tech/author/sara-levy/",
+      "slug": "sara-levy",
+      "avatar_urls": {
+        "24": "https://secure.gravatar.com/avatar/6f9d8abeea86bfda4ddd2c6ce2129f05?s=24&d=mm&r=g",
+        "48": "https://secure.gravatar.com/avatar/6f9d8abeea86bfda4ddd2c6ce2129f05?s=48&d=mm&r=g",
+        "96": "https://secure.gravatar.com/avatar/6f9d8abeea86bfda4ddd2c6ce2129f05?s=96&d=mm&r=g"
+      },
+      "meta": [],
+      "acf": {
+        "arabic_name": "",
+        "guide": false,
+        "image": false,
+        "risk_profile": "10",
+        "short_term_memory": "20",
+        "middle_term_memory": "11",
+        "long_term_memory": "14",
+        "concentration_and_focus_in_actions": "12",
+        "hearing_level": "41",
+        "vision_level": "33",
+        "guide_phone": "972544643843"
+      },
+      "_links": {
+        "self": [
+          {
+            "href": "https://taal.tech/wp-json/wp/v2/users/20"
           }
+        ],
+        "collection": [
+          {
+            "href": "https://taal.tech/wp-json/wp/v2/users"
+          }
+        ]
+      }
+    }
+    console.log("res:");
+    console.log(res);
+    localStorage.setItem("guidphone", loggedInUser.coach.phone || res2.acf.guide_phone);
 
-          const { token, user_nicename, user_email, user_ID } = res.data;
-          console.log(typeof token);
-
-          // axios.post(`${siteUrl}/wp-json/jwt-auth/v1/token`)
-          sessionStorage.setItem("token", token);
-          localStorage.setItem("token", token);
-          localStorage.setItem("userName", user_nicename);
-          localStorage.setItem("userID", user_ID);
-
-          // get user acf fields
-          axios
-            .get(wpConfig.getUser, {
-              headers: {
-                Authorization: "Bearer " + token,
-              },
-            })
-            .then((res) => {
-              console.log("res:");
-              console.log(res);
-              localStorage.setItem("guidphone", res.data.acf.guide_phone);
-
-
-              const extraData = res.data.acf ? res.data.acf : [];
-              this.props.actions.changeUser({
-                imgPath:
-                  extraData.image && extraData.image.url
-                    ? extraData.image.url
-                    : null,
-                username: user_nicename,
-                isLoggedIn: true,
-                id: user_ID,
-                phone: extraData.phone || "",
-                arabicName: extraData.arabic_name || "",
-                guideName:
-                  extraData.guide && extraData.guide.display_name
-                    ? extraData.guide.display_name
-                    : "",
-                hebrewName: res.data.name,
-                GuidPhone:
-                  extraData.guide && extraData.guide.user_description
-                    ? extraData.guide.user_description
-                    : "",
-              });
-
-              this.setState({
-                loading: false,
-                token: token,
-                userNiceName: user_nicename,
-                userEmail: user_email,
-                loggedIn: true,
-              });
-            })
-            .catch((err) => console.error(err));
-        })
-        .catch((err) => {
-          this.setState({ error: err.response.data.message, loading: false });
-        });
+    const extraData = res2.acf ? res2.acf : [];
+    props.actions.changeUser({
+      imgPath:
+        loggedInUser.picture_url ||
+          extraData.image && extraData.image.url
+          ? extraData.image.url
+          : null,
+      username: loggedInUser.name || user_nicename,
+      isLoggedIn: true,
+      id: loggedInUser.id || user_ID,
+      phone: loggedInUser.phone || extraData.phone || "",
+      arabicName: extraData.arabic_name || "",
+      guideName:
+        extraData.guide && extraData.guide.display_name
+          ? extraData.guide.display_name
+          : "",
+      hebrewName: res.data.name,
+      GuidPhone:
+        loggedInUser.coach.phone ||
+          extraData.guide && extraData.guide.user_description
+          ? extraData.guide.user_description
+          : "",
     });
+
+    setLoading(false);
+    setUserNiceName(loggedInUser.name);
+    setUserEmail(loggedInUser.email);
+    setLoggedIn(true);
   };
 
-  handleOnChange = (event) => {
-    this.setState({ [event.target.name]: event.target.value });
+  const handleOnChange = (event) => {
+    const { name, value } = event.target;
+    if (name === "username") setUsername(value);
+    else if (name === "password") setPassword(value);
+    else if (name === "userEmail") setUserEmail(value);
   };
-  styles = {
+  const styles = {
     modalStyle: {
       overlay: {
         position: "fixed",
@@ -152,86 +218,95 @@ class Login extends React.Component {
       },
     },
   };
-  render() {
-    const { username, password, userNiceName, loggedIn, error, loading } =
-      this.state;
+  const user = userNiceName ? userNiceName : localStorage.getItem("userName");
 
-    const user = userNiceName ? userNiceName : localStorage.getItem("userName");
-
-    if (loggedIn || localStorage.getItem("token")) {
-      //if we get the token
-      return <Redirect to={`/Sites/` + user} noThrow />;
-    } else {
-      return (
-        <div className=" centered">
-          {/* {loading && <Spinner isLoading={loading} top={-200} />} */}
-          {error && (
-            <div
-              className="alert alert-danger"
-              dangerouslySetInnerHTML={this.createMarkup(error)}
-            />
-          )}
-          <div className="logo">
-            <img alt={"login logo"} src={LogoLogin} style={{maxWidth: "250px"}} />
-          </div>
-          <form onSubmit={this.onFormSubmit}>
-            <label className="form-group">
-              <div className="icon">
-                <FaRegUser />
-              </div>
-              <input
-                type="text"
-                className="form-control"
-                name="username"
-                placeholder="שם משתמש اسم المستخدم"
-                value={username}
-                onChange={this.handleOnChange}
-              />
-            </label>
-            <br />
-            <label className="form-group">
-              <div className="icon">
-                {" "}
-                <RiKey2Line />
-              </div>
-
-              <input
-                type="password"
-                className="form-control"
-                name="password"
-                placeholder="סיסמא كلمة المرور"
-                value={password}
-                onChange={this.handleOnChange}
-              />
-            </label>
-            <br />
-            <button className="btn mb-3" type="submit">
-              התחברות / دخول{" "}
-            </button>
-
-            {/*{ loading && <img className="loader" src={Loader} alt="Loader"/> }*/}
-          </form>
-          <button
-            className="forgotPass"
-            onClick={(e) => this.setState({ isOpen: true })}
-          >
-            שכחת סיסמא? نسيت كلمة المرور
-          </button>
-          <Modal
-            isOpen={this.state.isOpen}
-            onRequestClose={this.toggleModal}
-            style={this.styles.modalStyle}
-          >
-            <div className="popup">
-              <AiFillCloseCircle id="x" onClick={this.toggleModal} />
-              <div className="ModalMessage">
-                <h2>לשחזור סיסמה נא ליצור קשר עם 054-464-3843</h2>
-              </div>
-            </div>
-          </Modal>
+  if (loggedIn || localStorage.getItem("token")) {
+    //if we get the token
+    return <Redirect to={`/Sites/` + user} noThrow />;
+  } else {
+    return (
+      <div className=" centered">
+        {/* {loading && <Spinner isLoading={loading} top={-200} />} */}
+        {error && (
+          <div
+            className="alert alert-danger"
+            dangerouslySetInnerHTML={createMarkup(error)}
+          />
+        )}
+        <div className="logo">
+          <img alt={"login logo"} src={LogoLogin} style={{ maxWidth: "250px" }} />
         </div>
-      );
-    }
+        <form onSubmit={onFormSubmit}>
+          <label className="form-group">
+            <div className="icon">
+              <FaRegUser />
+            </div>
+            <input
+              type="text"
+              className="form-control"
+              name="username"
+              placeholder="שם משתמש اسم المستخدم"
+              value={username}
+              onChange={handleOnChange}
+            />
+          </label>
+          <br />
+          {/* <label hidden={!IS_ADMIN_VERSION} className="form-group">
+            <div className="icon">
+              <FaAt />
+            </div>
+            <input
+              type="email"
+              className="form-control"
+              name="userEmail"
+              placeholder="דואר אלקטרוני بريد الكتروني"
+              value={userEmail}
+              onChange={handleOnChange}
+            />
+          </label>
+          <br /> */}
+          <label className="form-group">
+            <div className="icon">
+              {" "}
+              <RiKey2Line />
+            </div>
+
+            <input
+              type="password"
+              className="form-control"
+              name="password"
+              placeholder="סיסמא كلمة المرور"
+              value={password}
+              onChange={handleOnChange}
+            />
+          </label>
+          <br />
+          <button className="btn mb-3" type="submit">
+            התחברות / دخول{" "}
+          </button>
+
+          {/*{ loading && <img className="loader" src={Loader} alt="Loader"/> }*/}
+        </form>
+        <button
+          className="forgotPass"
+          onClick={(e) => setIsOpen(true)}
+        >
+          שכחת סיסמא? نسيت كلمة المرور
+        </button>
+        <Modal
+          isOpen={isOpen}
+          onRequestClose={toggleModal}
+          style={styles.modalStyle}
+        >
+          <div className="popup">
+            <AiFillCloseCircle id="x" onClick={toggleModal} />
+            <div className="ModalMessage">
+              <h2>לשחזור סיסמה נא ליצור קשר עם 054-464-3843</h2>
+            </div>
+          </div>
+        </Modal>
+      </div>
+    );
   }
 }
 

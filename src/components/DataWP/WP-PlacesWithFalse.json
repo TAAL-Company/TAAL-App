@@ -1,0 +1,35 @@
+// Image,Audio,QR Are False
+[
+  {
+    "id": 308,
+    "count": 15,
+    "description": "",
+    "link": "https://taal.tech/places/in-case-of-emergency/",
+    "name": "In case of Emergency",
+    "slug": "in-case-of-emergency",
+    "taxonomy": "places",
+    "parent": 306,
+    "meta": [],
+    "acf": { "image": false, "audio": false, "defaultPath": "", "qr": false },
+    "_links": {
+      "self": [{ "href": "https://taal.tech/wp-json/wp/v2/places/308" }],
+      "collection": [{ "href": "https://taal.tech/wp-json/wp/v2/places" }],
+      "about": [
+        { "href": "https://taal.tech/wp-json/wp/v2/taxonomies/places" }
+      ],
+      "up": [
+        {
+          "embeddable": true,
+          "href": "https://taal.tech/wp-json/wp/v2/places/306"
+        }
+      ],
+      "wp:post_type": [
+        { "href": "https://taal.tech/wp-json/wp/v2/tasks?places=308" },
+        { "href": "https://taal.tech/wp-json/wp/v2/routes?places=308" }
+      ],
+      "curies": [
+        { "name": "wp", "href": "https://api.w.org/{rel}", "templated": true }
+      ]
+    }
+  }
+]

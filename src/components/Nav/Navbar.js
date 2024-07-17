@@ -12,6 +12,7 @@ import Swal from "sweetalert2";
 function Navbar(props) {
   const { origin, user } = props;
   const { hebrewName = "", arabicName = "", imgPath = false } = user;
+
   const userName = getUserName() ? getUserName() : "";
 
   const stress = origin === "Help" ? "StressIconGrey" : "StressIconRed";
@@ -134,7 +135,10 @@ function Navbar(props) {
                         </div>
                       </>
                     ) : (
-                      <NavLink origin={origin} to={`/Help/${userName}`}>
+                      <NavLink origin={origin} onClick={()=>{
+                        localStorage.setItem("whenAssisted","0")
+                        console.log("testing",localStorage.getItem("whenAssisted"))
+                      }} to={`/Help/${userName}`}>
                         <StressIconRed className="StressIcon" src={stress} />
                       </NavLink>
                     )}
@@ -193,14 +197,14 @@ function Navbar(props) {
                   {/* <div hidden={true} className="nav-item">
                     <NavLink to={`/Sites/${userName}`}>Sites</NavLink>
                   </div> */}
-                  <div hidden={true} className="nav-item">
+                  {/* <div hidden={true} className="nav-item">
                     <button
                       onClick={handleLogout}
                       className="btn btn-secondary ml-3"
                     >
                       Logout
                     </button>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="nav-item Profile ProfileContent">
                   <div
@@ -212,10 +216,11 @@ function Navbar(props) {
                   >
                     <button
                       onClick={handleLogout}
+                      className="btnlogout btn-secondary ml-3"
                       style={{
                         background: "rgb(37,111,161)",
                         borderWidth: 0,
-                        color: "rgb(37,111,161)",
+                        // color: "rgb(37,111,161)",
                       }}
                     >
                       Logout
@@ -233,9 +238,9 @@ function Navbar(props) {
                           : "7px",
                       }}
                     >
-                      {hebrewName}
+                      {userName}
                     </h5>
-                    {/* <h5>{arabicName}</h5> */}
+                    {/* <h5>{arabicName , hebrewName}</h5> */}
                   </div>
                 </div>
                 <div className="imageFrame">

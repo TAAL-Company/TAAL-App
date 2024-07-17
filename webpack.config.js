@@ -3,6 +3,7 @@ const WebpackPwaManifest = require("webpack-pwa-manifest");
 const WorkboxPlugin = require("workbox-webpack-plugin");
 const CopyPlugin = require("copy-webpack-plugin");
 const Dotenv = require('dotenv-webpack');
+const webpack = require('webpack');
 
 
 const path = require("path");
@@ -14,6 +15,7 @@ module.exports = {
     filename: "main.js",
     publicPath: "/",
   },
+  devtool : 'inline-source-map',
   devServer: {
     historyApiFallback: true,
   },
@@ -95,6 +97,6 @@ module.exports = {
           sizes: "768x768",
         },
       ],
-    }),
+    })
   ],
 };
