@@ -50,10 +50,14 @@ export default function Sites(props) {
   const [allTasksOfUser, setAllTasksOfUser] = useState([]);
   const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
   const [AllPlacesOfUserwithroutes, setAllPlacesOfUserwithroutes] = useState([]);
-  const users_ltr = [39, 78];
 
   const [nodeUser, setNodeUser] = useState({});
 
+  const currentLanguage = sessionStorage.getItem('language')
+  const isLTR = () => {
+    const currentDirection = sessionStorage.getItem('direction')
+    return currentDirection !== "ltr"; // Adjust based on your language codes
+  };
 
   useEffect(() => {
     console.log("user_places: ", props.user_places);
@@ -383,29 +387,34 @@ export default function Sites(props) {
           <div
             className="containerSites"
             style={{
-              direction: users_ltr.includes(parseInt(userId)) ? "rtl" : "ltr",
+              direction: isLTR() ? "ltr" : "rtl",
             }}
           >
             <div
               className="helloAera"
               style={{
-                direction: users_ltr.includes(parseInt(userId)) ? "rtl" : "ltr",
-                paddingRight: users_ltr.includes(parseInt(userId))
-                  ? "0"
-                  : "2em",
-                paddingLeft: users_ltr.includes(parseInt(userId)) ? "2em" : "0",
+                direction: isLTR() ? "ltr" : "rtl",
+                paddingRight: isLTR() ? "2em" : "0",
+                paddingLeft: isLTR() ? "0" : "2em",
               }}
             >
-              {users_ltr.includes(parseInt(userId)) ? (
+              {currentLanguage === "English" ? (
                 <>
                   <h5 className="helloTitle">Hello {user.user.username} </h5>
                   <h1 className="addText">!Happy to see you</h1>
                 </>
               ) : (
-                <>
+                currentLanguage === "Arabic" ? (
+                  <>
+                  <h5 className="helloTitle">{user.user.username} مرحبا</h5>
+                  <h1 className="addText">سعيد لرؤيتك!</h1>
+                  </>
+                ):(
+                  <>
                   <h5 className="helloTitle">{user.user.username} שלום</h5>{" "}
                   <h1 className="addText">!שמחים לראותך</h1>
                 </>
+                )
               )}
             </div>
             {/* <div className="barcode">

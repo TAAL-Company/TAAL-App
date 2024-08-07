@@ -17,7 +17,11 @@ function Navbar(props) {
 
   const stress = origin === "Help" ? "StressIconGrey" : "StressIconRed";
   const userId = localStorage.getItem("userID");
-  const users_ltr = [39, 78];
+  const currentLanguage = sessionStorage.getItem('language')
+  const isLTR = () => {
+    const currentDirection = sessionStorage.getItem('direction')
+    return currentDirection === "ltr"; // Adjust based on your language codes
+  };
 
   const handleLogout = () => {
     //console.log('logout');
@@ -30,7 +34,7 @@ function Navbar(props) {
       <div
         className="NavContent"
         style={{
-          direction: users_ltr.includes(parseInt(userId)) ? "rtl" : "ltr",
+          direction: isLTR() ? "rtl" : "ltr",
         }}
       >
         <div className="navbar-nav my-navbar-nav mr-auto">
@@ -42,8 +46,8 @@ function Navbar(props) {
               <div className="User">
                 <div className="navDemo">
                   <div className="nav-item">
-                    {users_ltr.includes(parseInt(userId)) &&
-                    origin === "Help" ? (
+                    {isLTR() &&
+                      origin === "Help" ? (
                       <>
                         <div
                           className="GoBackToSitesPage"
@@ -88,56 +92,100 @@ function Navbar(props) {
                           ></BsArrowCounterclockwise>
                         </div>
                       </>
-                    ) : !users_ltr.includes(parseInt(userId)) &&
+                    ) : !isLTR() &&
                       origin === "Help" ? (
-                      <>
-                        <div
-                          className="GoBackToSitesPage"
-                          onClick={() => {
-                            console.log("go back");
-                            Swal.fire({
-                              icon: "question",
-                              title: "",
-                              text: "האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?",
-                              // html: `<div style="direction: rtl">האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?</div>`,
-
-                              showCancelButton: true,
-                              showDenyButton: false,
-                              showConfirmButton: true,
-                              confirmButtonColor: "green",
-                              cancelButtonColor: "red",
-                              confirmButtonText: "כן",
-                              cancelButtonText: "לא",
-                              focusCancel: false,
-                              focusConfirm: false,
-                              customClass: {
-                                cancelButton: "order-1 left-gap ",
-                                confirmButton: "order-2",
-                              },
-                            }).then((result) => {
-                              if (result.value) {
-                                // The user clicked the "Confirm" button, perform the desired action
-                                window.location.href = `/Sites/${userName}`;
-                              } else {
-                                // The user clicked the "Cancel" button, do nothing
-                              }
-                            });
-                            // window.location.href = `/Sites/${userName}`;
-                          }}
-                        >
-                          <BsArrowCounterclockwise
-                            style={{
-                              height: "80%",
-                              width: "80%",
-                              marginTop: "0.7vh",
+                      currentLanguage === "Arabic" ? (
+                        <>
+                          <div
+                            className="GoBackToSitesPage"
+                            onClick={() => {
+                              console.log("go back");
+                              Swal.fire({
+                                icon: "question",
+                                title: "",
+                                text: "هل أنت متأكد أنك تريد إعادة ضبط مسارك؟",
+                                showCancelButton: true,
+                                showDenyButton: false,
+                                showConfirmButton: true,
+                                confirmButtonColor: "green",
+                                cancelButtonColor: "red",
+                                confirmButtonText: "نعم",
+                                cancelButtonText: "لا",
+                                focusCancel: false,
+                                focusConfirm: false,
+                                customClass: {
+                                  cancelButton: "order-1 left-gap ",
+                                  confirmButton: "order-2",
+                                },
+                              }).then((result) => {
+                                if (result.value) {
+                                  // The user clicked the "Confirm" button, perform the desired action
+                                  window.location.href = `/Sites/${userName}`;
+                                } else {
+                                  // The user clicked the "Cancel" button, do nothing
+                                }
+                              });
+                              // window.location.href = `/Sites/${userName}`;
                             }}
-                          ></BsArrowCounterclockwise>
-                        </div>
-                      </>
+                          >
+                            <BsArrowCounterclockwise
+                              style={{
+                                height: "80%",
+                                width: "80%",
+                                marginTop: "0.7vh",
+                              }}
+                            ></BsArrowCounterclockwise>
+                          </div>
+                        </>
+                      ) : (
+                        <>
+                          <div
+                            className="GoBackToSitesPage"
+                            onClick={() => {
+                              console.log("go back");
+                              Swal.fire({
+                                icon: "question",
+                                title: "",
+                                text: "האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?",
+                                // html: `<div style="direction: rtl">האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?</div>`,
+
+                                showCancelButton: true,
+                                showDenyButton: false,
+                                showConfirmButton: true,
+                                confirmButtonColor: "green",
+                                cancelButtonColor: "red",
+                                confirmButtonText: "כן",
+                                cancelButtonText: "לא",
+                                focusCancel: false,
+                                focusConfirm: false,
+                                customClass: {
+                                  cancelButton: "order-1 left-gap ",
+                                  confirmButton: "order-2",
+                                },
+                              }).then((result) => {
+                                if (result.value) {
+                                  // The user clicked the "Confirm" button, perform the desired action
+                                  window.location.href = `/Sites/${userName}`;
+                                } else {
+                                  // The user clicked the "Cancel" button, do nothing
+                                }
+                              });
+                              // window.location.href = `/Sites/${userName}`;
+                            }}
+                          >
+                            <BsArrowCounterclockwise
+                              style={{
+                                height: "80%",
+                                width: "80%",
+                                marginTop: "0.7vh",
+                              }}
+                            ></BsArrowCounterclockwise>
+                          </div>
+                        </>)
                     ) : (
-                      <NavLink origin={origin} onClick={()=>{
-                        localStorage.setItem("whenAssisted","0")
-                        console.log("testing",localStorage.getItem("whenAssisted"))
+                      <NavLink origin={origin} onClick={() => {
+                        localStorage.setItem("whenAssisted", "0")
+                        console.log("testing", localStorage.getItem("whenAssisted"))
                       }} to={`/Help/${userName}`}>
                         <StressIconRed className="StressIcon" src={stress} />
                       </NavLink>
@@ -227,13 +275,13 @@ function Navbar(props) {
                     </button>
                     <h5
                       style={{
-                        marginLeft: users_ltr.includes(parseInt(userId))
+                        marginLeft: isLTR()
                           ? "14px"
                           : "0px",
-                        marginRight: users_ltr.includes(parseInt(userId))
+                        marginRight: isLTR()
                           ? "0px"
                           : "14px",
-                        marginTop: users_ltr.includes(parseInt(userId))
+                        marginTop: isLTR()
                           ? "7px"
                           : "7px",
                       }}

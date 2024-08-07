@@ -32,6 +32,70 @@ function Login(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [IS_ADMIN_VERSION, set_IS_ADMIN_VERSION] = useState(true);
 
+  const [checked, setChecked] = useState({
+    Hebrew: true,
+    English: false,
+    Arabic: false,
+  });
+
+  const [passwordLanguage, setpasswordLanguage] = useState('סיסמה');
+  const [usernameLanguage, setUsernameLanguage] = useState('שם משתמש');
+  const [loginLanguage, setLoginLanguage] = useState('התחברות');
+  const [language, setLanguage] = useState('Hebrew');
+  const [direction, setDirection] = useState('rtl');
+
+  const handlecheckedChange = (event) => {
+
+    const checkedLanguage = event.target.name;
+
+    sessionStorage.setItem('language', checkedLanguage);
+
+    setChecked({
+      Hebrew: checkedLanguage === 'Hebrew',
+      English: checkedLanguage === 'English',
+      Arabic: checkedLanguage === 'Arabic',
+    });
+
+    if (checkedLanguage === 'Hebrew') {
+      hebrew();
+      setDirection('rtl'); // Set direction to rtl
+      sessionStorage.setItem('direction', 'rtl');
+    } else if (checkedLanguage === 'English') {
+      english();
+      setDirection('ltr'); // Set direction to ltr
+      sessionStorage.setItem('direction', 'ltr');
+    } else if (checkedLanguage === 'Arabic') {
+      arabic();
+      setDirection('rtl'); // Set direction to rtl
+      sessionStorage.setItem('direction', 'rtl');
+    }
+  };
+
+  const { English, Arabic, Hebrew } = checked;
+
+  if(Hebrew) {
+    sessionStorage.setItem('direction', direction);
+  }
+
+  const hebrew = () => {
+    setLanguage('hebrew');
+    setpasswordLanguage('סיסמה');
+    setUsernameLanguage('שם משתמש');
+    setLoginLanguage('התחברות');
+  };
+  const english = () => {
+    setLanguage('english');
+    setpasswordLanguage('Password');
+    setUsernameLanguage('Username');
+    setLoginLanguage('Login');
+  }
+
+  const arabic = () => {
+    setLanguage('arabic');
+    setpasswordLanguage('كلمة المرور');
+    setUsernameLanguage('اسم المستخدم');
+    setLoginLanguage('تسجيل الدخول');
+  };
 
   const toggleModal = () => {
     setIsOpen(!isOpen);
@@ -226,6 +290,7 @@ function Login(props) {
   } else {
     return (
       <div className=" centered">
+      
         {/* {loading && <Spinner isLoading={loading} top={-200} />} */}
         {error && (
           <div
@@ -237,7 +302,7 @@ function Login(props) {
           <img alt={"login logo"} src={LogoLogin} style={{ maxWidth: "250px" }} />
         </div>
         <form onSubmit={onFormSubmit}>
-          <label className="form-group">
+          <label className="form-group" style={{direction : ` ${direction}`}}>
             <div className="icon">
               <FaRegUser />
             </div>
@@ -245,7 +310,7 @@ function Login(props) {
               type="text"
               className="form-control"
               name="username"
-              placeholder="שם משתמש اسم المستخدم"
+              placeholder={usernameLanguage}
               value={username}
               onChange={handleOnChange}
             />
@@ -265,7 +330,7 @@ function Login(props) {
             />
           </label>
           <br /> */}
-          <label className="form-group">
+          <label className="form-group" style={{direction : ` ${direction}`}}>
             <div className="icon">
               {" "}
               <RiKey2Line />
@@ -275,14 +340,49 @@ function Login(props) {
               type="password"
               className="form-control"
               name="password"
-              placeholder="סיסמא كلمة المرور"
+              placeholder={passwordLanguage}
               value={password}
               onChange={handleOnChange}
             />
           </label>
+          <div className='form-control'>
+            <input
+              className="forgotPass"
+              type="checkbox"
+              checked={Hebrew}
+              name='Hebrew'
+              onClick={(event) => {
+                handlecheckedChange(event)
+              }}
+              inputProps={{ 'aria-label': 'controlled' }}
+            />
+            Hebrew  |
+            <input
+              className="forgotPass"
+              type="checkbox"
+              checked={English}
+              name='English'
+              onClick={(event) => {
+                handlecheckedChange(event)
+              }}
+              inputProps={{ 'aria-label': 'controlled' }}
+            />
+            English  |
+            <input
+              className="forgotPass"
+              type="checkbox"
+              checked={Arabic}
+              name='Arabic'
+              onClick={(event) => {
+                handlecheckedChange(event)
+              }}
+              inputProps={{ 'aria-label': 'controlled' }}
+            />
+            Arabic
+          </div>
           <br />
           <button className="btn mb-3" type="submit">
-            התחברות / دخول{" "}
+            {loginLanguage}
           </button>
 
           {/*{ loading && <img className="loader" src={Loader} alt="Loader"/> }*/}
@@ -291,7 +391,7 @@ function Login(props) {
           className="forgotPass"
           onClick={(e) => setIsOpen(true)}
         >
-          שכחת סיסמא? نسيت كلمة المرور
+          שכחת סיסמא?  /نسيت كلمة المرور / forgotPass?
         </button>
         <Modal
           isOpen={isOpen}

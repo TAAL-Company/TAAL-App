@@ -16,7 +16,10 @@ export default function SiteComp(props) {
   // }
 
   const userId = localStorage.getItem("userID");
-  const users_ltr = [39, 78];
+  const isLTR = () => {
+    const currentDirection = sessionStorage.getItem('direction')
+    return currentDirection === "ltr"; // Adjust based on your language codes
+  };
 
   function handleStartRoute() {
     try {
@@ -50,7 +53,7 @@ export default function SiteComp(props) {
             <p className="siteTxt">{props.rouetname}</p>
           </div>
 
-          {users_ltr.includes(parseInt(userId)) ? (
+          {isLTR() ? (
             <>
               <div className="startButtonWarpper" onClick={handleStartRoute}>
                 <div

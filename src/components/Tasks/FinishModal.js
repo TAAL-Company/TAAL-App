@@ -11,7 +11,10 @@ export default function FinishModal(props) {
   const { places_location, userName, modalOpen, wideModal, onPressGoToSites } =
     props;
   const userId = localStorage.getItem("userID");
-  const users_ltr = [39, 78];
+  const isLTR = () => {
+    const currentDirection = sessionStorage.getItem('direction')
+    return currentDirection === "ltr"; // Adjust based on your language codes
+  };
 
   const { t } = useTranslation();
   return (
@@ -26,7 +29,7 @@ export default function FinishModal(props) {
           <LogoIconWrapper>
             <LogoModal />
           </LogoIconWrapper>
-          {users_ltr.includes(parseInt(userId)) ? (
+          {isLTR() ? (
             <div>
               <p className="whiteText modalTxt1">well done!</p>
             </div>
@@ -39,13 +42,13 @@ export default function FinishModal(props) {
         {places_location === -1 ? (
           <div className="modalInfoBox">
             <div style={{ flex: 1 }}>
-              {users_ltr.includes(parseInt(userId)) ? (
+              {isLTR() ? (
                 <p className="modalTxt2">completed successfully</p>
               ) : (
                 <p className="modalTxt2">{t("completed_successfully.1")}</p>
               )}
 
-              {users_ltr.includes(parseInt(userId)) ? (
+              {isLTR() ? (
                 <p></p>
               ) : (
                 <p className="modalTxt2">{t("completed_successfully.2")}</p>
@@ -57,7 +60,7 @@ export default function FinishModal(props) {
                   onPress={onPressGoToSites}
                   iconType={"home"}
                   content={
-                    users_ltr.includes(parseInt(userId))
+                    isLTR()
                       ? "finish"
                       : t("finish.1")
                   }
