@@ -43,6 +43,8 @@ function Login(props) {
   const [loginLanguage, setLoginLanguage] = useState('התחברות');
   const [language, setLanguage] = useState('Hebrew');
   const [direction, setDirection] = useState('rtl');
+  const [forgotPassmassage, setforgotPassmassage] = useState('לשחזור סיסמה נא ליצור קשר עם 054-464-3843');
+  const [errormessage, setErrormessage] = useState('שם משתמש או סיסמה אינם תקנים');
 
   const handlecheckedChange = (event) => {
 
@@ -60,14 +62,20 @@ function Login(props) {
       hebrew();
       setDirection('rtl'); // Set direction to rtl
       sessionStorage.setItem('direction', 'rtl');
+      setforgotPassmassage('לשחזור סיסמה נא ליצור קשר עם 054-464-3843');
+      setErrormessage('שם משתמש או סיסמה אינם תקנים');
     } else if (checkedLanguage === 'English') {
       english();
       setDirection('ltr'); // Set direction to ltr
       sessionStorage.setItem('direction', 'ltr');
+      setforgotPassmassage('To recover your password, please contact 054-464-3843');
+      setErrormessage('Username or password are not valid');
     } else if (checkedLanguage === 'Arabic') {
       arabic();
       setDirection('rtl'); // Set direction to rtl
       sessionStorage.setItem('direction', 'rtl');
+      setforgotPassmassage(' للحصول على كلمة مرورك، يرجى الاتصال ب 3843-464-054  ');
+      setErrormessage('اسم المستخدم او كلمة المرور غير صالحة');
     }
   };
 
@@ -133,7 +141,7 @@ function Login(props) {
 
     const loggedInUser = await loginUser({ user_name: username, phone: password });
     if (!loggedInUser) {
-      setError("שם משתמש או סיסמה שגויים");
+      setError(errormessage);
       setLoading(false);
       return;
     }
@@ -401,7 +409,7 @@ function Login(props) {
           <div className="popup">
             <AiFillCloseCircle id="x" onClick={toggleModal} />
             <div className="ModalMessage">
-              <h2>לשחזור סיסמה נא ליצור קשר עם 054-464-3843</h2>
+              <h2>{forgotPassmassage}</h2>
             </div>
           </div>
         </Modal>

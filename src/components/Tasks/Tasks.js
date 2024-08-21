@@ -59,6 +59,18 @@ function Tasks(props) {
 
   const [canSwipe, setCanSwipe] = useState(false);
   const [Swipetime, setSwipetime] = useState(0);
+  const [waitingmsg, Setwaitingmsg] = useState('הזמן לא נגמר...');
+
+    useEffect(() => {
+      const currentLanguage = sessionStorage.getItem('language')
+      if (currentLanguage === 'Hebrew') {
+        Setwaitingmsg('הזמן לא נגמר...');
+      } else if (currentLanguage === 'English') {
+        Setwaitingmsg('Waiting...');
+      } else if (currentLanguage === 'Arabic') {
+        Setwaitingmsg('انتظر...');
+      }
+  }, []);
 
   // useEffect(() => {
   //   if (screen.width > screenwidth)
@@ -113,7 +125,7 @@ function Tasks(props) {
       } else {
         let timerInterval;
         Swal.fire({
-          title: "הזמן לא נגמר.",
+          title: waitingmsg,
           width: 600,
           html: `<p>הזמן נגמר ב ${(estimatedTime - (Date.now() / 1000 - Swipetime / 1000)).toFixed(2)} שניות</p>`,
           icon: "warning",
@@ -179,7 +191,6 @@ function Tasks(props) {
   useEffect(() => {
     if (!isLoggedIn()) {
       handleLogout();
-
     }
 
 
@@ -281,7 +292,7 @@ function Tasks(props) {
       } else {
         let timerInterval;
         Swal.fire({
-          title: "הזמן לא נגמר.",
+          title: waitingmsg,
           width: 600,
           html: `<p>הזמן נגמר ב ${(estimatedTime - (Date.now() / 1000 - Swipetime / 1000)).toFixed(2)} שניות</p>`,
           icon: "warning",
@@ -464,6 +475,7 @@ function Tasks(props) {
                     <TaskComp
                       taskId={item.id}
                       task_location={task_location}
+                      dataEntered={item.dataEntered}
 
                       lastOne={modalOpen}
                       imgUrl={
@@ -590,6 +602,7 @@ function Tasks(props) {
                       taskId={item.id}
                       task_location={task_location}
                       lastOne={modalOpen}
+                      dataEntered={item.dataEntered}
                       imgUrl={
                         item.acf && item.acf.image ? item.acf.image.url : false
                       }

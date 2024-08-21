@@ -7,6 +7,23 @@ export const isLoggedIn = () => {
 export const handleLogout = () => {
 	console.log('logout');
 	localStorage.removeItem("token");
+	sessionStorage.removeItem("token");			
+	localStorage.removeItem("taskIdForApi");
+	localStorage.removeItem("guidphone");
+	localStorage.removeItem("userName");
+	localStorage.removeItem("userID");
+	localStorage.removeItem("UserNODEid");
+	localStorage.removeItem("userEmail");
+	localStorage.removeItem("site_title")
+	localStorage.removeItem("site_id")
+	localStorage.removeItem("loglevel:webpack-dev-server")
+	localStorage.removeItem("persist:root")
+	localStorage.removeItem("route_title")
+	localStorage.removeItem("route_id")
+	localStorage.removeItem("i18nextLng")
+
+	localStorage.clear();
+	// sessionStorage.clear();
 	window.location.href = "/";
 };
 
@@ -528,6 +545,11 @@ export const nodeTasksAdapter = (Tasksdata) => {
 		wpTasks.acf.audio.url = Taskdata.audio_url
 		wpTasks.acf.audio.link = Taskdata.audio_url
 		wpTasks.acf.sub_tasks = Taskdata.subtasks
+		// wpTasks.type = Taskdata.TaskType
+		// wpTasks.status = Taskdata.dataEntryType
+		wpTasks.template = Taskdata.dataEntryLabel
+		// wpTasks.featured_media = Taskdata.dataEntryValidation
+		
 
 		// ----places/sites---
 		Taskdata.sites.map(async (taskId) => {

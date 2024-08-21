@@ -1,6 +1,6 @@
 import React from "react";
 import NavLink from "./NavLink";
-import { isLoggedIn, getUserName } from "../functions";
+import { isLoggedIn, getUserName, handleLogout } from "../functions";
 import "./Navbar.css";
 import { StressIconRed, StressIconGrey } from "../assets/icons";
 import ListenIcon from "../../images/ListenIcon.png";
@@ -23,11 +23,6 @@ function Navbar(props) {
     return currentDirection === "ltr"; // Adjust based on your language codes
   };
 
-  const handleLogout = () => {
-    //console.log('logout');
-    localStorage.removeItem("token");
-    window.location.href = "/";
-  };
 
   return (
     <nav className="navbar my-navbar ">
