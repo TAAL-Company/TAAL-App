@@ -20,6 +20,7 @@ export const postDataTime = (objTime) => {
                 "startTime": objTime.startTime,
                 "endTime": objTime.endTime,
                 "whenAssisted": objTime.currdateAndTime,
+                "dataEntered": objTime.dataEntered
             })
         })
     } else {

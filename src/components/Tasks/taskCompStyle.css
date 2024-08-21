@@ -31,7 +31,7 @@
   justify-content: space-between;
   align-items: center;
   flex-direction: row;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 .imageWrapper {
   width: 100%;

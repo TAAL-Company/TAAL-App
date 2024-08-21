@@ -6,6 +6,8 @@ import CheckIcon from "../assets/CheckIcon";
 import styled from "styled-components";
 import { parseContent, getTimeInUTC } from "./functions";
 import "./taskCompStyle.css";
+import WeightPopup from "./WeightPopup";
+import Swal from "sweetalert2";
 
 import { IS_NODE } from "../Sites/Sites";
 
@@ -21,11 +23,16 @@ let objTime = {
   startTime: "",
   endTime: "",
   currdateAndTime: "",
+  dataEntered:"",
 };
 
 export default function TaskComp(props) {
   const [, set_obj_time] = useState(null);
   const [myCurrent, setMyCurrent] = useState();
+  const [modalOpen, setModalOpen] = useState(false);
+  const [dataEntered, setDataEntered] = useState(props.dataEntered===undefined?"":props.dataEntered);
+  console.log("dataEntered1212 ", dataEntered);
+  
 
   let dateAndTime = ''
 
@@ -78,8 +85,10 @@ export default function TaskComp(props) {
         //If it is not equal to this, then it means that the user has finished the task
         localStorage.setItem("taskIdForApi", objTime.idTask);
         objTime.currdateAndTime = localStorage.getItem("whenAssisted");
+        objTime
         postDataTime(objTime); //api request to wp db
-        localStorage.setItem("whenAssisted","1")
+        objTime.dataEntered=""
+        localStorage.setItem("whenAssisted", "1")
       }
 
       //rest the data to the next tesk:
@@ -112,7 +121,8 @@ export default function TaskComp(props) {
         localStorage.setItem("taskIdForApi", objTime.idTask);
         objTime.currdateAndTime = localStorage.getItem("whenAssisted");
         postDataTime(objTime); //api request to wp db
-        localStorage.setItem("whenAssisted","1")
+        objTime.dataEntered=""
+        localStorage.setItem("whenAssisted", "1")
       }
     }
   }
@@ -130,8 +140,9 @@ export default function TaskComp(props) {
       className="containerWrapper"
       style={{
         width: props.wrapperWidth ? props.wrapperWidth : "50%",
-        height: props.height ? props.height : "90px",
+        height: props.height ? props.height : "90px",//251.72px
       }}
+      key={props.index}
     >
       <div
         className="taskContainer"
@@ -207,6 +218,13 @@ export default function TaskComp(props) {
                 }}
               >
                 {parseContent(props.content)}
+                <button onClick={() => setModalOpen(true)}>weight popup</button>
+                <h6>{dataEntered}</h6>
+                {
+                  modalOpen ?
+                    <WeightPopup key={props.index} modalOpen={modalOpen} objTime={objTime}  setDataEntered={setDataEntered} setModalOpen={setModalOpen}/> 
+                    : <></>
+                }
               </div>
             </div>
           </div>
