@@ -1,3 +1,4 @@
+import promise from "core-js/fn/promise";
 import { getingTasksById } from "./api";
 
 export const isLoggedIn = () => {
@@ -7,7 +8,7 @@ export const isLoggedIn = () => {
 export const handleLogout = () => {
 	console.log('logout');
 	localStorage.removeItem("token");
-	sessionStorage.removeItem("token");			
+	sessionStorage.removeItem("token");
 	localStorage.removeItem("taskIdForApi");
 	localStorage.removeItem("guidphone");
 	localStorage.removeItem("userName");
@@ -50,10 +51,12 @@ export const internetConnection = () => {
 		return false
 }
 
-export const nodeRouteAdapter = (routedata) => {
-	console.log('routedata',routedata);
+export const nodeRouteAdapter = async (routedata) => {
+	console.log('routedata', routedata);
 	let noderoutedata = [];
-	routedata.forEach(async (route) => {
+
+	// Use `map` instead of `forEach` to create an array of promises
+	await Promise.all(routedata.map(async (route) => {
 
 		let wpRoute = {
 			"id": 0,
@@ -78,9 +81,7 @@ export const nodeRouteAdapter = (routedata) => {
 			"featured_media": 0,
 			"parent": 0,
 			"template": "",
-			"meta": [
-
-			],
+			"meta": [],
 			"places": [],
 			"acf": {
 				"tasks": [],
@@ -123,7 +124,8 @@ export const nodeRouteAdapter = (routedata) => {
 					}
 				]
 			}
-		}
+		};
+
 		let user = {
 			"ID": 0,
 			"user_firstname": "",
@@ -136,7 +138,8 @@ export const nodeRouteAdapter = (routedata) => {
 			"user_registered": "",
 			"user_description": "",
 			"user_avatar": "<img alt='' src='https:\/\/secure.gravatar.com\/avatar\/a7543504a4b2e386f27fc80ff2abd03d?s=96&#038;d=mm&#038;r=g' srcset='https:\/\/secure.gravatar.com\/avatar\/a7543504a4b2e386f27fc80ff2abd03d?s=192&#038;d=mm&#038;r=g 2x' class='avatar avatar-96 photo' height='96' width='96' loading='lazy' decoding='async'\/>"
-		}
+		};
+
 		let tasks = {
 			"ID": 0,
 			"post_author": "0",
@@ -162,40 +165,41 @@ export const nodeRouteAdapter = (routedata) => {
 			"post_mime_type": "",
 			"comment_count": "0",
 			"filter": "raw"
-		}
+		};
 
-		wpRoute.id = route.id
+		wpRoute.id = route.id;
 		wpRoute.title.rendered = route.name || '';
 
 		// ----places/sites---
-		route.sites.map(async (PlaceSiteId) => {
-			wpRoute.places.push(PlaceSiteId.id)
-		})
+		await Promise.all(route.sites.map(async (PlaceSiteId) => {
+			wpRoute.places.push(PlaceSiteId.id);
+		}));
 
 		// ----users---
-		route.students.map((student) => {
-			user.ID = student.id
-			user.user_email = student.email
-			user.display_name = student.name
-			user.user_avatar = student.picture_url
-			user.user_nicename = student.user_name
-			wpRoute.acf.users.push({ ...user })
-		})
+		await Promise.all(route.students.map((student) => {
+			user.ID = student.id;
+			user.user_email = student.email;
+			user.display_name = student.name;
+			user.user_avatar = student.picture_url;
+			user.user_nicename = student.user_name;
+			wpRoute.acf.users.push({ ...user });
+		}));
 
 		// ----tasks----
-		route.tasks.map(async (taskId, index) => {
-			let tasksbyid = await getingTasksById(taskId.taskId)
-			tasks.ID = tasksbyid.id
-			tasks.post_name = tasksbyid.subtitle
-			tasks.post_title = tasksbyid.title
-			wpRoute.acf.tasks[index]=({ ...tasks })
-		});
+		await Promise.all(route.tasks.map(async (taskId, index) => {
+			let tasksbyid = await getingTasksById(taskId.taskId);
+			tasks.ID = tasksbyid.id;
+			tasks.post_name = tasksbyid.subtitle;
+			tasks.post_title = tasksbyid.title;
+			wpRoute.acf.tasks[index] = { ...tasks };
+		}));
 
-		noderoutedata.push(wpRoute)
-	})
+		noderoutedata.push(wpRoute);
+	}));
+
 	console.log("noderoutedata", noderoutedata);
-	return noderoutedata
-}
+	return noderoutedata;
+};
 
 export const nodePlacesAdapter = (Placesdata) => {
 
@@ -549,7 +553,7 @@ export const nodeTasksAdapter = (Tasksdata) => {
 		// wpTasks.status = Taskdata.dataEntryType
 		wpTasks.template = Taskdata.dataEntryLabel
 		// wpTasks.featured_media = Taskdata.dataEntryValidation
-		
+
 
 		// ----places/sites---
 		Taskdata.sites.map(async (taskId) => {

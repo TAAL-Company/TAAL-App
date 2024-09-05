@@ -467,6 +467,7 @@ function Tasks(props) {
           <div className="center containerCarousel" {...handleSwipe}>
             <Slider {...settings} ref={sliderRef}>
               {allData.map((item, index) => {
+                console.log("item", item);
                 return (
                   <div
                     key={index}
@@ -475,8 +476,10 @@ function Tasks(props) {
                     <TaskComp
                       taskId={item.id}
                       task_location={task_location}
-                      dataEntered={item.dataEntered}
-
+                      dataEntered={item.template}
+                      taskType={item.type}
+                      dataEntryType={item.status}
+                      dataEntryValidation={item.featured_media}
                       lastOne={modalOpen}
                       imgUrl={
                         item.acf && item.acf.image ? item.acf.image.url : false
@@ -601,12 +604,15 @@ function Tasks(props) {
                     <TaskComp
                       taskId={item.id}
                       task_location={task_location}
+                      dataEntered={item.template}
+                      taskType={item.type}
+                      dataEntryType={item.status}
+                      dataEntryValidation={item.featured_media}
                       lastOne={modalOpen}
-                      dataEntered={item.dataEntered}
                       imgUrl={
                         item.acf && item.acf.image ? item.acf.image.url : false
                       }
-                      title={item.title && (item.title.rendered || '').split("&")[0]}
+                      title={item.title && item.title.rendered.split("&")[0]}
                       content={item.content && item.content.rendered}
                       didFinished={item.didFinish}
                       audioUrl={

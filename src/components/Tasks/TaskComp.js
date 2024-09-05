@@ -9,7 +9,7 @@ import "./taskCompStyle.css";
 import WeightPopup from "./WeightPopup";
 import Swal from "sweetalert2";
 
-import { IS_NODE } from "../Sites/Sites";
+const IS_NODE = true;
 
 //obj for save the Length of time it took the user to do the task
 let objTime = {
@@ -23,16 +23,16 @@ let objTime = {
   startTime: "",
   endTime: "",
   currdateAndTime: "",
-  dataEntered:"",
+  dataEntered: "",
 };
 
 export default function TaskComp(props) {
   const [, set_obj_time] = useState(null);
   const [myCurrent, setMyCurrent] = useState();
   const [modalOpen, setModalOpen] = useState(false);
-  const [dataEntered, setDataEntered] = useState(props.dataEntered===undefined?"":props.dataEntered);
+  const [dataEntered, setDataEntered] = useState(props.dataEntered === undefined ? "" : props.dataEntered);
   console.log("dataEntered1212 ", dataEntered);
-  
+
 
   let dateAndTime = ''
 
@@ -85,9 +85,8 @@ export default function TaskComp(props) {
         //If it is not equal to this, then it means that the user has finished the task
         localStorage.setItem("taskIdForApi", objTime.idTask);
         objTime.currdateAndTime = localStorage.getItem("whenAssisted");
-        objTime
         postDataTime(objTime); //api request to wp db
-        objTime.dataEntered=""
+        objTime.dataEntered = ""
         localStorage.setItem("whenAssisted", "1")
       }
 
@@ -121,7 +120,7 @@ export default function TaskComp(props) {
         localStorage.setItem("taskIdForApi", objTime.idTask);
         objTime.currdateAndTime = localStorage.getItem("whenAssisted");
         postDataTime(objTime); //api request to wp db
-        objTime.dataEntered=""
+        objTime.dataEntered = ""
         localStorage.setItem("whenAssisted", "1")
       }
     }
@@ -218,13 +217,52 @@ export default function TaskComp(props) {
                 }}
               >
                 {parseContent(props.content)}
-                <button onClick={() => setModalOpen(true)}>weight popup</button>
-                <h6>{dataEntered}</h6>
-                {
+                {props.taskType === "specialTask" ?
+                  <div style={{
+                    display: "flex",
+                    flexDirection: "row-reverse",
+                  }}>
+                    <p
+                      style={{
+                        marginLeft: "10px"
+                      }}
+
+                    >{props.language !== 'English'
+                      ? " משקל "
+                      : " משקל "}</p>
+                    <input
+                      style={{
+                        width: " 32px",
+                        height: "20px"
+                      }}
+                      type='number'
+                      step="50"
+                      min={1}
+                      onChange={(e) => {
+                        objTime.dataEntered = e.target.value
+                        setDataEntered(e.target.value)
+                      }}
+                    />
+                    <button
+                      style={{
+                        width: " 40px",
+                        height: "20px",
+                        backgroundColor: "#00ff00",
+                      }}
+                      type="button" > אישור </button>
+
+                  </div>
+                  :
+                  ""
+                }
+
+                {/* <button onClick={() => setModalOpen(true)}>weight popup</button> */}
+                {/* <h6>{dataEntered}</h6> */}
+                {/* {
                   modalOpen ?
                     <WeightPopup key={props.index} modalOpen={modalOpen} objTime={objTime}  setDataEntered={setDataEntered} setModalOpen={setModalOpen}/> 
                     : <></>
-                }
+                } */}
               </div>
             </div>
           </div>

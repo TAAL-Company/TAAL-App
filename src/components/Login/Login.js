@@ -83,6 +83,7 @@ function Login(props) {
 
   if(Hebrew) {
     sessionStorage.setItem('direction', direction);
+    sessionStorage.setItem('language', language);
   }
 
   const hebrew = () => {
@@ -233,30 +234,21 @@ function Login(props) {
     }
     console.log("res:");
     console.log(res);
-    localStorage.setItem("guidphone", loggedInUser.coach.phone || res2.acf.guide_phone);
+    localStorage.setItem("guidphone", loggedInUser.coach?.phone || res2.acf.guide_phone);
 
     const extraData = res2.acf ? res2.acf : [];
+    console.log("loggedInUser", loggedInUser);
+    
     props.actions.changeUser({
-      imgPath:
-        loggedInUser.picture_url ||
-          extraData.image && extraData.image.url
-          ? extraData.image.url
-          : null,
-      username: loggedInUser.name || user_nicename,
+      imgPath: loggedInUser.picture_url || null,
+      username: loggedInUser.name || "",
       isLoggedIn: true,
-      id: loggedInUser.id || user_ID,
-      phone: loggedInUser.phone || extraData.phone || "",
-      arabicName: extraData.arabic_name || "",
-      guideName:
-        extraData.guide && extraData.guide.display_name
-          ? extraData.guide.display_name
-          : "",
-      hebrewName: res.data.name,
-      GuidPhone:
-        loggedInUser.coach.phone ||
-          extraData.guide && extraData.guide.user_description
-          ? extraData.guide.user_description
-          : "",
+      id: loggedInUser.id,
+      phone: loggedInUser.phone || "",
+      arabicName: loggedInUser.name || "", //loggedInUser.arabic_name || "",
+      guideName: loggedInUser.coach?.name || "", //extraData.guide || "",
+      hebrewName: loggedInUser.name || "",// loggedInUser.hebrewName
+      guidePhone: loggedInUser.coach?.phone ||  "",
     });
 
     setLoading(false);

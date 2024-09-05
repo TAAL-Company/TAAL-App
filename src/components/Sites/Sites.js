@@ -50,6 +50,7 @@ export default function Sites(props) {
   const [allTasksOfUser, setAllTasksOfUser] = useState([]);
   const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
   const [AllPlacesOfUserwithroutes, setAllPlacesOfUserwithroutes] = useState([]);
+  localStorage.setItem("whenAssisted", "1")
 
   const [nodeUser, setNodeUser] = useState({});
 
@@ -68,7 +69,7 @@ export default function Sites(props) {
   }, [routesInfo]);
 
   useEffect(() => {
-    if (completed > 100) {
+    if (completed >= 100) {
       setCompleted(100);
     }
     console.log("completed: ", completed);
@@ -223,14 +224,18 @@ export default function Sites(props) {
     setLoading(true);
     try {
       if (IS_NODE) {
-        setAllRoutes(nodeRouteAdapter(await getingDataRoutesFromNodejs()));
-        setAllPlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
-        setAllTasks(nodeTasksAdapter(await getingDataTasksFromNodejs(setCompleted, setnumOfTasks)));
+        setAllRoutes(await nodeRouteAdapter(await getingDataRoutesFromNodejs()));
+        setCompleted(25);
+        setAllPlaces( nodePlacesAdapter(await getingDataPlacesFromNodejs()));
+        setCompleted(50);
+        setAllTasks( nodeTasksAdapter(await getingDataTasksFromNodejs()));
+        setCompleted(90);
       } else {
         setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
         setAllRoutes(await getingDataRoutes()); //get request for routes
         setAllPlaces(await getingDataPlaces()); //get request for places  
       }
+      setnumOfTasks(100);
 
     } catch (error) {
       console.log("Error");
@@ -242,12 +247,12 @@ export default function Sites(props) {
   }, []);
 
   useEffect(() => {
-    if (numOfTasks != 0 && allTasks.length == numOfTasks) {
+    if (numOfTasks != 0) {
       if (allPlaces.length > 0 && allRoutes.length > 0 && allTasks.length > 0) {
         getDataFunction();
       }
     }
-  }, [allRoutes, allTasks, allPlaces]);
+  }, [numOfTasks]);
 
   const clearCache = () => {
     // Remove all cookies
@@ -355,8 +360,10 @@ export default function Sites(props) {
     props.actions.changePlaces(temp1, dateRef.current);
     if (temp1.length < 2) setLineLength(0);
     else if (temp1.length === 2) setLineLength(32);
-    setLoading(false);
     props.actions.enterApp(dateRef.current);
+
+    setCompleted(100);
+    setLoading(false);
   };
   const isCurrentSite = (itemId) =>
     itemId === props.user_places.places_location;
@@ -406,14 +413,14 @@ export default function Sites(props) {
               ) : (
                 currentLanguage === "Arabic" ? (
                   <>
-                  <h5 className="helloTitle">{user.user.username} مرحبا</h5>
-                  <h1 className="addText">سعيد لرؤيتك!</h1>
+                    <h5 className="helloTitle">{user.user.username} مرحبا</h5>
+                    <h1 className="addText">سعيد لرؤيتك!</h1>
                   </>
-                ):(
+                ) : (
                   <>
-                  <h5 className="helloTitle">{user.user.username} שלום</h5>{" "}
-                  <h1 className="addText">!שמחים לראותך</h1>
-                </>
+                    <h5 className="helloTitle">{user.user.username} שלום</h5>{" "}
+                    <h1 className="addText">!שמחים לראותך</h1>
+                  </>
                 )
               )}
             </div>
