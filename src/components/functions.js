@@ -549,10 +549,10 @@ export const nodeTasksAdapter = (Tasksdata) => {
 		wpTasks.acf.audio.url = Taskdata.audio_url
 		wpTasks.acf.audio.link = Taskdata.audio_url
 		wpTasks.acf.sub_tasks = Taskdata.subtasks
-		// wpTasks.type = Taskdata.TaskType
-		// wpTasks.status = Taskdata.dataEntryType
+		wpTasks.type = Taskdata.taskType
+		wpTasks.status = Taskdata.dataEntryType
 		wpTasks.template = Taskdata.dataEntryLabel
-		// wpTasks.featured_media = Taskdata.dataEntryValidation
+		wpTasks.featured_media = Taskdata.dataEntryValidation
 
 
 		// ----places/sites---

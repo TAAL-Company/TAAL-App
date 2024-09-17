@@ -140,7 +140,8 @@ function Login(props) {
       }
     };
 
-    const loggedInUser = await loginUser({ user_name: username, phone: password });
+    // const loggedInUser = await loginUser({ user_name: username, phone: password });
+    const loggedInUser = await loginUser({ user_name: username, password: password });
     if (!loggedInUser) {
       setError(errormessage);
       setLoading(false);
