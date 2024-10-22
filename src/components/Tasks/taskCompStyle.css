@@ -40,6 +40,8 @@
 }
 .textTaskComp {
   /* text-align: right; */
+  /* inline-size: 150px; */
+  overflow-wrap: break-word;
   font-family: "Arimo", sans-serif;
   margin: 0;
   padding: 0;
