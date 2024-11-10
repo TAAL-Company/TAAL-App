@@ -7,7 +7,7 @@ import "./Login.css";
 
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FaRegUser, FaAt } from "react-icons/fa";
-import { RiKey2Line } from "react-icons/ri";
+import { RiKey2Line, RiEyeLine, RiEyeOffLine } from 'react-icons/ri';
 import LogoLogin from "../../images/LogoLoginWhite.png";
 
 import wpConfig from "../../wp-config";
@@ -148,6 +148,8 @@ function Login(props) {
       return;
     }
 
+    localStorage.setItem("routes", JSON.stringify(loggedInUser.routes))
+
     const loggedInUser2 = {
       "id": "78c4941a-4b31-4b91-a039-5dba27fafbff",
       "user_name": "TW1",
@@ -258,6 +260,12 @@ function Login(props) {
     setLoggedIn(true);
   };
 
+    const [showPassword, setShowPassword] = useState(false);
+  
+    const togglePasswordVisibility = () => {
+      setShowPassword(prevShowPassword => !prevShowPassword);
+    };
+
   const handleOnChange = (event) => {
     const { name, value } = event.target;
     if (name === "username") setUsername(value);
@@ -338,13 +346,16 @@ function Login(props) {
             </div>
 
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               className="form-control"
               name="password"
               placeholder={passwordLanguage}
               value={password}
               onChange={handleOnChange}
             />
+            <div className="icon" onClick={togglePasswordVisibility} style={{ cursor: 'pointer' }}>
+              {showPassword ? <RiEyeOffLine /> : <RiEyeLine />}
+            </div>
           </label>
           <div className='form-control'>
             <input
