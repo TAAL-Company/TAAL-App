@@ -175,6 +175,7 @@ export default function TaskComp(props) {
                 props.imgUrl
                   ? props.imgUrl
                   : "https://globalimpactnetwork.org/wp-content/themes/globalimpact/images/no-image-found-360x250.png"
+                  // : "https://planner.taal.link/static/media/TaskImage.3014df9eff903a04f142.png"
               }
               className=" imgStyle"
             />

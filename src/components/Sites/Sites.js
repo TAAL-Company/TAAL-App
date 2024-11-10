@@ -6,7 +6,7 @@ import { navigate } from "@reach/router";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import Navbar from "../Nav/Navbar";
-import { getingDataPlaces, getingDataPlacesFromNodejs, getingDataRoutes, getingDataRoutesFromNodejs, getingDataTasks, getingDataTasksFromNodejs } from "../api";
+import { getingDataPlaceByIdFromNodejs, getingDataPlaces, getingDataPlacesFromNodejs, getingDataRouteByIdFromNodejs, getingDataRoutes, getingDataRoutesFromNodejs, getingDataTasks, getingDataTasksFromNodejs, getingTasksById, noderoutedataforuser, nodetasksdataforuser } from "../api";
 import ProgressBarComp from "../assets/progressBar.js";
 import { handleLogout, internetConnection, isLoggedIn, nodePlacesAdapter, nodeRouteAdapter, nodeTasksAdapter } from "../functions";
 import "./Sites.css";
@@ -222,25 +222,44 @@ export default function Sites(props) {
 
   const fetchData = async () => {
     setLoading(true);
-    try {
+    // try {
       if (IS_NODE) {
-        setAllRoutes(await nodeRouteAdapter(await getingDataRoutesFromNodejs()));
+        // const routes = await noderoutedataforuser();
+        // setCompleted(15);
+        // setAllRoutes(await nodeRouteAdapter(routes));
+        // setCompleted(25);
+        // setAllPlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
+        // setCompleted(50);
+        // const tasks = await nodetasksdataforuser(routes)
+        // setCompleted(75);
+        // setAllTasks(nodeTasksAdapter(tasks));
+        // setCompleted(90);
+
+        setAllRoutes(await getingDataRouteByIdFromNodejs("app"));
         setCompleted(25);
-        setAllPlaces( nodePlacesAdapter(await getingDataPlacesFromNodejs()));
+        setAllPlaces(await getingDataPlaceByIdFromNodejs("app"));
         setCompleted(50);
-        setAllTasks( nodeTasksAdapter(await getingDataTasksFromNodejs()));
+        setAllTasks(await getingTasksById("app"));
         setCompleted(90);
+
+
+        // setAllRoutes(await nodeRouteAdapter(await getingDataRoutesFromNodejs()));// TODO : fix this
+        // setCompleted(25);
+        // setAllPlaces( nodePlacesAdapter(await getingDataPlacesFromNodejs()));
+        // setCompleted(50);
+        // setAllTasks( nodeTasksAdapter(await getingDataTasksFromNodejs()));
+        // setCompleted(90);
       } else {
-        setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
-        setAllRoutes(await getingDataRoutes()); //get request for routes
-        setAllPlaces(await getingDataPlaces()); //get request for places  
+        // setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
+        // setAllRoutes(await getingDataRoutes()); //get request for routes
+        // setAllPlaces(await getingDataPlaces()); //get request for places  
       }
       setnumOfTasks(100);
 
-    } catch (error) {
-      console.log("Error");
-      console.error(error.message);
-    }
+    // } catch (error) {
+    //   console.log("Error");
+    //   console.error(error.message);
+    // }
   };
   useEffect(() => {
     fetchData();

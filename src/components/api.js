@@ -278,3 +278,76 @@ export const getingDataTasksFromNodejs = async () => {
         return null;
     }
 };
+
+export const getingDataRouteByIdFromNodejs = async (RouteId) => {
+    let allRoutes;
+    console.log("geting data Routes");
+    try {
+        await get(azureConfig.getRoutes + "/" + RouteId).then((res) => {
+            // console.log("getRoutes", res.data);
+            allRoutes = res.data
+        });
+        return allRoutes
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+};
+
+export const getingDataPlaceByIdFromNodejs = async (SiteId) => {
+    let allPlaces;
+    console.log("geting data Places");
+    try {
+        await get(azureConfig.getPlaces + "/" + SiteId).then((res) => {
+            console.log("getPlaces", res.data);
+            allPlaces = res.data
+        });
+        return allPlaces
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+};
+
+export const noderoutedataforuser = async () => {
+    const results = [];
+    const userRoute = JSON.parse(localStorage.getItem("routes"));
+    const userRoutesIDs = userRoute.map(item => item.id);
+
+    try {
+        const responses = await Promise.all(
+            userRoutesIDs.map(async (id) => {
+                const response = await getingDataRouteByIdFromNodejs(id);
+                return response;
+            })
+        );
+
+        results.push(...responses);
+    } catch (error) {
+        console.error(`Error fetching data for routes:`, error);
+    }
+
+    return results;
+};
+
+export const nodetasksdataforuser = async (userRoutes) => {
+    console.log("userRoutes", userRoutes);
+    
+    const taskIds = [...new Set(userRoutes.flatMap(route => route.tasks.map(task => task.taskId)))];
+    const results = [];
+
+    try {
+        const responses = await Promise.all(
+            taskIds.map(async (id) => {
+                const response = await getingTasksById(id);
+                return response;
+            })
+        );
+
+        results.push(...responses);
+    } catch (error) {
+        console.error(`Error fetching data for tasks:`, error);
+    }
+
+    return results;
+};

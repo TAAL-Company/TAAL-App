@@ -389,6 +389,7 @@ function Tasks(props) {
       return allData[currIndex].acf.image.url;
     else
       return "https://globalimpactnetwork.org/wp-content/themes/globalimpact/images/no-image-found-360x250.png";
+      // return "https://planner.taal.link/static/media/TaskImage.3014df9eff903a04f142.png";
   };
 
   const getAudio = () => {
