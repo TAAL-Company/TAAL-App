@@ -148,7 +148,11 @@ function Login(props) {
       return;
     }
 
-    localStorage.setItem("routes", JSON.stringify(loggedInUser.routes))
+    const routesID = loggedInUser.routes.map(route => route.id);
+    localStorage.setItem("routes", JSON.stringify(routesID))
+
+    const placesID = loggedInUser.sites.map(site => site.id);
+    localStorage.setItem("placesID", JSON.stringify(placesID))
 
     const loggedInUser2 = {
       "id": "78c4941a-4b31-4b91-a039-5dba27fafbff",

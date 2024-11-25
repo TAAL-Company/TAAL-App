@@ -58,7 +58,6 @@ export const postDataTime = (objTime) => {
 
 
 };
-
 export const get = async (url, header) => {
     try {
         const res = await axios.get(url, header);
@@ -70,6 +69,32 @@ export const get = async (url, header) => {
     }
 };
 
+export const post = async (url, body) => {
+    try {
+        const res = await axios.post(url, body);
+        if (res) {
+            return res;
+        }
+    } catch (e) {
+        console.log(e);
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////
+export const loginUser = async (loginBodyData) => {
+    let loginUser;
+    console.log("geting data users");
+    try {
+        const res = await axios.post(azureConfig.loginUser, loginBodyData);
+        return res.data;
+    } catch (e) {
+        console.log(e);
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
+//////// ------wpConfig
+////////////////////////////////////////////////////////////////////////////////////////
 export const getingDataTasks = async (setCompleted, setnumOfTasks) => {
 
     let allTasks;
@@ -110,7 +135,6 @@ export const getingDataTasks = async (setCompleted, setnumOfTasks) => {
 
     return allTasks;
 };
-
 export const getingDataRoutes = async () => {
 
     let allRoutes;
@@ -143,7 +167,6 @@ export const getingDataRoutes = async () => {
 
     return allRoutes;
 };
-
 export const getingDataPlaces = async () => {
 
     let allPlaces;
@@ -178,7 +201,9 @@ export const getingDataPlaces = async () => {
 
     return allPlaces;
 };
+////////////////////////////////////////////////////////////////////////////////////////
 
+////////////////////////////////////////////////////////////////////////////////////////
 export const getingDataUsersFromNodejs = async () => {
     let allUsers;
     // console.log('geting data routes', `${wpConfig}/wp-json/wp/v2/routes/`)
@@ -195,29 +220,17 @@ export const getingDataUsersFromNodejs = async () => {
     }
 
 };
-
-export const loginUser = async (loginBodyData) => {
-    let loginUser;
-    console.log("geting data users");
-    try {
-        const res = await axios.post(azureConfig.loginUser, loginBodyData);
-        return res.data;
-    } catch (e) {
-        console.log(e);
-    }
-}
-
 export const getingDataRoutesFromNodejs = async () => {
     let allRoutes;
     console.log("geting data Routes");
     try {
         await get(azureConfig.getRoutes).then((res) => {
             console.log("getRoutes", res.data);
-            allRoutes = res.data.map((route)=>{
+            allRoutes = res.data.map((route) => {
                 // console.log(route.tasks);
                 route.tasks.sort((a, b) => a.position - b.position);
                 return route
-              })
+            })
             // allRoutes = res.data
         });
         return allRoutes
@@ -226,7 +239,6 @@ export const getingDataRoutesFromNodejs = async () => {
         return null;
     }
 };
-
 export const getingDataPlacesFromNodejs = async () => {
     let allPlaces;
     console.log("geting data Places");
@@ -241,22 +253,6 @@ export const getingDataPlacesFromNodejs = async () => {
         return null;
     }
 };
-
-export const getingTasksById = async (taskid) => {
-    let taskinfo;
-    // console.log(taskid);
-    try {
-        await get(azureConfig.getTasks + "/" + taskid).then((res) => {
-            // console.log("task info", res.data);
-            taskinfo = res.data
-        });
-        return taskinfo
-    } catch (error) {
-        console.error(error)
-        return null;
-    }
-}
-
 export const getingDataTasksFromNodejs = async () => {
     let allTasks;
     console.log("geting data Tasks");
@@ -278,6 +274,23 @@ export const getingDataTasksFromNodejs = async () => {
         return null;
     }
 };
+export const getingTasksById = async (taskid) => {
+    let taskinfo;
+    // console.log(taskid);
+    try {
+        await get(azureConfig.getTasks + "/" + taskid).then((res) => {
+            // console.log("task info", res.data);
+            taskinfo = res.data
+        });
+        return taskinfo
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+}
+////////////////////////////////////////////////////////////////////////////////////////
+
+////////////////////////////////////////////////////////////////////////////////////////
 
 export const getingDataRouteByIdFromNodejs = async (RouteId) => {
     let allRoutes;
@@ -332,7 +345,7 @@ export const noderoutedataforuser = async () => {
 
 export const nodetasksdataforuser = async (userRoutes) => {
     console.log("userRoutes", userRoutes);
-    
+
     const taskIds = [...new Set(userRoutes.flatMap(route => route.tasks.map(task => task.taskId)))];
     const results = [];
 
@@ -351,3 +364,157 @@ export const nodetasksdataforuser = async (userRoutes) => {
 
     return results;
 };
+////////////////////////////////////////////////////////////////////////////////////////
+///////- GET DATA FROM NODEJS APP - ////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////
+export const getingDataRouteByIdsFromNodejs = async (RouteId) => {
+    let allRoutes;
+    console.log("geting data Routes");
+    try {
+        await post(azureConfig.getRoutes + "/app", RouteId).then((res) => {
+            allRoutes = res.data
+        });
+        return allRoutes
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+};
+
+export const getingDataPlaceByIdsFromNodejs = async (SiteId) => {
+    let allPlaces;
+    try {
+        await post(azureConfig.getPlaces + "/app", SiteId).then((res) => {
+            allPlaces = res.data
+        });
+        return allPlaces
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+};
+
+export const getingDataTasksByIdsFromNodejs = async (tasksId) => {
+    let allTasks;
+    try {
+        await post(azureConfig.getTasks + "/app", tasksId).then((res) => {
+            allTasks = res.data
+        });
+        return allTasks
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+};
+
+export const getTaskIdsFromPlaces = async (userPlaceIds) => {
+    const results = [];
+
+    if (!Array.isArray(userPlaceIds)) {
+        console.error("No valid place IDs found in localStorage");
+        return results;
+    }
+
+    try {
+        await post(azureConfig.getPlaces + "/ids", userPlaceIds).then((res) => {
+            res.data.map((site) => {
+                site.tasks.map((task) => {
+                    results.push(task.id)
+                })
+            })
+        });
+
+        return results
+
+    } catch (error) {
+        console.error(`Error fetching places for routes:`, error);
+    }
+
+    return results;
+
+};
+
+export const getingPlacesIdFormRoutes = async (userRouteIds) => {
+    const results = [];
+
+    if (!Array.isArray(userRouteIds)) {
+        console.error("No valid route IDs found in localStorage");
+        return results;
+    }
+
+    try {
+        await post(azureConfig.getRoutes + "/ids", userRouteIds).then((res) => {
+            res.data.map((route) => {
+                route.sites.map((site) => {
+                    results.push(site.id)
+                })
+            })
+        });
+
+        return results
+
+    } catch (error) {
+        console.error(`Error fetching places for routes:`, error);
+    }
+
+    return results;
+};
+// export const getTaskIdsFromPlaces = async (userPlaceIds) => {
+//     const results = [];
+
+//     if (!Array.isArray(userPlaceIds)) {
+//         console.error("No valid place IDs found in localStorage");
+//         return results;
+//     }
+
+//     try {
+//         const taskIdArrays = await Promise.all(
+//             userPlaceIds.map(async (placeId) => {
+//                 try {
+//                     const placeData = await getingDataPlaceByIdFromNodejs(placeId);//
+//                     return placeData?.tasks?.map((task) => task.id) || [];
+//                 } catch (error) {
+//                     console.error(`Error fetching data for place ID ${placeId}:`, error);
+//                     return [];
+//                 }
+//             })
+//         );
+
+//         // Flatten the nested arrays and add to results
+//         results.push(...taskIdArrays.flat());
+//     } catch (error) {
+//         console.error(`Error fetching tasks for places:`, error);
+//     }
+
+//     return results;
+// };
+
+// export const getingPlacesIdFormRoutes = async (userRouteIds) => {
+//     const results = [];
+
+//     if (!Array.isArray(userRouteIds)) {
+//         console.error("No valid route IDs found in localStorage");
+//         return results;
+//     }
+
+//     try {
+//         const placeIdArrays = await Promise.all(
+//             userRouteIds.map(async (routeId) => {
+//                 try {
+//                     const routeData = await getingDataRouteByIdFromNodejs(routeId);//
+//                     return routeData?.sites?.map((site) => site.id) || [];
+//                 } catch (error) {
+//                     console.error(`Error fetching data for route ID ${routeId}:`, error);
+//                     return [];
+//                 }
+//             })
+//         );
+
+//         // Flatten the nested arrays and add to results
+//         results.push(...placeIdArrays.flat());
+//     } catch (error) {
+//         console.error(`Error fetching places for routes:`, error);
+//     }
+
+//     return results;
+// };

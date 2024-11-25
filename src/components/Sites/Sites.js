@@ -6,7 +6,7 @@ import { navigate } from "@reach/router";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import Navbar from "../Nav/Navbar";
-import { getingDataPlaceByIdFromNodejs, getingDataPlaces, getingDataPlacesFromNodejs, getingDataRouteByIdFromNodejs, getingDataRoutes, getingDataRoutesFromNodejs, getingDataTasks, getingDataTasksFromNodejs, getingTasksById, noderoutedataforuser, nodetasksdataforuser } from "../api";
+import { getingDataPlaceByIdFromNodejs, getingDataPlaceByIdsFromNodejs, getingDataPlaces, getingDataPlacesFromNodejs, getingDataRouteByIdFromNodejs, getingDataRouteByIdsFromNodejs, getingDataRoutes, getingDataRoutesFromNodejs, getingDataTasks, getingDataTasksByIdsFromNodejs, getingDataTasksFromNodejs, getingPlacesIdFormRoutes, getingTasksById, getTaskIdsFromPlaces, noderoutedataforuser, nodetasksdataforuser } from "../api";
 import ProgressBarComp from "../assets/progressBar.js";
 import { handleLogout, internetConnection, isLoggedIn, nodePlacesAdapter, nodeRouteAdapter, nodeTasksAdapter } from "../functions";
 import "./Sites.css";
@@ -223,38 +223,65 @@ export default function Sites(props) {
   const fetchData = async () => {
     setLoading(true);
     // try {
-      if (IS_NODE) {
-        // const routes = await noderoutedataforuser();
-        // setCompleted(15);
-        // setAllRoutes(await nodeRouteAdapter(routes));
-        // setCompleted(25);
-        // setAllPlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
-        // setCompleted(50);
-        // const tasks = await nodetasksdataforuser(routes)
-        // setCompleted(75);
-        // setAllTasks(nodeTasksAdapter(tasks));
-        // setCompleted(90);
+    if (IS_NODE) {
+      // const routes = await noderoutedataforuser();
+      // setCompleted(15);
+      // setAllRoutes(await nodeRouteAdapter(routes));
+      // setCompleted(25);
+      // setAllPlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
+      // setCompleted(50);
+      // const tasks = await nodetasksdataforuser(routes)
+      // setCompleted(75);
+      // setAllTasks(nodeTasksAdapter(tasks));
+      // setCompleted(90);
 
-        setAllRoutes(await getingDataRouteByIdFromNodejs("app"));
-        setCompleted(25);
-        setAllPlaces(await getingDataPlaceByIdFromNodejs("app"));
+      // Retrieve user routes from localStorage
+      const userRoutesIDs = JSON.parse(localStorage.getItem("routes"));
+      if (userRoutesIDs) {
+        setAllRoutes(await getingDataRouteByIdsFromNodejs(userRoutesIDs));
+        setCompleted(15);
+
+        // Check if user has places in localStorage
+        let userPlacesIds = null//JSON.parse(localStorage.getItem("placesID"));
+        if (!userPlacesIds) {
+          // If no places in localStorage, derive them from routes
+          userPlacesIds = await getingPlacesIdFormRoutes(userRoutesIDs);
+          setCompleted(25);
+        }
+        setAllPlaces(await getingDataPlaceByIdsFromNodejs(userPlacesIds));
         setCompleted(50);
-        setAllTasks(await getingTasksById("app"));
+
+        // Retrieve tasks associated with places
+        const userTasksIDs = await getTaskIdsFromPlaces(userPlacesIds);
+        setCompleted(70);
+
+        // Fetch and set all tasks
+        setAllTasks(await getingDataTasksByIdsFromNodejs(userTasksIDs));
         setCompleted(90);
-
-
-        // setAllRoutes(await nodeRouteAdapter(await getingDataRoutesFromNodejs()));// TODO : fix this
-        // setCompleted(25);
-        // setAllPlaces( nodePlacesAdapter(await getingDataPlacesFromNodejs()));
-        // setCompleted(50);
-        // setAllTasks( nodeTasksAdapter(await getingDataTasksFromNodejs()));
-        // setCompleted(90);
       } else {
-        // setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
-        // setAllRoutes(await getingDataRoutes()); //get request for routes
-        // setAllPlaces(await getingDataPlaces()); //get request for places  
+        console.error("No user routes found in localStorage.");
       }
-      setnumOfTasks(100);
+
+      // setAllRoutes(await getingDataRouteByIdFromNodejs("app"));
+      // setCompleted(25);
+      // setAllPlaces(await getingDataPlaceByIdFromNodejs("app"));
+      // setCompleted(50);
+      // setAllTasks(await getingTasksById("app"));
+      // setCompleted(90);
+
+
+      // setAllRoutes(await nodeRouteAdapter(await getingDataRoutesFromNodejs()));// TODO : fix this
+      // setCompleted(25);
+      // setAllPlaces( nodePlacesAdapter(await getingDataPlacesFromNodejs()));
+      // setCompleted(50);
+      // setAllTasks( nodeTasksAdapter(await getingDataTasksFromNodejs()));
+      // setCompleted(90);
+    } else {
+      // setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
+      // setAllRoutes(await getingDataRoutes()); //get request for routes
+      // setAllPlaces(await getingDataPlaces()); //get request for places  
+    }
+    setnumOfTasks(100);
 
     // } catch (error) {
     //   console.log("Error");
