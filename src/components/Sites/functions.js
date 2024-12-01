@@ -185,7 +185,7 @@ export const addStationDetailsToTask = (userTasks, place) => {
 
   let copyUserTasks = [...userTasks];
   copyUserTasks.forEach((task) => {
-    task["stationDetails"] = place[task.places[task.places.length - 1]];
+    task["stationDetails"] =  task.stations[0]// place[task.places[task.places.length - 1]];
   });
   return copyUserTasks;
 };

@@ -403,7 +403,7 @@ function Tasks(props) {
   // get station name for tablet design
   const getStationName = (index) => {
     if (allData && allData[index] && allData[index].stationDetails)
-      return allData[index].stationDetails.name;
+      return allData[index].stationDetails.title;
     else return "none";
   };
 
@@ -457,7 +457,7 @@ function Tasks(props) {
           <div className="center grayBar">
             <Text>
               {/* {allData[currIndex] && allData[currIndex].stationDetails ? allData[currIndex].stationDetails.name : ""} */}
-              {allData[currIndex]?.stationDetails?.name || ''}
+              {allData[currIndex]?.stationDetails?.title || ''}
             </Text>
           </div>
           <Connector
@@ -510,7 +510,7 @@ function Tasks(props) {
           </PrevButton>
           <div className={barStatus2}>
             <Text>
-              {stationsData[currIndex] ? stationsData[currIndex].name : ""}
+              {stationsData[currIndex] ? stationsData[currIndex].title : ""}
             </Text>
           </div>
 

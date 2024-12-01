@@ -7,7 +7,7 @@ export const storeInitialData = (sitesTasks) => {
     for (let index = 0; index < sitesTasks.length; index++) {
         if (sitesTasks[index + 1]) {
             let placeIndex = index + sitesTasks[index].length - 1
-            stationsObject[placeIndex] = sitesTasks[index + 1][0].stationDetails
+            stationsObject[placeIndex] = sitesTasks[index + 1][0].stations
         }
     }
     return stationsObject
