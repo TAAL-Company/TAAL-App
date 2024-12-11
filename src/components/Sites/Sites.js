@@ -294,7 +294,7 @@ export default function Sites(props) {
 
   useEffect(() => {
     if (numOfTasks != 0) {
-      if (allPlaces.length > 0 && allRoutes.length > 0 && allTasks.length > 0) {
+      if ((allPlaces.length > 0 && allRoutes.length > 0 && allTasks.length > 0) || props.user) {
         getDataFunction();
       }
     }

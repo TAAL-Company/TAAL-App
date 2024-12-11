@@ -13,6 +13,7 @@ import LogoLogin from "../../images/LogoLoginWhite.png";
 import wpConfig from "../../wp-config";
 import { IS_NODE } from "../Sites/Sites";
 import { getingDataUsersFromNodejs, loginUser } from "../api";
+import posthog from "posthog-js";
 //redux
 // import Spinner from "../assets/Spinner";
 
@@ -245,6 +246,8 @@ function Login(props) {
 
     const extraData = res2.acf ? res2.acf : [];
     console.log("loggedInUser", loggedInUser);
+
+    posthog.identify(loggedInUser.name)
     
     props.actions.changeUser({
       imgPath: loggedInUser.picture_url || null,

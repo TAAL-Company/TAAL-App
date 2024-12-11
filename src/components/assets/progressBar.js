@@ -1,6 +1,7 @@
 import React, { useState,useEffect } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
 import LogoLogin from "../../images/logoTaal.svg";
+import {handleLogout} from "../functions";
 import "./styleProgressBar.css";
 
 
@@ -15,6 +16,7 @@ export default function ProgressBarComp(props) {
 
     return (
         <div className="progressBarWarpper" >
+            <button onClick={handleLogout}>logout</button>
             <img
                 src={LogoLogin}
                 className="LogoLogin"

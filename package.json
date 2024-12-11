@@ -26,6 +26,7 @@
     "i18next-http-backend": "^1.2.6",
     "image-webpack-loader": "^4.6.0",
     "moment": "^2.24.0",
+    "posthog-js": "^1.195.0",
     "qs": "^6.7.0",
     "querystringify": "^2.0.0",
     "react": "18.2.0",

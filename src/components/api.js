@@ -435,29 +435,29 @@ export const getTaskIdsFromPlaces = async (userPlaceIds) => {
 };
 
 export const getingPlacesIdFormRoutes = async (userRouteIds) => {
-    const results = [];
+    const results = new Set();
 
     if (!Array.isArray(userRouteIds)) {
         console.error("No valid route IDs found in localStorage");
-        return results;
+        return Array.from(results);
     }
 
     try {
         await post(azureConfig.getRoutes + "/ids", userRouteIds).then((res) => {
-            res.data.map((route) => {
-                route.sites.map((site) => {
-                    results.push(site.id)
-                })
-            })
+            res.data.forEach((route) => {
+                route.sites.forEach((site) => {
+                    results.add(site.id);
+                });
+            });
         });
 
-        return results
+        return Array.from(results);
 
     } catch (error) {
         console.error(`Error fetching places for routes:`, error);
     }
 
-    return results;
+    return Array.from(results);
 };
 // export const getTaskIdsFromPlaces = async (userPlaceIds) => {
 //     const results = [];
