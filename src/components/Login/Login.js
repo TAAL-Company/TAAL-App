@@ -248,6 +248,12 @@ function Login(props) {
     console.log("loggedInUser", loggedInUser);
 
     posthog.identify(loggedInUser.name)
+    posthog.capture(
+      '$set', 
+      { 
+          $$set: [process.env.REACT_APP_VERSION],
+      }
+  )
     
     props.actions.changeUser({
       imgPath: loggedInUser.picture_url || null,

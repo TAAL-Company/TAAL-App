@@ -4,10 +4,12 @@
   "private": true,
   "main": "index.js",
   "scripts": {
+    "prestart": "node set-env.js",
+    "prebuild": "node set-env.js",
     "webpack-dev-server": "webpack-dev-server",
-    "dev": "webpack-dev-server --mode=development",
+    "dev": "node set-env.js && webpack-dev-server --mode=development",
     "prod": "webpack --mode=production",
-    "build": "webpack --mode production --output-path dist"
+    "build": "node set-env.js && webpack --mode production --output-path dist"
   },
   "keywords": [],
   "author": "",
