@@ -149,11 +149,11 @@ function Login(props) {
       return;
     }
 
-    const routesID = loggedInUser.routes.map(route => route.id);
-    localStorage.setItem("routes", JSON.stringify(routesID))
+    // const routesID = loggedInUser.routes.map(route => route.id);
+    // localStorage.setItem("routes", JSON.stringify(routesID))
 
-    const placesID = loggedInUser.sites.map(site => site.id);
-    localStorage.setItem("placesID", JSON.stringify(placesID))
+    // const placesID = loggedInUser.sites.map(site => site.id);
+    // localStorage.setItem("placesID", JSON.stringify(placesID))
 
     const loggedInUser2 = {
       "id": "78c4941a-4b31-4b91-a039-5dba27fafbff",
@@ -285,6 +285,7 @@ function Login(props) {
     else if (name === "password") setPassword(value);
     else if (name === "userEmail") setUserEmail(value);
   };
+
   const styles = {
     modalStyle: {
       overlay: {
@@ -304,6 +305,7 @@ function Login(props) {
       },
     },
   };
+  
   const user = userNiceName ? userNiceName : localStorage.getItem("userName");
 
   if (loggedIn || localStorage.getItem("token")) {

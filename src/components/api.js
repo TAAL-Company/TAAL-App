@@ -459,6 +459,22 @@ export const getingPlacesIdFormRoutes = async (userRouteIds) => {
 
     return Array.from(results);
 };
+
+export const getingDatauserByIdFromNodejs = async (UserId) => {
+    let userdata;
+    console.log("geting data user");
+    try {
+        await get(azureConfig.getUsers + "/" + UserId).then((res) => {
+            // console.log("getRoutes", res.data);
+            userdata = res.data
+        });
+        return userdata
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+};
+
 // export const getTaskIdsFromPlaces = async (userPlaceIds) => {
 //     const results = [];
 

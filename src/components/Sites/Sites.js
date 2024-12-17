@@ -6,7 +6,7 @@ import { navigate } from "@reach/router";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import Navbar from "../Nav/Navbar";
-import { getingDataPlaceByIdFromNodejs, getingDataPlaceByIdsFromNodejs, getingDataPlaces, getingDataPlacesFromNodejs, getingDataRouteByIdFromNodejs, getingDataRouteByIdsFromNodejs, getingDataRoutes, getingDataRoutesFromNodejs, getingDataTasks, getingDataTasksByIdsFromNodejs, getingDataTasksFromNodejs, getingPlacesIdFormRoutes, getingTasksById, getTaskIdsFromPlaces, noderoutedataforuser, nodetasksdataforuser } from "../api";
+import { getingDataPlaceByIdFromNodejs, getingDataPlaceByIdsFromNodejs, getingDataPlaces, getingDataPlacesFromNodejs, getingDataRouteByIdFromNodejs, getingDataRouteByIdsFromNodejs, getingDataRoutes, getingDataRoutesFromNodejs, getingDataTasks, getingDataTasksByIdsFromNodejs, getingDataTasksFromNodejs, getingPlacesIdFormRoutes, getingTasksById, getTaskIdsFromPlaces, noderoutedataforuser, nodetasksdataforuser, getingDatauserByIdFromNodejs } from "../api";
 import ProgressBarComp from "../assets/progressBar.js";
 import { handleLogout, internetConnection, isLoggedIn, nodePlacesAdapter, nodeRouteAdapter, nodeTasksAdapter } from "../functions";
 import "./Sites.css";
@@ -235,8 +235,17 @@ export default function Sites(props) {
       // setAllTasks(nodeTasksAdapter(tasks));
       // setCompleted(90);
 
+      let userRoutesIDs = []//JSON.parse(localStorage.getItem("routes"));
+      
+      await getingDatauserByIdFromNodejs(userId).then((user) => {
+        const routesID = user.routes.map(route => route.id);
+        console.log("routesID", routesID);
+        localStorage.setItem("routes", JSON.stringify(routesID))
+        userRoutesIDs = JSON.parse(localStorage.getItem("routes"));
+        setCompleted(10);
+      })
+      
       // Retrieve user routes from localStorage
-      const userRoutesIDs = JSON.parse(localStorage.getItem("routes"));
       if (userRoutesIDs) {
         setAllRoutes(await getingDataRouteByIdsFromNodejs(userRoutesIDs));
         setCompleted(15);
