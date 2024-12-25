@@ -405,7 +405,7 @@ function Login(props) {
               }}
               inputProps={{ 'aria-label': 'controlled' }}
             />
-            Arabic
+           العربية
           </div>
           <br />
           <button className="btn mb-3" type="submit">
