@@ -199,7 +199,7 @@ export default function TaskComp(props) {
               <div
                 className="textTaskComp"
                 style={{
-                  fontSize: "2.8vw",
+                  fontSize: "3.5vw",
                   textAlign: routes_ltr.includes(
                     parseInt(localStorage.getItem("route_id"))
                   )
