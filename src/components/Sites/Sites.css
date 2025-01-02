@@ -68,10 +68,11 @@
         display: flex;
         /* align-items: center; */
         background-color: #272727;
-        min-height: 188px;
+        min-height: 300px;
         overflow: hidden;
         overflow-y: scroll;
         overflow-x: hidden;
+        height: 80%;
     }
     .scanText {
         flex: 2;
