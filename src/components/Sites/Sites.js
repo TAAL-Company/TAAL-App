@@ -54,6 +54,8 @@ export default function Sites(props) {
 
   const [nodeUser, setNodeUser] = useState({});
 
+  const [isOnLine, setIsOnLine] = useState([]);
+
   const currentLanguage = sessionStorage.getItem('language')
   const isLTR = () => {
     const currentDirection = sessionStorage.getItem('direction')
@@ -216,89 +218,138 @@ export default function Sites(props) {
   };
 
   const checkForInternet = async () => {
-    internetStatus.current = await internetConnection();
-    return internetStatus.current;
+    // internetStatus.current = await internetConnection();
+    // return internetStatus.current;
+
+    //heck you are online or not
+    // navigator.onLine (true or false)
+
   };
 
-  const fetchData = async () => {
+  const fetchData = async (networkState) => {
+    // checkForInternet();
     setLoading(true);
     // try {
-    if (IS_NODE) {
-      // const routes = await noderoutedataforuser();
-      // setCompleted(15);
-      // setAllRoutes(await nodeRouteAdapter(routes));
-      // setCompleted(25);
-      // setAllPlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
-      // setCompleted(50);
-      // const tasks = await nodetasksdataforuser(routes)
-      // setCompleted(75);
-      // setAllTasks(nodeTasksAdapter(tasks));
-      // setCompleted(90);
+    if (networkState == "online") {
+      if (IS_NODE) {
+        // const routes = await noderoutedataforuser();
+        // setCompleted(15);
+        // setAllRoutes(await nodeRouteAdapter(routes));
+        // setCompleted(25);
+        // setAllPlaces(nodePlacesAdapter(await getingDataPlacesFromNodejs()));
+        // setCompleted(50);
+        // const tasks = await nodetasksdataforuser(routes)
+        // setCompleted(75);
+        // setAllTasks(nodeTasksAdapter(tasks));
+        // setCompleted(90);
 
-      let userRoutesIDs = []//JSON.parse(localStorage.getItem("routes"));
-      
-      await getingDatauserByIdFromNodejs(userId).then((user) => {
-        const routesID = user.routes.map(route => route.id);
-        console.log("routesID", routesID);
-        localStorage.setItem("routes", JSON.stringify(routesID))
-        userRoutesIDs = JSON.parse(localStorage.getItem("routes"));
-        setCompleted(10);
-      })
-      
-      // Retrieve user routes from localStorage
-      if (userRoutesIDs) {
-        setAllRoutes(await getingDataRouteByIdsFromNodejs(userRoutesIDs));
-        setCompleted(15);
+        let userRoutesIDs = []//JSON.parse(localStorage.getItem("routes"));
 
-        // Check if user has places in localStorage
-        let userPlacesIds = null//JSON.parse(localStorage.getItem("placesID"));
-        if (!userPlacesIds) {
-          // If no places in localStorage, derive them from routes
-          userPlacesIds = await getingPlacesIdFormRoutes(userRoutesIDs);
-          setCompleted(25);
+        await getingDatauserByIdFromNodejs(userId).then((user) => {
+          const routesID = user.routes.map(route => route.id);
+          console.log("routesID", routesID);
+          localStorage.setItem("routes", JSON.stringify(routesID))
+          userRoutesIDs = JSON.parse(localStorage.getItem("routes"));
+          setCompleted(10);
+        })
+
+        // Retrieve user routes from localStorage
+        if (userRoutesIDs) {
+          let getingDataRouteByIdsFromNodejsoffline = await getingDataRouteByIdsFromNodejs(userRoutesIDs)
+          setAllRoutes(getingDataRouteByIdsFromNodejsoffline);
+          setCompleted(15);
+
+          // Check if user has places in localStorage
+          let userPlacesIds = null//JSON.parse(localStorage.getItem("placesID"));
+          if (!userPlacesIds) {
+            // If no places in localStorage, derive them from routes
+            userPlacesIds = await getingPlacesIdFormRoutes(userRoutesIDs);
+            setCompleted(25);
+          }
+          let getingDataPlaceByIdsFromNodejsoffline = await getingDataPlaceByIdsFromNodejs(userPlacesIds)
+          setAllPlaces(getingDataPlaceByIdsFromNodejsoffline);
+          setCompleted(50);
+
+          // Retrieve tasks associated with places
+          const userTasksIDs = await getTaskIdsFromPlaces(userPlacesIds);
+          setCompleted(70);
+
+          let getingDataTasksByIdsFromNodejsoffline = await getingDataTasksByIdsFromNodejs(userTasksIDs)
+          // Fetch and set all tasks
+          setAllTasks(getingDataTasksByIdsFromNodejsoffline);
+          setCompleted(90);
+
+          localStorage.setItem("onlineData-allRoutes", JSON.stringify(getingDataRouteByIdsFromNodejsoffline))//getingDataRouteByIdsFromNodejsoffline)
+          localStorage.setItem("onlineData-allPlaces", JSON.stringify(getingDataPlaceByIdsFromNodejsoffline))//getingDataPlaceByIdsFromNodejsoffline)
+          localStorage.setItem("onlineData-allTasks", JSON.stringify(getingDataTasksByIdsFromNodejsoffline))//getingDataTasksByIdsFromNodejsoffline)
+
+        } else {
+          console.error("No user routes found in localStorage.");
         }
-        setAllPlaces(await getingDataPlaceByIdsFromNodejs(userPlacesIds));
-        setCompleted(50);
 
-        // Retrieve tasks associated with places
-        const userTasksIDs = await getTaskIdsFromPlaces(userPlacesIds);
-        setCompleted(70);
 
-        // Fetch and set all tasks
-        setAllTasks(await getingDataTasksByIdsFromNodejs(userTasksIDs));
-        setCompleted(90);
+
+        // setAllRoutes(await getingDataRouteByIdFromNodejs("app"));
+        // setCompleted(25);
+        // setAllPlaces(await getingDataPlaceByIdFromNodejs("app"));
+        // setCompleted(50);
+        // setAllTasks(await getingTasksById("app"));
+        // setCompleted(90);
+
+
+        // setAllRoutes(await nodeRouteAdapter(await getingDataRoutesFromNodejs()));// TODO : fix this
+        // setCompleted(25);
+        // setAllPlaces( nodePlacesAdapter(await getingDataPlacesFromNodejs()));
+        // setCompleted(50);
+        // setAllTasks( nodeTasksAdapter(await getingDataTasksFromNodejs()));
+        // setCompleted(90);
       } else {
-        console.error("No user routes found in localStorage.");
+        // setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
+        // setAllRoutes(await getingDataRoutes()); //get request for routes
+        // setAllPlaces(await getingDataPlaces()); //get request for places  
       }
-
-      // setAllRoutes(await getingDataRouteByIdFromNodejs("app"));
-      // setCompleted(25);
-      // setAllPlaces(await getingDataPlaceByIdFromNodejs("app"));
-      // setCompleted(50);
-      // setAllTasks(await getingTasksById("app"));
-      // setCompleted(90);
-
-
-      // setAllRoutes(await nodeRouteAdapter(await getingDataRoutesFromNodejs()));// TODO : fix this
-      // setCompleted(25);
-      // setAllPlaces( nodePlacesAdapter(await getingDataPlacesFromNodejs()));
-      // setCompleted(50);
-      // setAllTasks( nodeTasksAdapter(await getingDataTasksFromNodejs()));
-      // setCompleted(90);
+      setnumOfTasks(100);
+    } else if (networkState == "offline") {
+      console.log("offline", networkState);
+      // console.log("routes", JSON.parse(localStorage.getItem("onlineData-allRoutes")));
+      setAllRoutes(JSON.parse(localStorage.getItem("onlineData-allRoutes")));
+      setCompleted(15);
+      setAllPlaces(JSON.parse(localStorage.getItem("onlineData-allPlaces")));
+      setCompleted(50);
+      setAllTasks(JSON.parse(localStorage.getItem("onlineData-allTasks")));
+      setCompleted(90);
+      setnumOfTasks(100);
     } else {
-      // setAllTasks(await getingDataTasks(setCompleted, setnumOfTasks)); //get request for tasks
-      // setAllRoutes(await getingDataRoutes()); //get request for routes
-      // setAllPlaces(await getingDataPlaces()); //get request for places  
+      console.log("offline", networkState);
     }
-    setnumOfTasks(100);
 
     // } catch (error) {
     //   console.log("Error");
     //   console.error(error.message);
     // }
   };
+
   useEffect(() => {
-    fetchData();
+    let networkState = "online";
+    // Check you are online or not
+    if (navigator.onLine) {
+      setIsOnLine("online");
+      networkState = "online";
+    } else {
+      setIsOnLine("offline");
+      networkState = "offline";
+    }
+    // To see changes in the network state, use addEventListener
+    window.addEventListener("offline", (e) => {
+      setIsOnLine("offline");
+      networkState = "offline";
+    });
+
+    window.addEventListener("online", (e) => {
+      setIsOnLine("online");
+      networkState = "online";
+    });
+    fetchData(networkState);
   }, []);
 
   useEffect(() => {

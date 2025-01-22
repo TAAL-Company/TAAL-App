@@ -67,7 +67,7 @@ module.exports = {
     new WebpackPwaManifest({
       name: "Taal Path",
       short_name: "TaalPath",
-      description: "Taal Path Web App test",
+      description: "Taal Path Web App",
       background_color: "#ffffff",
       theme_color: "#EEEEEE",
       crossorigin: "use-credentials", //can be null, use-credentials or anonymous

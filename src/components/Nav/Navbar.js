@@ -8,6 +8,7 @@ import maskable from "../../images/maskable.png";
 import { connect } from "react-redux";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 import Swal from "sweetalert2";
+import { navigate } from "@reach/router";
 
 function Navbar(props) {
   const { origin, user } = props;
@@ -70,7 +71,9 @@ function Navbar(props) {
                             }).then((result) => {
                               if (result.value) {
                                 // The user clicked the "Confirm" button, perform the desired action
-                                window.location.href = `/Sites/${userName}`;
+                                // window.history.go(-1)
+                                navigate(`/Sites/${userName}`);
+                                // window.location.href = `/Sites/${userName}`;
                               } else {
                                 // The user clicked the "Cancel" button, do nothing
                               }
@@ -115,7 +118,8 @@ function Navbar(props) {
                               }).then((result) => {
                                 if (result.value) {
                                   // The user clicked the "Confirm" button, perform the desired action
-                                  window.location.href = `/Sites/${userName}`;
+                                  navigate(`/Sites/${userName}`);
+                                  // window.location.href = `/Sites/${userName}`;
                                 } else {
                                   // The user clicked the "Cancel" button, do nothing
                                 }
@@ -160,7 +164,8 @@ function Navbar(props) {
                               }).then((result) => {
                                 if (result.value) {
                                   // The user clicked the "Confirm" button, perform the desired action
-                                  window.location.href = `/Sites/${userName}`;
+                                  navigate(`/Sites/${userName}`);
+                                  // window.location.href = `/Sites/${userName}`;
                                 } else {
                                   // The user clicked the "Cancel" button, do nothing
                                 }
