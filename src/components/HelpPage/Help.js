@@ -25,6 +25,7 @@ function Help(props) {
   // const currentTaskStation = currentTaskjson?.stationDetails?.name || "";
 
   const currentTaskName = currentTaskjson?.content?.rendered || ""; //user_tasks.task_location || "";
+  const generalHelp = currentTaskjson?.additonalHelp?.find(help => help.UserID === "General") || [];
   const [isOpen, setIsOpen] = useState(false);
   const [action, setAction] = useState("");
   const [state, setState] = useState({
@@ -45,6 +46,7 @@ function Help(props) {
   console.log("user_places: " + user_places.user_places);
   console.log("username hebrew" + user.user?.hebrewName);
   console.log("current task: " + currentTaskName);
+  console.log("generalHelp: " + generalHelp);
 
   const [phoneGuide, setPhoneGuide] = useState("error");
   const userId = localStorage.getItem("userID");
@@ -69,7 +71,7 @@ function Help(props) {
     // check if the user have current task
   };
 
-  const changeHelpText = () => {
+  const changehelp_text = () => {
     if (
       user_tasks.task_location !== null &&
       user_places.places_location !== -1
@@ -134,7 +136,7 @@ function Help(props) {
     setPhoneGuide(localStorage.getItem("guidphone"));
 
     // getData();
-    changeHelpText();
+    changehelp_text();
   }, []);
 
   const get = async (url, header) => {
@@ -218,7 +220,8 @@ function Help(props) {
                       <div className="audioCircle-en">
                         <AudioIcon
                           id="audio"
-                          onPress={() => console.log("pressed audio")}
+                          audioUrl={generalHelp?.audio_url}
+                          // onPress={() => console.log("pressed audio")}
                         />
                       </div>
                     </div>
@@ -246,12 +249,22 @@ function Help(props) {
                         >
                           {currentTaskName}
                         </h2>
+                        <div
+                        className="headText"
+                        hidden={generalHelp?.help_text === ""}
+                      >
+                        Additional Help text
+                      </div>
+                        <h2 className="secText" hidden={generalHelp?.help_text === ""}>
+                          {generalHelp?.help_text}
+                        </h2>
                       </Fragment>
                     </div>
                     <div className="listen-en">
                       <AudioIcon
                         id="audio"
-                        onPress={() => console.log("pressed audio")}
+                        audioUrl={generalHelp?.audio_url}
+                        // onPress={() => console.log("pressed audio")}
                       />
                     </div>
                   </div>
@@ -280,7 +293,8 @@ function Help(props) {
                         <div className="audioCircle">
                           <AudioIcon
                             id="audio"
-                            onPress={() => console.log("pressed audio")}
+                            audioUrl={generalHelp?.audio_url}
+                            // onPress={() => console.log("pressed audio")}
                           />
                         </div>
                       </div>
@@ -305,12 +319,22 @@ function Help(props) {
                           <h2 className="secText" hidden={currentTaskName === ""}>
                             {currentTaskName}
                           </h2>
+                          <div
+                        className="headText"
+                        hidden={generalHelp?.help_text === ""}
+                      >
+                        نص المساعدة الإضافي
+                      </div>
+                          <h2 className="secText" hidden={generalHelp?.help_text === ""}>
+                          {generalHelp?.help_text}
+                        </h2>
                         </Fragment>
                       </div>
                       <div className="listen">
                         <AudioIcon
                           id="audio"
-                          onPress={() => console.log("pressed audio")}
+                          audioUrl={generalHelp?.audio_url}
+                          // onPress={() => console.log("pressed audio")}
                         />
                       </div>
                     </div>
@@ -343,7 +367,8 @@ function Help(props) {
                     <div className="audioCircle">
                       <AudioIcon
                         id="audio"
-                        onPress={() => console.log("pressed audio")}
+                        audioUrl={generalHelp?.audio_url}
+                        // onPress={() => console.log("pressed audio")}
                       />
                     </div>
                   </div>
@@ -368,12 +393,22 @@ function Help(props) {
                       <h2 className="secText" hidden={currentTaskName === ""}>
                         {currentTaskName}
                       </h2>
+                      <div
+                        className="headText"
+                        hidden={generalHelp?.help_text === ""}
+                      >
+                        טקסט עזרה נוסף:
+                      </div>
+                      <h2 className="secText" hidden={generalHelp?.help_text === ""}>
+                          {generalHelp?.help_text}
+                        </h2>
                     </Fragment>
                   </div>
                   <div className="listen">
                     <AudioIcon
                       id="audio"
-                      onPress={() => console.log("pressed audio")}
+                      audioUrl={generalHelp?.audio_url}
+                      // onPress={() => console.log("pressed audio")}
                     />
                   </div>
                 </div>
