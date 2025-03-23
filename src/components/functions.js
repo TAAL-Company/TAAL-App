@@ -565,3 +565,47 @@ export const nodeTasksAdapter = (Tasksdata) => {
 	console.log("nodeTasksdata", nodeTasksdata);
 	return nodeTasksdata
 }
+
+const hebrewToEnglishMap = {
+    'א': 'A', 'ב': 'B', 'ג': 'G', 'ד': 'D', 'ה': 'H', 'ו': 'V', 'ז': 'Z', 'ח': 'Ch', 'ט': 'T',
+    'י': 'Y', 'כ': 'K', 'ך': 'K', 'ל': 'L', 'מ': 'M', 'ם': 'M', 'נ': 'N', 'ן': 'N', 'ס': 'S',
+    'ע': 'E', 'פ': 'P', 'ף': 'P', 'צ': 'TS', 'ץ': 'TS', 'ק': 'Q', 'ר': 'R', 'ש': 'SH', 'ת': 'T'
+};
+
+const arabicToEnglishMap = {
+    'ا': 'A', 'ب': 'B', 'ت': 'T', 'ث': 'Th', 'ج': 'J', 'ح': 'H', 'خ': 'Kh', 'د': 'D', 'ذ': 'Dh',
+    'ر': 'R', 'ز': 'Z', 'س': 'S', 'ش': 'Sh', 'ص': 'S', 'ض': 'D', 'ط': 'T', 'ظ': 'Dh', 'ع': 'A',
+    'غ': 'Gh', 'ف': 'F', 'ق': 'Q', 'ك': 'K', 'ل': 'L', 'م': 'M', 'ن': 'N', 'ه': 'H', 'و': 'W', 'ي': 'Y'
+};
+
+export function convertUsername(username) {
+    const language = sessionStorage.getItem('language');
+    console.log("convertedUsername language", language);
+
+    let map;
+    switch (language) {
+        case 'Hebrew':
+            map = hebrewToEnglishMap;
+            break;
+        case 'Arabic':
+            map = arabicToEnglishMap;
+            break;
+        default:
+            return username; // Return original if no mapping
+    }
+
+    // Convert characters using mapping
+    let converted = username.split('').map(char => map[char] || char).join('');
+
+    // Ensure proper capitalization (preserving name structure)
+    converted = converted.replace(/\b\w/g, char => char.toUpperCase());
+
+	converted = converted.replace(/\s/g, ''); // Remove spaces
+
+    return converted;
+}
+
+// // Example usage
+// const username = 'רתםגלמישאל';
+// const convertedUsername = convertUsername(username);
+// console.log("convertedUsername", convertedUsername); // Output: RetemGalmishaal

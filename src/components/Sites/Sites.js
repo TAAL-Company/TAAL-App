@@ -8,7 +8,7 @@ import styled from "styled-components";
 import Navbar from "../Nav/Navbar";
 import { getingDataPlaceByIdFromNodejs, getingDataPlaceByIdsFromNodejs, getingDataPlaces, getingDataPlacesFromNodejs, getingDataRouteByIdFromNodejs, getingDataRouteByIdsFromNodejs, getingDataRoutes, getingDataRoutesFromNodejs, getingDataTasks, getingDataTasksByIdsFromNodejs, getingDataTasksFromNodejs, getingPlacesIdFormRoutes, getingTasksById, getTaskIdsFromPlaces, noderoutedataforuser, nodetasksdataforuser, getingDatauserByIdFromNodejs } from "../api";
 import ProgressBarComp from "../assets/progressBar.js";
-import { handleLogout, internetConnection, isLoggedIn, nodePlacesAdapter, nodeRouteAdapter, nodeTasksAdapter } from "../functions";
+import { convertUsername, handleLogout, internetConnection, isLoggedIn, nodePlacesAdapter, nodeRouteAdapter, nodeTasksAdapter } from "../functions";
 import "./Sites.css";
 import {
   addStationDetailsToTask,
@@ -168,7 +168,7 @@ export default function Sites(props) {
     // localStorage.setItem("site_title", placesList[site_id].name);
     //navigate to Tasks page
     setScanning(false);
-    navigate(`/Tasks/${user.user.username}`, { state: { newId: 1 } }); //  { state={}, replace=false }
+    navigate(`/Tasks/${convertUsername(user.user.username)}`, { state: { newId: 1 } }); //  { state={}, replace=false }
   }
 
   /*

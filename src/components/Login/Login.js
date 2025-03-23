@@ -14,6 +14,7 @@ import wpConfig from "../../wp-config";
 import { IS_NODE } from "../Sites/Sites";
 import { getingDataUsersFromNodejs, loginUser } from "../api";
 import posthog from "posthog-js";
+import { convertUsername } from "../functions";
 //redux
 // import Spinner from "../assets/Spinner";
 
@@ -180,7 +181,8 @@ function Login(props) {
 
     sessionStorage.setItem("token", res.data.token);
     localStorage.setItem("token", res.data.token);
-    localStorage.setItem("userName", loggedInUser.name);
+    localStorage.setItem("userName", convertUsername(loggedInUser.name));
+    localStorage.setItem("undecodeduserName", loggedInUser.name); 
     localStorage.setItem("userID", loggedInUser.id);
 
     if (IS_NODE) {
@@ -310,7 +312,8 @@ function Login(props) {
 
   if (loggedIn || localStorage.getItem("token")) {
     //if we get the token
-    return <Redirect to={`/Sites/` + user} noThrow />;
+    const convertedUsername = convertUsername(user); // Use the function here
+    return <Redirect to={`/Sites/` + convertedUsername} noThrow />;
   } else {
     return (
       <div className=" centered">

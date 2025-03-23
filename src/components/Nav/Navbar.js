@@ -13,6 +13,7 @@ import { navigate } from "@reach/router";
 function Navbar(props) {
   const { origin, user } = props;
   const { hebrewName = "", arabicName = "", imgPath = false } = user;
+  const undecodeduserName = localStorage.getItem("undecodeduserName")
 
   const userName = getUserName() ? getUserName() : "";
 
@@ -286,7 +287,8 @@ function Navbar(props) {
                           : "7px",
                       }}
                     >
-                      {userName}
+                      {undecodeduserName}
+                      {/* {userName} */}
                     </h5>
                     {/* <h5>{arabicName , hebrewName}</h5> */}
                   </div>
