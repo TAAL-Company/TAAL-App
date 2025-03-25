@@ -243,12 +243,12 @@ function Help(props) {
                           {currentTaskName}
                         </h2>
                         <div
-                          className="headText"
+                          className="headText-en"
                           hidden={generalHelp?.help_text === ""}
                         >
                           Additional Help text
                         </div>
-                        <h2 className="secText" hidden={generalHelp?.help_text === ""}>
+                        <h2 className="secText-en" hidden={generalHelp?.help_text === ""}>
                           {generalHelp?.help_text}
                         </h2>
                       </Fragment>
