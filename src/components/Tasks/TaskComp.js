@@ -58,6 +58,30 @@ export default function TaskComp(props) {
     objTime.idUser = localStorage.getItem("userID");
   }
 
+  useEffect(() => {
+    // Listen for network state changes
+    const handleOnline = () => {
+      const savedData = localStorage.getItem("postDataTime");
+      if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        console.log("navigator.onLine Sending saved data to the server:", parsedData);
+
+        // Send each saved task to the server
+        parsedData.forEach((task) => {
+          postDataTime(task);
+        });
+
+        // Clear the saved data after sending
+        localStorage.removeItem("postDataTime");
+      }
+    };
+
+    window.addEventListener("online", handleOnline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+    };
+  }, []);
 
   //this if handle publish the data in the 'Data Time' table for each task the user has done
   if (props.index === props.currentIndex) {
@@ -85,9 +109,22 @@ export default function TaskComp(props) {
         //If it is not equal to this, then it means that the user has finished the task
         localStorage.setItem("taskIdForApi", objTime.idTask);
         objTime.currdateAndTime = localStorage.getItem("whenAssisted");
-        postDataTime(objTime); //api request to wp db
-        objTime.dataEntered = ""
-        localStorage.setItem("whenAssisted", "1")
+
+        if (navigator.onLine) {
+          console.log("navigator.onLine"+navigator.onLine);
+          postDataTime(objTime); // Send data to the server
+        } else {
+          console.log("navigator.onLine"+navigator.onLine);
+
+          // Save data locally as an array
+          const existingData = localStorage.getItem("postDataTime");
+          const dataArray = existingData ? JSON.parse(existingData) : [];
+          dataArray.push(objTime);
+          localStorage.setItem("postDataTime", JSON.stringify(dataArray));
+        }
+
+        objTime.dataEntered = "";
+        localStorage.setItem("whenAssisted", "1");
       }
 
       //rest the data to the next tesk:
@@ -119,9 +156,22 @@ export default function TaskComp(props) {
         //If it is not equal to this, then it means that the user has finished the task
         localStorage.setItem("taskIdForApi", objTime.idTask);
         objTime.currdateAndTime = localStorage.getItem("whenAssisted");
-        postDataTime(objTime); //api request to wp db
-        objTime.dataEntered = ""
-        localStorage.setItem("whenAssisted", "1")
+
+        if (navigator.onLine) {
+          console.log("navigator.onLine"+navigator.onLine);
+          postDataTime(objTime); // Send data to the server
+        } else {
+          console.log("navigator.onLine"+navigator.onLine);
+
+          // Save data locally as an array
+          const existingData = localStorage.getItem("postDataTime");
+          const dataArray = existingData ? JSON.parse(existingData) : [];
+          dataArray.push(objTime);
+          localStorage.setItem("postDataTime", JSON.stringify(dataArray));
+        }
+
+        objTime.dataEntered = "";
+        localStorage.setItem("whenAssisted", "1");
       }
     }
   }

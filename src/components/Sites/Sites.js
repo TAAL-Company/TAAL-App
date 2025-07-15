@@ -6,7 +6,7 @@ import { navigate } from "@reach/router";
 import { useTranslation } from "react-i18next";
 import styled from "styled-components";
 import Navbar from "../Nav/Navbar";
-import { getingDataPlaceByIdFromNodejs, getingDataPlaceByIdsFromNodejs, getingDataPlaces, getingDataPlacesFromNodejs, getingDataRouteByIdFromNodejs, getingDataRouteByIdsFromNodejs, getingDataRoutes, getingDataRoutesFromNodejs, getingDataTasks, getingDataTasksByIdsFromNodejs, getingDataTasksFromNodejs, getingPlacesIdFormRoutes, getingTasksById, getTaskIdsFromPlaces, noderoutedataforuser, nodetasksdataforuser, getingDatauserByIdFromNodejs } from "../api";
+import { getingDataPlaceByIdFromNodejs, getingDataPlaceByIdsFromNodejs, getingDataPlaces, getingDataPlacesFromNodejs, getingDataRouteByIdFromNodejs, getingDataRouteByIdsFromNodejs, getingDataRoutes, getingDataRoutesFromNodejs, getingDataTasks, getingDataTasksByIdsFromNodejs, getingDataTasksFromNodejs, getingPlacesIdFormRoutes, getingTasksById, getTaskIdsFromPlaces, noderoutedataforuser, nodetasksdataforuser, getingDatauserByIdFromNodejs, getingpacksDataUsersFromNodejs } from "../api";
 import ProgressBarComp from "../assets/progressBar.js";
 import { convertUsername, handleLogout, internetConnection, isLoggedIn, nodePlacesAdapter, nodeRouteAdapter, nodeTasksAdapter } from "../functions";
 import "./Sites.css";
@@ -50,6 +50,8 @@ export default function Sites(props) {
   const [allTasksOfUser, setAllTasksOfUser] = useState([]);
   const [allPlacesOfUser, setAllPlacesOfUser] = useState([]);
   const [AllPlacesOfUserwithroutes, setAllPlacesOfUserwithroutes] = useState([]);
+  const [allPacks, setAllPacks] = useState([]);
+  const [userPacksIDs, setUserPacksIDs] = useState([]);
   localStorage.setItem("whenAssisted", "1")
 
   const [nodeUser, setNodeUser] = useState({});
@@ -244,27 +246,33 @@ export default function Sites(props) {
         // setCompleted(90);
 
         let userRoutesIDs = []//JSON.parse(localStorage.getItem("routes"));
+        let userPacksIDs = [];
 
         await getingDatauserByIdFromNodejs(userId).then((user) => {
           const routesID = user.routes.map(route => route.id);
+          const packsID = user.packs.map(pack => pack.id);
+          setUserPacksIDs(packsID);
           console.log("routesID", routesID);
+          console.log("packs", packsID);
           localStorage.setItem("routes", JSON.stringify(routesID))
+          localStorage.setItem("useroacks", JSON.stringify(packsID))
           userRoutesIDs = JSON.parse(localStorage.getItem("routes"));
-          setCompleted(10);
+          userPacksIDs = JSON.parse(localStorage.getItem("useroacks"));
+          setCompleted(5);
         })
 
         // Retrieve user routes from localStorage
         if (userRoutesIDs) {
           let getingDataRouteByIdsFromNodejsoffline = await getingDataRouteByIdsFromNodejs(userRoutesIDs)
           setAllRoutes(getingDataRouteByIdsFromNodejsoffline);
-          setCompleted(15);
+          setCompleted(10);
 
           // Check if user has places in localStorage
           let userPlacesIds = null//JSON.parse(localStorage.getItem("placesID"));
           if (!userPlacesIds) {
             // If no places in localStorage, derive them from routes
             userPlacesIds = await getingPlacesIdFormRoutes(userRoutesIDs);
-            setCompleted(25);
+            setCompleted(20);
           }
           let getingDataPlaceByIdsFromNodejsoffline = await getingDataPlaceByIdsFromNodejs(userPlacesIds)
           setAllPlaces(getingDataPlaceByIdsFromNodejsoffline);
@@ -279,9 +287,15 @@ export default function Sites(props) {
           setAllTasks(getingDataTasksByIdsFromNodejsoffline);
           setCompleted(90);
 
+          // Retrieve packs data
+          let getingDataPacksByIdsFromNodejsoffline = await getingpacksDataUsersFromNodejs(userPacksIDs)
+          setAllPacks(getingDataPacksByIdsFromNodejsoffline);
+          setCompleted(100);
+
           localStorage.setItem("onlineData-allRoutes", JSON.stringify(getingDataRouteByIdsFromNodejsoffline))//getingDataRouteByIdsFromNodejsoffline)
           localStorage.setItem("onlineData-allPlaces", JSON.stringify(getingDataPlaceByIdsFromNodejsoffline))//getingDataPlaceByIdsFromNodejsoffline)
           localStorage.setItem("onlineData-allTasks", JSON.stringify(getingDataTasksByIdsFromNodejsoffline))//getingDataTasksByIdsFromNodejsoffline)
+          localStorage.setItem("onlineData-allPacks", JSON.stringify(getingDataPacksByIdsFromNodejsoffline))//getingDataPacksByIdsFromNodejsoffline)
 
         } else {
           console.error("No user routes found in localStorage.");
@@ -384,6 +398,7 @@ export default function Sites(props) {
     console.log("allRoutes", allRoutes);
     console.log("allTasks", allTasks);
     console.log("allPlaces", allPlaces);
+    console.log("allPacks", allPacks);
 
     clearCache();
     let email = userEmail;
@@ -402,7 +417,7 @@ export default function Sites(props) {
         if (userExists !== undefined) return route;
       }
     });
-
+    allRoutesOfUserTemp = [...allPacks, ...allRoutesOfUserTemp];
     setAllRoutesOfUser(allRoutesOfUserTemp);
     console.log('allRoutesOfUserTemp', allRoutesOfUserTemp);
 

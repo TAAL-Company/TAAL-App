@@ -184,19 +184,20 @@ function Login(props) {
     localStorage.setItem("userName", convertUsername(loggedInUser.name));
     localStorage.setItem("undecodeduserName", loggedInUser.name); 
     localStorage.setItem("userID", loggedInUser.id);
+    // localStorage.setItem("useroacks", loggedInUser.packs);
 
     if (IS_NODE) {
-      const allUsers = await getingDataUsersFromNodejs();
+      // const allUsers = await getingDataUsersFromNodejs();
 
       const email = loggedInUser.email; // allUsers.some((user) => user.email === userEmail) ? userEmail : "taalworker+121@gmail.com";
 
-      const UserNODEid = allUsers.find((user) => {
-        if (user.email === email) {
-          return user
-        } else {
-          return null
-        }
-      });
+      // const UserNODEid = allUsers.find((user) => {
+      //   if (user.email === email) {
+      //     return user
+      //   } else {
+      //     return null
+      //   }
+      // });
 
       localStorage.setItem("UserNODEid", loggedInUser.id);
       console.log("UserNODEid", loggedInUser.id);

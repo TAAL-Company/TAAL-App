@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import NavLink from "./NavLink";
 import { isLoggedIn, getUserName, handleLogout } from "../functions";
 import "./Navbar.css";
@@ -9,19 +9,45 @@ import { connect } from "react-redux";
 import { BsArrowCounterclockwise } from "react-icons/bs";
 import Swal from "sweetalert2";
 import { navigate } from "@reach/router";
+import { postDataTime } from "../api"; // Ensure this function is imported correctly
 
 function Navbar(props) {
   const { origin, user } = props;
   const { hebrewName = "", arabicName = "", imgPath = false } = user;
-  const undecodeduserName = localStorage.getItem("undecodeduserName")
+  const undecodeduserName = localStorage.getItem("undecodeduserName");
+
+  useEffect(() => {
+    // Listen for network state changes
+    const handleOnline = () => {
+      const savedData = localStorage.getItem("postDataTime");
+      if (savedData) {
+        const parsedData = JSON.parse(savedData);
+        console.log("Navbar: Sending saved data to the server:", parsedData);
+
+        // Send each saved task to the server
+        parsedData.forEach((task) => {
+          postDataTime(task);
+        });
+
+        // Clear the saved data after sending
+        localStorage.removeItem("postDataTime");
+      }
+    };
+
+    window.addEventListener("online", handleOnline);
+
+    return () => {
+      window.removeEventListener("online", handleOnline);
+    };
+  }, []);
 
   const userName = getUserName() ? getUserName() : "";
 
   const stress = origin === "Help" ? "StressIconGrey" : "StressIconRed";
   const userId = localStorage.getItem("userID");
-  const currentLanguage = sessionStorage.getItem('language')
+  const currentLanguage = sessionStorage.getItem('language');
   const isLTR = () => {
-    const currentDirection = sessionStorage.getItem('direction')
+    const currentDirection = sessionStorage.getItem('direction');
     return currentDirection === "ltr"; // Adjust based on your language codes
   };
 
@@ -185,8 +211,8 @@ function Navbar(props) {
                         </>)
                     ) : (
                       <NavLink origin={origin} onClick={() => {
-                        localStorage.setItem("whenAssisted", "0")
-                        console.log("testing", localStorage.getItem("whenAssisted"))
+                        localStorage.setItem("whenAssisted", "0");
+                        console.log("testing", localStorage.getItem("whenAssisted"));
                       }} to={`/Help/${userName}`}>
                         <StressIconRed className="StressIcon" src={stress} />
                       </NavLink>

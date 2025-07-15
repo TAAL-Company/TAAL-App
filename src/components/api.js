@@ -24,35 +24,35 @@ export const postDataTime = (objTime) => {
             })
         })
     } else {
-        const userNameApi = process.env.REACT_APP_USERNAME_ACCESSKEY;
-        const passwordApi = process.env.REACT_APP_PASSWORD_ACCESSKEY;
-        const base64encodedData = Buffer.from(`${userNameApi}:${passwordApi}`).toString('base64');
+        // const userNameApi = process.env.REACT_APP_USERNAME_ACCESSKEY;
+        // const passwordApi = process.env.REACT_APP_PASSWORD_ACCESSKEY;
+        // const base64encodedData = Buffer.from(`${userNameApi}:${passwordApi}`).toString('base64');
 
-        fetch("https://s83.bfa.myftpupload.com/wp-json/wp/v2/time_data", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `basic ${base64encodedData}`,
-            },
-            body: JSON.stringify(
-                {
-                    "title": objTime.userName,
-                    "fields": {
-                        "user_id": objTime.idUser,
-                        "route_id": objTime.route_id,
-                        "site_id": objTime.site_id,
-                        "route_title": objTime.route_title,
-                        "task_id": objTime.idTask.toString(),
-                        "task_title": objTime.task_location,
-                        "start_time": objTime.startTime,
-                        "end_time": objTime.endTime,
-                        "req_help_time": "1"
-                    },
+        // fetch("https://s83.bfa.myftpupload.com/wp-json/wp/v2/time_data", {
+        //     method: "POST",
+        //     headers: {
+        //         "Content-Type": "application/json",
+        //         Authorization: `basic ${base64encodedData}`,
+        //     },
+        //     body: JSON.stringify(
+        //         {
+        //             "title": objTime.userName,
+        //             "fields": {
+        //                 "user_id": objTime.idUser,
+        //                 "route_id": objTime.route_id,
+        //                 "site_id": objTime.site_id,
+        //                 "route_title": objTime.route_title,
+        //                 "task_id": objTime.idTask.toString(),
+        //                 "task_title": objTime.task_location,
+        //                 "start_time": objTime.startTime,
+        //                 "end_time": objTime.endTime,
+        //                 "req_help_time": "1"
+        //             },
 
-                    "status": "publish"
-                }
-            )
-        })
+        //             "status": "publish"
+        //         }
+        //     )
+        // })
     }
 
 
@@ -474,12 +474,19 @@ export const getingDatauserByIdFromNodejs = async (UserId) => {
         return null;
     }
 };
+export const getingpacksDataUsersFromNodejs = async (Packsids) => {
+    let allPacks;
+    try {
+        await post(azureConfig.getPacks + "/app", Packsids).then((res) => {
+            allPacks = res.data
+        });
+        return allPacks
+    } catch (error) {
+        console.error(error)
+        return null;
+    }
+};
 
-// export const getTaskIdsFromPlaces = async (userPlaceIds) => {
-//     const results = [];
-
-//     if (!Array.isArray(userPlaceIds)) {
-//         console.error("No valid place IDs found in localStorage");
 //         return results;
 //     }
 
