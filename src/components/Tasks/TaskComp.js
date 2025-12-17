@@ -22,6 +22,10 @@ let objTime = {
   route_title: "",
   startTime: "",
   endTime: "",
+  startTimeLoop: "",
+  endTimeLoop: "",
+  stationid: "",
+  Loopnumber: null,
   currdateAndTime: "",
   dataEntered: "",
 };
@@ -31,7 +35,7 @@ export default function TaskComp(props) {
   const [myCurrent, setMyCurrent] = useState();
   const [modalOpen, setModalOpen] = useState(false);
   const [dataEntered, setDataEntered] = useState(props.dataEntered === undefined ? "" : props.dataEntered);
-  console.log("dataEntered1212 ", dataEntered);
+  // console.log("dataEntered1212 ", dataEntered);
 
 
   let dateAndTime = ''
@@ -90,6 +94,18 @@ export default function TaskComp(props) {
       objTime.idTask = props.taskId;
       objTime.task_location = props.task_location;
       objTime.startTime = dateAndTime;
+      // Initialize loop/session fields
+      if (props.loopMeta) {
+        objTime.startTimeLoop = dateAndTime;
+      }
+      // Prefer loop stationId, else from props
+      if (props.loopMeta?.stationId || props.stationId) {
+        objTime.stationid = props.loopMeta?.stationId || props.stationId;
+      }
+      // Set loop number for the first task occurrence (1-based). Null if not in loop
+      objTime.Loopnumber = props.loopMeta?.iterationIndex ?? null;
+      // Keep previous meta to detect iteration boundaries
+      objTime._prevLoopMeta = props.loopMeta || null;
       localStorage.setItem("taskIdForApi", 0);
     } else if (objTime.idTask !== props.taskId) {
       //Prevents double case
@@ -103,12 +119,26 @@ export default function TaskComp(props) {
 
       objTime.endTime = dateAndTime;
 
+      // Determine if we crossed a loop iteration boundary (or loop changed)
+      const prevMeta = objTime._prevLoopMeta;
+      const nextMeta = props.loopMeta || null;
+      const loopBoundary = prevMeta && (
+        !nextMeta ||
+        nextMeta.loopId !== prevMeta.loopId ||
+        nextMeta.iterationIndex !== prevMeta.iterationIndex
+      );
+      if (loopBoundary) {
+        objTime.endTimeLoop = dateAndTime;
+      }
+
       if (localStorage.getItem("taskIdForApi") === 0) {
         localStorage.setItem("taskIdForApi", objTime.idTask);
       } else if (localStorage.getItem("taskIdForApi") !== objTime.idTask) {
         //If it is not equal to this, then it means that the user has finished the task
         localStorage.setItem("taskIdForApi", objTime.idTask);
         objTime.currdateAndTime = localStorage.getItem("whenAssisted");
+        // Ensure Loopnumber reflects the completed occurrence's iteration
+        objTime.Loopnumber = prevMeta?.iterationIndex ?? null;
 
         if (navigator.onLine) {
           console.log("navigator.onLine"+navigator.onLine);
@@ -132,6 +162,18 @@ export default function TaskComp(props) {
       objTime.task_location = props.task_location;
       objTime.startTime = objTime.endTime;
       objTime.endTime = "";
+
+      // If we are entering a (new) loop iteration, set startTimeLoop and station id for the new iteration
+      const prevMeta2 = objTime._prevLoopMeta;
+      const nextMeta2 = props.loopMeta || null;
+      const enteringLoop = (!!nextMeta2 && (!prevMeta2 || nextMeta2.loopId !== prevMeta2.loopId || nextMeta2.iterationIndex !== prevMeta2.iterationIndex));
+      if (enteringLoop) {
+        objTime.startTimeLoop = objTime.startTime;
+        objTime.stationid = nextMeta2?.stationId || props.stationId || objTime.stationid;
+      }
+      // Set loop number for the new current task occurrence
+      objTime.Loopnumber = nextMeta2?.iterationIndex ?? null;
+      objTime._prevLoopMeta = nextMeta2;
     }
 
     if (
@@ -149,6 +191,11 @@ export default function TaskComp(props) {
 
       objTime.endTime = dateAndTime;
 
+      // Last task: if we were in a loop, close loop time as well
+      if (objTime._prevLoopMeta) {
+        objTime.endTimeLoop = dateAndTime;
+      }
+
       if (localStorage.getItem("taskIdForApi") === 0) {
         //in case there is only one tesk
         localStorage.setItem("taskIdForApi", objTime.idTask);
@@ -156,6 +203,8 @@ export default function TaskComp(props) {
         //If it is not equal to this, then it means that the user has finished the task
         localStorage.setItem("taskIdForApi", objTime.idTask);
         objTime.currdateAndTime = localStorage.getItem("whenAssisted");
+        // For the final task, set Loopnumber based on the last known loop meta
+        objTime.Loopnumber = objTime._prevLoopMeta?.iterationIndex ?? null;
 
         if (navigator.onLine) {
           console.log("navigator.onLine"+navigator.onLine);

@@ -30,7 +30,7 @@ const tasksReducer = (state, action) => {
 };
 
 function Tasks(props) {
-  console.log("Tasks props: ", props);
+  // console.log("Tasks props: ", props);
   let screenwidth = 672;//1020 - 1023
 
   const { user_tasks } = props;
@@ -60,6 +60,11 @@ function Tasks(props) {
   const [canSwipe, setCanSwipe] = useState(false);
   const [Swipetime, setSwipetime] = useState(0);
   const [waitingmsg, Setwaitingmsg] = useState('הזמן לא נגמר...');
+  // Loop countdown state (for loopDuration)
+  const [loopIdActive, setLoopIdActive] = useState(null);
+  const loopEndTsRef = useRef(null);
+  const loopTickerRef = useRef(null);
+  const [loopRemainingSec, setLoopRemainingSec] = useState(null);
 
     useEffect(() => {
       const currentLanguage = sessionStorage.getItem('language')
@@ -100,6 +105,67 @@ function Tasks(props) {
     }, estimatedTime * 1000); // Convert seconds to milliseconds
     return () => clearTimeout(timeoutID);
   }, [currIndex]);
+
+  // Start/stop loop countdown when entering/leaving a duration-based loop
+  useEffect(() => {
+    const meta = allData[currIndex]?.loopMeta;
+    const hasDuration = meta && meta.loopDuration != null && meta.loopDuration !== '' && !isNaN(meta.loopDuration);
+    if (hasDuration) {
+      if (loopIdActive !== meta.loopId) {
+        // Entering a new loop or switching loops: start countdown if not already running for this loop
+        const endTs = Date.now() + Number(meta.loopDuration) * 60 * 1000;
+        loopEndTsRef.current = endTs;
+        setLoopIdActive(meta.loopId);
+        setLoopRemainingSec(Math.ceil((endTs - Date.now()) / 1000));
+        if (loopTickerRef.current) clearInterval(loopTickerRef.current);
+        loopTickerRef.current = setInterval(() => {
+          const rem = Math.ceil((loopEndTsRef.current - Date.now()) / 1000);
+          setLoopRemainingSec(rem > 0 ? rem : 0);
+          if (rem <= 0) {
+            clearInterval(loopTickerRef.current);
+            loopTickerRef.current = null;
+            // Time's up: skip to the first task after this loop
+            endCurrentLoop(meta.loopId);
+          }
+        }, 500);
+      }
+    } else {
+      // Not inside a duration-based loop: clear if we were showing one
+      if (loopTickerRef.current) {
+        clearInterval(loopTickerRef.current);
+        loopTickerRef.current = null;
+      }
+      loopEndTsRef.current = null;
+      setLoopRemainingSec(null);
+      setLoopIdActive(null);
+    }
+    return () => {};
+  }, [currIndex, allData]);
+
+  const endCurrentLoop = (activeLoopId) => {
+    if (!activeLoopId) return;
+    // find last index of this loop in allData
+    let lastIdx = -1;
+    for (let i = allData.length - 1; i >= 0; i--) {
+      if (allData[i]?.loopMeta?.loopId === activeLoopId) {
+        lastIdx = i;
+        break;
+      }
+    }
+    const target = lastIdx >= 0 ? lastIdx + 1 : currIndex + 1;
+    if (sliderRef.current && target < allData.length) {
+      sliderRef.current.slickGoTo(target);
+    } else if (target >= allData.length) {
+      // we're at the end; trigger completion if needed
+      if (screen.width <= screenwidth) {
+        // mobile flow: mark final task
+        if (allData[currIndex]) {
+          props.actions.completeTask(allData[currIndex].id, currIndex);
+          setModalOpen(true);
+        }
+      }
+    }
+  };
 
   const handleSwipe = useSwipeable({
     onSwiped: () => {
@@ -411,6 +477,40 @@ function Tasks(props) {
     resetTasks();
   };
 
+  const renderLoopMeta = () => {
+    const meta = allData[currIndex]?.loopMeta;
+    if (!meta) return null;
+    const chips = [];
+    // Duration chip (orange) with countdown
+    if (meta.loopDuration != null && meta.loopDuration !== "") {
+      let label = `משך חזרה: ${meta.loopDuration} דק'`;
+      if (loopIdActive === meta.loopId && loopRemainingSec != null) {
+        const mm = Math.floor(loopRemainingSec / 60);
+        const ss = loopRemainingSec % 60;
+        label += ` · נותר: ${mm}:${ss < 10 ? '0' + ss : ss}`;
+      }
+      chips.push(
+        <Badge key="duration" bg="#FFA726">{label}</Badge>
+      );
+    }
+    // Iteration chip (blue)
+    if (meta.loopIteration != null && meta.loopIteration !== "") {
+      chips.push(
+        <Badge key="iteration" bg="#42A5F5">{`מס' חזרות: ${meta.iterationIndex}/${meta.iterationCount}`}</Badge>
+      );
+    }
+    // Until chip (purple)
+    if (meta.loopUntil) {
+      chips.push(
+        <Badge key="until" bg="#AB47BC">{`עד: ${meta.loopUntil}`}</Badge>
+      );
+    }
+    if (chips.length === 0) return null;
+    return <BadgesRow>
+      {chips}
+      </BadgesRow>;
+  };
+
   return (
     <div className="Tasks">
       {/* <div className="voicecomman">{const recognition = new webkitSpeechRecognition();
@@ -455,10 +555,13 @@ function Tasks(props) {
       {screen.width < screenwidth ? (
         <div className="containerTasks">
           <div className="center grayBar">
-            <Text>
-              {/* {allData[currIndex] && allData[currIndex].stationDetails ? allData[currIndex].stationDetails.name : ""} */}
-              {allData[currIndex]?.stationDetails?.title || ''}
-            </Text>
+            <StationHeader>
+              <Text>
+                {/* {allData[currIndex] && allData[currIndex].stationDetails ? allData[currIndex].stationDetails.name : ""} */}
+                {allData[currIndex]?.stationDetails?.title || ''}
+              </Text>
+              {renderLoopMeta()}
+            </StationHeader>
           </div>
           <Connector
             height={allData.length < 2 ? 1 : getLineLength(screen.height)}
@@ -468,7 +571,7 @@ function Tasks(props) {
           <div className="center containerCarousel" {...handleSwipe}>
             <Slider {...settings} ref={sliderRef}>
               {allData.map((item, index) => {
-                console.log("item", item);
+                // console.log("item", item);
                 return (
                   <div
                     key={index}
@@ -477,6 +580,8 @@ function Tasks(props) {
                     <TaskComp
                       taskId={item.id}
                       task_location={task_location}
+                      loopMeta={item.loopMeta}
+                      stationId={item.loopMeta?.stationId || item.stationDetails?.id || item.stationDetails?.ID}
                       dataEntered={item.template}
                       taskType={item.type}
                       dataEntryType={item.status}
@@ -605,6 +710,8 @@ function Tasks(props) {
                     <TaskComp
                       taskId={item.id}
                       task_location={task_location}
+                      loopMeta={item.loopMeta}
+                      stationId={item.loopMeta?.stationId || item.stationDetails?.id || item.stationDetails?.ID}
                       dataEntered={item.template}
                       taskType={item.type}
                       dataEntryType={item.status}
@@ -632,13 +739,16 @@ function Tasks(props) {
               {/* TODO: fixed carousel problem when having only one task */}
             </Slider>
             <div className={"stationBox"}>
-              <Text
-                className={"stationText right"}
-                textAlign={"right"}
-                fontSize={2}
-              >
-                {getStationName(currIndex)}
-              </Text>
+              <StationHeaderintabletview>
+                <Text
+                  className={"stationText right"}
+                  textAlign={"right"}
+                  fontSize={2}
+                >
+                  {getStationName(currIndex)}
+                </Text>
+                {renderLoopMeta()}
+              </StationHeaderintabletview>
               <div className={"stationLogo"}>
                 <Text fontSize={2}>לוגו</Text>
               </div>
@@ -728,4 +838,41 @@ const PrevButton = styled.div`
 
 const LogoIconWrapper = styled.div`
   width: 18%;
+`;
+
+// Colored badges for LoopMeta under station name
+const BadgesRow = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 6px;
+`;
+
+const Badge = styled.span`
+  background: ${(p) => p.bg || "#607D8B"};
+  color: #fff;
+  border-radius: 12px;
+  padding: 4px 10px;
+  font-size: 3vw;
+  line-height: 1;
+  display: inline-block;
+  white-space: nowrap;
+`;
+
+const StationHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+`;
+
+const StationHeaderintabletview = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  ${Badge} {
+    font-size: 2vw;
+  }
 `;

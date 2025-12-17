@@ -19,6 +19,10 @@ export const postDataTime = (objTime) => {
                 "siteId": objTime.site_id,
                 "startTime": objTime.startTime,
                 "endTime": objTime.endTime,
+                "startTimeLoop": objTime.startTimeLoop,
+                "endTimeLoop": objTime.endTimeLoop,
+                "stationId": objTime.stationid,
+                "Loopnumber": objTime.Loopnumber ?? null,
                 "whenAssisted": objTime.currdateAndTime,
                 "dataEntered": objTime.dataEntered
             })

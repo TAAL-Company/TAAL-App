@@ -13,6 +13,8 @@ import "./Sites.css";
 import {
   addStationDetailsToTask,
   extractPathForSite,
+  extractPathForSiteWithLoops,
+  expandRouteTasksWithLoops,
   getPlacesList,
   getRoutesOfUserInTheSite,
   getTasksList,
@@ -152,14 +154,19 @@ export default function Sites(props) {
     localStorage.setItem("route_title", routesOfUserInTheSite[index].title.rendered);
     localStorage.setItem("route_id", routesOfUserInTheSite[index].id);
 
-    let tempTransformObject = await trasformObject(
-      routesOfUserInTheSite[index].acf.tasks
-    );
-    let [separateList, cleanList] = extractPathForSite(
-      allTasks,//allTasks, --> AllNodeTasks,
-      routesOfUserInTheSite[index].acf.tasks,
+    // Expand the selected route (or pack) tasks with loops if provided
+    const selected = routesOfUserInTheSite[index];
+    const routeTasks = selected?.acf?.tasks || [];
+    const routeLoops = selected?.acf?.loops || [];
+
+  // Use the pre-built taskInformation map for fast lookups
+  const routeTasksExpanded = expandRouteTasksWithLoops(taskInformation || allTasks, routeTasks, routeLoops);
+
+    // Build grouped and linear lists while preserving loop meta per task occurrence
+    let [separateList, cleanList] = extractPathForSiteWithLoops(
+      taskInformation || allTasks,
+      routeTasksExpanded,
       site_id
-      // tempTransformObject
     );
 
     console.log('separateList', separateList);
