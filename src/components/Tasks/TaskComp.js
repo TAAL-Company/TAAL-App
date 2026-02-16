@@ -309,10 +309,10 @@ export default function TaskComp(props) {
                 : "ltr",
             }}
           >
-            <div style={{ width: "30%", height: "100%", padding: 0 }}>
+            <div style={{ width: "13%",  padding: 0, position: "fixed",top: "-7%",right: "23%"  }}>
               <AudioIcon audioUrl={props.audioUrl} />
             </div>
-            <div style={{ height: "100%", width: "70%", padding: 0 }}>
+            <div style={{ height: "100%", padding: 0 }}>
               <div
                 className="textTaskComp"
                 style={{
