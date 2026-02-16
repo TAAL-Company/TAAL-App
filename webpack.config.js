@@ -48,6 +48,17 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.(mp3|wav|ogg)$/i,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              name: '[path][name].[ext]',
+            },
+          },
+        ],
+      },
     ],
   },
   plugins: [

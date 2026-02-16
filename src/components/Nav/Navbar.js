@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import NavLink from "./NavLink";
 import { isLoggedIn, getUserName, handleLogout } from "../functions";
 import "./Navbar.css";
@@ -6,15 +6,34 @@ import { StressIconRed, StressIconGrey } from "../assets/icons";
 import ListenIcon from "../../images/ListenIcon.png";
 import maskable from "../../images/maskable.png";
 import { connect } from "react-redux";
-import { BsArrowCounterclockwise } from "react-icons/bs";
+import { BsArrowCounterclockwise, BsFillMegaphoneFill } from "react-icons/bs";
 import Swal from "sweetalert2";
 import { navigate } from "@reach/router";
 import { postDataTime } from "../api"; // Ensure this function is imported correctly
+import clickSound from '../assets/audio/help_sound.mp3'; // Adjust the path as needed
 
 function Navbar(props) {
   const { origin, user } = props;
   const { hebrewName = "", arabicName = "", imgPath = false } = user;
   const undecodeduserName = localStorage.getItem("undecodeduserName");
+
+  const audioRef = useRef(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
+  const handleAudioToggle = () => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio(clickSound);
+      audioRef.current.loop = true; // Loop if you want continuous play
+    }
+    if (!isPlaying) {
+      audioRef.current.play();
+      setIsPlaying(true);
+    } else {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsPlaying(false);
+    }
+  };
 
   useEffect(() => {
     // Listen for network state changes
@@ -69,154 +88,161 @@ function Navbar(props) {
               <div className="User">
                 <div className="navDemo">
                   <div className="nav-item">
-                    {isLTR() &&
-                      origin === "Help" ? (
-                      <>
-                        <div
-                          className="GoBackToSitesPage"
-                          onClick={() => {
-                            console.log("go back");
-                            Swal.fire({
-                              icon: "question",
-                              title: "",
-                              // text: "האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?",
-                              text: "Are you sure you want to reset your route?",
-                              // html: `<div>Are you sure you want to reset your route?</div>`,
-                              showCancelButton: true,
-                              showDenyButton: false,
-                              showConfirmButton: true,
-                              confirmButtonColor: "green",
-                              cancelButtonColor: "red",
-                              confirmButtonText: "Yes",
-                              cancelButtonText: "No",
-                              focusCancel: false,
-                              focusConfirm: false,
-                              customClass: {
-                                cancelButton: "order-2 right-gap ",
-                                confirmButton: "order-1",
-                              },
-                            }).then((result) => {
-                              if (result.value) {
-                                // The user clicked the "Confirm" button, perform the desired action
-                                // window.history.go(-1)
-                                navigate(`/Sites/${userName}`);
-                                // window.location.href = `/Sites/${userName}`;
-                              } else {
-                                // The user clicked the "Cancel" button, do nothing
-                              }
-                            });
-                            // window.location.href = `/Sites/${userName}`;
-                          }}
-                        >
-                          <BsArrowCounterclockwise
-                            style={{
-                              height: "80%",
-                              width: "80%",
-                              marginTop: "0.7vh",
-                            }}
-                          ></BsArrowCounterclockwise>
-                        </div>
-                      </>
-                    ) : !isLTR() &&
-                      origin === "Help" ? (
-                      currentLanguage === "Arabic" ? (
-                        <>
-                          <div
-                            className="GoBackToSitesPage"
-                            onClick={() => {
-                              console.log("go back");
-                              Swal.fire({
-                                icon: "question",
-                                title: "",
-                                text: "هل أنت متأكد أنك تريد إعادة ضبط مسارك؟",
-                                showCancelButton: true,
-                                showDenyButton: false,
-                                showConfirmButton: true,
-                                confirmButtonColor: "green",
-                                cancelButtonColor: "red",
-                                confirmButtonText: "نعم",
-                                cancelButtonText: "لا",
-                                focusCancel: false,
-                                focusConfirm: false,
-                                customClass: {
-                                  cancelButton: "order-1 left-gap ",
-                                  confirmButton: "order-2",
-                                },
-                              }).then((result) => {
-                                if (result.value) {
-                                  // The user clicked the "Confirm" button, perform the desired action
-                                  navigate(`/Sites/${userName}`);
-                                  // window.location.href = `/Sites/${userName}`;
-                                } else {
-                                  // The user clicked the "Cancel" button, do nothing
-                                }
-                              });
-                              // window.location.href = `/Sites/${userName}`;
-                            }}
-                          >
-                            <BsArrowCounterclockwise
-                              style={{
-                                height: "80%",
-                                width: "80%",
-                                marginTop: "0.7vh",
-                              }}
-                            ></BsArrowCounterclockwise>
-                          </div>
-                        </>
-                      ) : (
-                        <>
-                          <div
-                            className="GoBackToSitesPage"
-                            onClick={() => {
-                              console.log("go back");
-                              Swal.fire({
-                                icon: "question",
-                                title: "",
-                                text: "האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?",
-                                // html: `<div style="direction: rtl">האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?</div>`,
+                    {
+                      // isLTR() && 
+                      origin === "Help" ?
 
-                                showCancelButton: true,
-                                showDenyButton: false,
-                                showConfirmButton: true,
-                                confirmButtonColor: "green",
-                                cancelButtonColor: "red",
-                                confirmButtonText: "כן",
-                                cancelButtonText: "לא",
-                                focusCancel: false,
-                                focusConfirm: false,
-                                customClass: {
-                                  cancelButton: "order-1 left-gap ",
-                                  confirmButton: "order-2",
-                                },
-                              }).then((result) => {
-                                if (result.value) {
-                                  // The user clicked the "Confirm" button, perform the desired action
-                                  navigate(`/Sites/${userName}`);
-                                  // window.location.href = `/Sites/${userName}`;
-                                } else {
-                                  // The user clicked the "Cancel" button, do nothing
-                                }
-                              });
-                              // window.location.href = `/Sites/${userName}`;
-                            }}
-                          >
-                            <BsArrowCounterclockwise
-                              style={{
-                                height: "80%",
-                                width: "80%",
-                                marginTop: "0.7vh",
+                        (
+                          <>
+                            <div
+                              className="GoBackToSitesPage"
+                              onClick={() => {
+                                console.log("befor audio play");
+                                handleAudioToggle();
+                                console.log("after audio play");
+                                // Swal.fire({
+                                //   icon: "question",
+                                //   title: "",
+                                //   // text: "האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?",
+                                //   text: "Are you sure you want to reset your route?",
+                                //   // html: `<div>Are you sure you want to reset your route?</div>`,
+                                //   showCancelButton: true,
+                                //   showDenyButton: false,
+                                //   showConfirmButton: true,
+                                //   confirmButtonColor: "green",
+                                //   cancelButtonColor: "red",
+                                //   confirmButtonText: "Yes",
+                                //   cancelButtonText: "No",
+                                //   focusCancel: false,
+                                //   focusConfirm: false,
+                                //   customClass: {
+                                //     cancelButton: "order-2 right-gap ",
+                                //     confirmButton: "order-1",
+                                //   },
+                                // }).then((result) => {
+                                //   if (result.value) {
+                                //     // The user clicked the "Confirm" button, perform the desired action
+                                //     // window.history.go(-1)
+                                //     navigate(`/Sites/${userName}`);
+                                //     // window.location.href = `/Sites/${userName}`;
+                                //   } else {
+                                //     // The user clicked the "Cancel" button, do nothing
+                                //   }
+                                // });
+                                // window.location.href = `/Sites/${userName}`;
+
                               }}
-                            ></BsArrowCounterclockwise>
-                          </div>
-                        </>)
-                    ) : (
-                      <NavLink origin={origin} onClick={() => {
-                        localStorage.setItem("whenAssisted", "0");
-                        console.log("testing", localStorage.getItem("whenAssisted"));
-                      }} to={`/Help/${userName}`}>
-                        <StressIconRed className="StressIcon" src={stress} />
-                      </NavLink>
-                    )}
+                            >
+                              <BsFillMegaphoneFill
+                                style={{
+                                  height: "80%",
+                                  width: "80%",
+                                  marginTop: "0.7vh",
+                                }}
+                              ></BsFillMegaphoneFill>
+                            </div>
+                          </>
+                          // ) : !isLTR() &&
+                          // origin === "Help" ? (
+                          // currentLanguage === "Arabic" ? (
+                          // <>
+                          //   <div
+                          //     className="GoBackToSitesPage"
+                          //     onClick={() => {
+                          //       console.log("go back");
+                          //       Swal.fire({
+                          //         icon: "question",
+                          //         title: "",
+                          //         text: "هل أنت متأكد أنك تريد إعادة ضبط مسارك؟",
+                          //         showCancelButton: true,
+                          //         showDenyButton: false,
+                          //         showConfirmButton: true,
+                          //         confirmButtonColor: "green",
+                          //         cancelButtonColor: "red",
+                          //         confirmButtonText: "نعم",
+                          //         cancelButtonText: "لا",
+                          //         focusCancel: false,
+                          //         focusConfirm: false,
+                          //         customClass: {
+                          //           cancelButton: "order-1 left-gap ",
+                          //           confirmButton: "order-2",
+                          //         },
+                          //       }).then((result) => {
+                          //         if (result.value) {
+                          //           // The user clicked the "Confirm" button, perform the desired action
+                          //           navigate(`/Sites/${userName}`);
+                          //           // window.location.href = `/Sites/${userName}`;
+                          //         } else {
+                          //           // The user clicked the "Cancel" button, do nothing
+                          //         }
+                          //       });
+                          //       // window.location.href = `/Sites/${userName}`;
+                          //     }}
+                          //   >
+                          //     <BsFillMegaphoneFill
+                          //       style={{
+                          //         height: "80%",
+                          //         width: "80%",
+                          //         marginTop: "0.7vh",
+                          //       }}
+                          //     ></BsFillMegaphoneFill>
+                          //   </div>
+                          // </>
+                          // ) : (
+                          // <>
+                          //   <div
+                          //     className="GoBackToSitesPage"
+                          //     onClick={() => {
+                          //       console.log("go back");
+                          //       Swal.fire({
+                          //         icon: "question",
+                          //         title: "",
+                          //         text: "האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?",
+                          //         // html: `<div style="direction: rtl">האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?</div>`,
+
+                          //         showCancelButton: true,
+                          //         showDenyButton: false,
+                          //         showConfirmButton: true,
+                          //         confirmButtonColor: "green",
+                          //         cancelButtonColor: "red",
+                          //         confirmButtonText: "כן",
+                          //         cancelButtonText: "לא",
+                          //         focusCancel: false,
+                          //         focusConfirm: false,
+                          //         customClass: {
+                          //           cancelButton: "order-1 left-gap ",
+                          //           confirmButton: "order-2",
+                          //         },
+                          //       }).then((result) => {
+                          //         if (result.value) {
+                          //           // The user clicked the "Confirm" button, perform the desired action
+                          //           navigate(`/Sites/${userName}`);
+                          //           // window.location.href = `/Sites/${userName}`;
+                          //         } else {
+                          //           // The user clicked the "Cancel" button, do nothing
+                          //         }
+                          //       });
+                          //       // window.location.href = `/Sites/${userName}`;
+                          //     }}
+                          //   >
+                          //     <BsFillMegaphoneFill
+                          //       style={{
+                          //         height: "80%",
+                          //         width: "80%",
+                          //         marginTop: "0.7vh",
+                          //       }}
+                          //     ></BsFillMegaphoneFill>
+                          //   </div>
+                          // </>
+                          // )
+                        ) : (
+                          <NavLink origin={origin} onClick={() => {
+                            localStorage.setItem("whenAssisted", "0");
+                            console.log("testing", localStorage.getItem("whenAssisted"));
+                          }} to={`/Help/${userName}`}>
+                            <StressIconRed className="StressIcon" src={stress} />
+                          </NavLink>
+                        )}
 
                     {/* {origin === "Help" ? (
                       <>
