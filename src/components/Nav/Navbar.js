@@ -6,7 +6,7 @@ import { StressIconRed, StressIconGrey } from "../assets/icons";
 import ListenIcon from "../../images/ListenIcon.png";
 import maskable from "../../images/maskable.png";
 import { connect } from "react-redux";
-import { BsArrowCounterclockwise, BsFillMegaphoneFill } from "react-icons/bs";
+import { BsArrowCounterclockwise, BsFillMegaphoneFill, BsThreeDotsVertical } from "react-icons/bs";
 import Swal from "sweetalert2";
 import { navigate } from "@reach/router";
 import { postDataTime } from "../api"; // Ensure this function is imported correctly
@@ -307,6 +307,56 @@ function Navbar(props) {
                     </button>
                   </div> */}
                 </div>
+                {origin === "Help" ? (
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "center",
+                      width: "6.5vh",
+                      height: "6.5vh",
+                    }}
+                    onClick={() => {
+
+                      Swal.fire({
+                        icon: "question",
+                        title: "",
+                        // text: "האם את/ה בטוח/ה שאת/ה רוצה לאפס את המסלול שלך?",
+                        text: "Are you sure you want to reset your route?",
+                        // html: `<div>Are you sure you want to reset your route?</div>`,
+                        showCancelButton: true,
+                        showDenyButton: false,
+                        showConfirmButton: true,
+                        confirmButtonColor: "green",
+                        cancelButtonColor: "red",
+                        confirmButtonText: "Yes",
+                        cancelButtonText: "No",
+                        focusCancel: false,
+                        focusConfirm: false,
+                        customClass: {
+                          cancelButton: "order-2 right-gap ",
+                          confirmButton: "order-1",
+                        },
+                      }).then((result) => {
+                        if (result.value) {
+                          // The user clicked the "Confirm" button, perform the desired action
+                          navigate(`/Sites/${userName}`);
+                        } else {
+                          // The user clicked the "Cancel" button, do nothing
+                        }
+                      });
+                    }}>
+                    <BsThreeDotsVertical
+                      style={{
+                        height: "80%",
+                        width: "80%",
+                        marginTop: "0.7vh",
+                      }}
+                    ></BsThreeDotsVertical>
+                  </div>
+                ) : (
+                  <>
+                  </>
+                )}
                 <div className="nav-item Profile ProfileContent">
                   <div
                     style={{
@@ -357,13 +407,14 @@ function Navbar(props) {
                   )}
                 </div>
               </div>
-            </React.Fragment>
+            </React.Fragment >
           ) : (
             <div></div>
-          )}
-        </div>
-      </div>
-    </nav>
+          )
+          }
+        </div >
+      </div >
+    </nav >
   );
 }
 const mapStateToProps = (state) => ({ user: state.user.user });
