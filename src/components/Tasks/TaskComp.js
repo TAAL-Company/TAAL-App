@@ -8,6 +8,7 @@ import { parseContent, getTimeInUTC } from "./functions";
 import "./taskCompStyle.css";
 import WeightPopup from "./WeightPopup";
 import Swal from "sweetalert2";
+import { useTranslator } from "../../Utility/TranslationProvider";
 
 const IS_NODE = true;
 
@@ -31,10 +32,27 @@ let objTime = {
 };
 
 export default function TaskComp(props) {
+  const { translate, currentLanguage } = useTranslator();
   const [, set_obj_time] = useState(null);
   const [myCurrent, setMyCurrent] = useState();
   const [modalOpen, setModalOpen] = useState(false);
   const [dataEntered, setDataEntered] = useState(props.dataEntered === undefined ? "" : props.dataEntered);
+  const [translatedTitle, setTranslatedTitle] = useState(props.title);
+  const [translatedContent, setTranslatedContent] = useState(parseContent(props.content));
+
+  useEffect(() => {
+    const doTranslate = async () => {
+      if (props.title) {
+        const title = await translate(props.title, currentLanguage);
+        setTranslatedTitle(title);
+      }
+      if (props.content) {
+        const content = await translate(parseContent(props.content), currentLanguage);
+        setTranslatedContent(content);
+      }
+    };
+    doTranslate();
+  }, [props.title, props.content, currentLanguage, translate]);
   // console.log("dataEntered1212 ", dataEntered);
 
 
@@ -306,7 +324,7 @@ export default function TaskComp(props) {
                     : "right",
                 }}
               >
-                {props.title}
+                {translatedTitle}
               </div>
               <div
                 className="textTaskComp"
@@ -316,7 +334,7 @@ export default function TaskComp(props) {
                     localStorage.getItem("route_id") == 3271 ? "" : "right",
                 }}
               >
-                {parseContent(props.content)}
+                {translatedContent}
                 {props.taskType === "specialTask" ?
                   <div style={{
                     display: "flex",

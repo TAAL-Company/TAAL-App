@@ -1,10 +1,29 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import playIcon from "../../images/playIcon.svg";
 import AudioIcon from "../assets/AudioIcon";
 import "./SiteComp.css";
 import "./SiteCompStyle.css";
+import { useTranslator } from "../../Utility/TranslationProvider";
 
 export default function SiteComp(props) {
+  const { translate, currentLanguage } = useTranslator();
+  const [translatedName, setTranslatedName] = useState(props.name);
+  const [translatedRouteName, setTranslatedRouteName] = useState(props.rouetname);
+
+  useEffect(() => {
+    const doTranslate = async () => {
+      if (props.name) {
+        const name = await translate(props.name, currentLanguage);
+        setTranslatedName(name);
+      }
+      if (props.rouetname) {
+        const routeName = await translate(props.rouetname, currentLanguage);
+        setTranslatedRouteName(routeName);
+      }
+    };
+    doTranslate();
+  }, [props.name, props.rouetname, currentLanguage, translate]);
+
   // function decideColor(type) {
   //     if (type === "current")
   //         return "orange";
@@ -49,8 +68,8 @@ export default function SiteComp(props) {
             />
           </div>
           <div className="textBox">
-            <p className="siteTxt">{props.name}</p>
-            <p className="siteTxt">{props.rouetname}</p>
+            <p className="siteTxt">{translatedName}</p>
+            <p className="siteTxt">{translatedRouteName}</p>
           </div>
 
           {isLTR() ? (

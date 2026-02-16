@@ -12,6 +12,7 @@ import { isLoggedIn, handleLogout } from "../functions";
 import AudioIcon from "../assets/AudioIcon";
 import logo from "../../images/logo.png";
 import { useTranslation } from "react-i18next";
+import { useTranslator } from "../../Utility/TranslationProvider";
 
 import axios from "axios";
 
@@ -51,6 +52,9 @@ function Help(props) {
   const [phoneGuide, setPhoneGuide] = useState("error");
   const userId = localStorage.getItem("userID");
   const currentLanguage = sessionStorage.getItem('language')
+  const { translate, currentLanguage: dataLanguage } = useTranslator();
+  const [translatedTaskName, setTranslatedTaskName] = useState(currentTaskName);
+  const [translatedHelpText, setTranslatedHelpText] = useState(generalHelp?.help_text || '');
   const isLTR = () => {
     const currentDirection = sessionStorage.getItem('direction')
     return currentDirection === "ltr"; // Adjust based on your language codes
@@ -63,6 +67,21 @@ function Help(props) {
     checkTask();
     return () => { };
   }, []);
+
+  // Translate task name and help text when data language changes
+  useEffect(() => {
+    const doTranslate = async () => {
+      if (currentTaskName) {
+        const translated = await translate(currentTaskName, dataLanguage);
+        setTranslatedTaskName(translated);
+      }
+      if (generalHelp?.help_text) {
+        const translated = await translate(generalHelp.help_text, dataLanguage);
+        setTranslatedHelpText(translated);
+      }
+    };
+    doTranslate();
+  }, [currentTaskName, generalHelp?.help_text, dataLanguage, translate]);
 
   const toggleModal = () => {
     //   setIsOpen(!isOpen) - cancel modal ?
@@ -240,7 +259,7 @@ function Help(props) {
                           className="secText-en"
                           hidden={currentTaskName === ""}
                         >
-                          {currentTaskName}
+                          {translatedTaskName}
                         </h2>
                         <div
                           className="headText-en"
@@ -249,7 +268,7 @@ function Help(props) {
                           Additional Help text
                         </div>
                         <h2 className="secText-en" hidden={generalHelp?.help_text === ""}>
-                          {generalHelp?.help_text}
+                          {translatedHelpText}
                         </h2>
                       </Fragment>
                     </div>
@@ -310,7 +329,7 @@ function Help(props) {
                             مهمتي الحالية:
                           </div>
                           <h2 className="secText" hidden={currentTaskName === ""}>
-                            {currentTaskName}
+                            {translatedTaskName}
                           </h2>
                           <div
                             className="headText"
@@ -319,7 +338,7 @@ function Help(props) {
                             نص المساعدة الإضافي
                           </div>
                           <h2 className="secText" hidden={generalHelp?.help_text === ""}>
-                          {generalHelp?.help_text}
+                          {translatedHelpText}
                         </h2>
                         </Fragment>
                       </div>
@@ -377,7 +396,7 @@ function Help(props) {
                             המשימה הנוכחית שלי:
                           </div>
                           <h2 className="secText" hidden={currentTaskName === ""}>
-                            {currentTaskName}
+                            {translatedTaskName}
                           </h2>
                           <div
                             className="headText"
@@ -386,7 +405,7 @@ function Help(props) {
                             טקסט עזרה נוסף:
                           </div>
                           <h2 className="secText" hidden={generalHelp?.help_text === ""}>
-                            {generalHelp?.help_text}
+                            {translatedHelpText}
                           </h2>
                         </Fragment>
                       </div>
@@ -436,7 +455,7 @@ function Help(props) {
                         user.user.username.toString() +
                         " Is having trouble completing the task" +
                         '"' +
-                        currentTaskName.toString() +
+                        translatedTaskName.toString() +
                         '"' +
                         "," +
                         " " +
@@ -525,7 +544,7 @@ function Help(props) {
 
                           " تواجه صعوبة في إكمال المهمة" +
                           '"' +
-                          currentTaskName.toString() +
+                          translatedTaskName.toString() +
                           '"' +
                           "," +
                           " " +
@@ -630,7 +649,7 @@ function Help(props) {
 
                           " מתקשה במילוי המשימה " +
                           '"' +
-                          currentTaskName.toString() +
+                          translatedTaskName.toString() +
                           '"' +
                           "," +
                           " " +

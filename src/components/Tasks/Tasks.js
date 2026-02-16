@@ -14,6 +14,7 @@ import TaskComp from "./TaskComp";
 import "./Tasks.css";
 import { getLineHeight, parseContent, storeInitialData } from "./functions";
 import Swal from "sweetalert2";
+import { useTranslator } from "../../Utility/TranslationProvider";
 
 Modal.setAppElement("body");
 
@@ -31,6 +32,7 @@ const tasksReducer = (state, action) => {
 
 function Tasks(props) {
   // console.log("Tasks props: ", props);
+  const { translate, currentLanguage } = useTranslator();
   let screenwidth = 672;//1020 - 1023
 
   const { user_tasks } = props;
@@ -47,6 +49,10 @@ function Tasks(props) {
   const [currIndex, setCurrIndex] = useState(getInitialLocation);
   const [stationsData, setStationsData] = useState({});
   const [modalOpen, setModalOpen] = useState(false);
+  const [translatedCurrentStation, setTranslatedCurrentStation] = useState('');
+  const [translatedNextStation, setTranslatedNextStation] = useState('');
+  const [translatedTaskTitle, setTranslatedTaskTitle] = useState('');
+  const [translatedTaskContent, setTranslatedTaskContent] = useState('');
   // second version
   const [allData, setAllData] = useState([]);
   const sliderRef = useRef();
@@ -473,6 +479,47 @@ function Tasks(props) {
     else return "none";
   };
 
+  // Translate station names when currIndex or language changes
+  useEffect(() => {
+    const translateStations = async () => {
+      const currentStationTitle = allData[currIndex]?.stationDetails?.title || '';
+      const nextStationTitle = getStationName(currIndex - 1);
+      
+      if (currentStationTitle) {
+        const translated = await translate(currentStationTitle, currentLanguage);
+        setTranslatedCurrentStation(translated);
+      } else {
+        setTranslatedCurrentStation('');
+      }
+      
+      if (nextStationTitle && nextStationTitle !== 'none') {
+        const translated = await translate(nextStationTitle, currentLanguage);
+        setTranslatedNextStation(translated);
+      } else {
+        setTranslatedNextStation(nextStationTitle);
+      }
+
+      // Translate task title and content for tablet view
+      const taskTitle = allData[currIndex]?.title?.rendered;
+      const taskContent = allData[currIndex]?.content?.rendered;
+      
+      if (taskTitle) {
+        const translatedTitle = await translate(parseContent(taskTitle), currentLanguage);
+        setTranslatedTaskTitle(translatedTitle);
+      } else {
+        setTranslatedTaskTitle('');
+      }
+      
+      if (taskContent) {
+        const translatedContent = await translate(parseContent(taskContent), currentLanguage);
+        setTranslatedTaskContent(translatedContent);
+      } else {
+        setTranslatedTaskContent('');
+      }
+    };
+    translateStations();
+  }, [currIndex, currentLanguage, allData, translate]);
+
   const onPressGoToSites = () => {
     resetTasks();
   };
@@ -558,7 +605,7 @@ function Tasks(props) {
             <StationHeader>
               <Text>
                 {/* {allData[currIndex] && allData[currIndex].stationDetails ? allData[currIndex].stationDetails.name : ""} */}
-                {allData[currIndex]?.stationDetails?.title || ''}
+                {translatedCurrentStation}
               </Text>
               {renderLoopMeta()}
             </StationHeader>
@@ -660,12 +707,10 @@ function Tasks(props) {
             <div className={"taskDetailsContainer"}>
               <div className={"detailsTextContainer"}>
                 <Text fontSize={4} textAlign={"right"}>
-                  {allData[currIndex] &&
-                    parseContent(allData[currIndex].title.rendered)}
+                  {translatedTaskTitle}
                 </Text>
                 <Text fontSize={2.5} textAlign={"right"}>
-                  {allData[currIndex] &&
-                    parseContent(allData[currIndex].content.rendered)}
+                  {translatedTaskContent}
                 </Text>
               </div>
               <div className={"audioContainer"}>
@@ -695,7 +740,8 @@ function Tasks(props) {
                 textAlign={"left"}
                 fontSize={2}
               >
-                :התחנה הבאה {getStationName(currIndex - 1)}
+                
+                :התחנה הבאה {translatedNextStation}
               </Text>
               <div className={"stationLogo"}>
                 <Text fontSize={2}>לוגו</Text>
@@ -745,7 +791,7 @@ function Tasks(props) {
                   textAlign={"right"}
                   fontSize={2}
                 >
-                  {getStationName(currIndex)}
+                  {translatedCurrentStation}
                 </Text>
                 {renderLoopMeta()}
               </StationHeaderintabletview>

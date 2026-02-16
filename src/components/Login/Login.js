@@ -15,6 +15,7 @@ import { IS_NODE } from "../Sites/Sites";
 import { getingDataUsersFromNodejs, loginUser } from "../api";
 import posthog from "posthog-js";
 import { convertUsername } from "../functions";
+import { useTranslator } from "../../Utility/TranslationProvider";
 //redux
 // import Spinner from "../assets/Spinner";
 
@@ -23,7 +24,50 @@ const userNameApi = process.env.REACT_APP_USERNAME_ACCESSKEY;
 const passwordApi = process.env.REACT_APP_PASSWORD_ACCESSKEY;
 const base64encodedData = Buffer.from(`${userNameApi}:${passwordApi}`).toString('base64');
 
+function DataLanguageSwitcher() {
+  const { currentLanguage, setLanguage, showOriginal, setShowOriginal } = useTranslator();
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+      <select
+        value={currentLanguage}
+        onChange={(e) => setLanguage(e.target.value)}
+        className="data-language-switcher"
+        style={{
+          padding: '8px 12px',
+          fontSize: '16px',
+          borderRadius: '5px',
+          border: '1px solid #ccc',
+          backgroundColor: '#fff',
+          cursor: 'pointer',
+          marginTop: '10px',
+          width: '200px'
+        }}
+      >
+        <option value="en">English</option>
+        <option value="he">עברית</option>
+        <option value="ar">العربية</option>
+      </select>
+      <label style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        fontSize: '14px',
+        cursor: 'pointer'
+      }}>
+        <input
+          type="checkbox"
+          checked={showOriginal}
+          onChange={(e) => setShowOriginal(e.target.checked)}
+          style={{ cursor: 'pointer' }}
+        />
+        Show Original Text (No Translation)
+      </label>
+    </div>
+  );
+}
+
 function Login(props) {
+  const { setLanguage: setDataLanguage, showOriginal, setShowOriginal  } = useTranslator();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [userNiceName, setUserNiceName] = useState("");
@@ -47,6 +91,7 @@ function Login(props) {
   const [direction, setDirection] = useState('rtl');
   const [forgotPassmassage, setforgotPassmassage] = useState('לשחזור סיסמה נא ליצור קשר עם 054-464-3843');
   const [errormessage, setErrormessage] = useState('שם משתמש או סיסמה אינם תקנים');
+  const [originalText, setOriginalText] = useState('הצג טקסט מקורי (ללא תרגום)');
 
   const handlecheckedChange = (event) => {
 
@@ -66,24 +111,30 @@ function Login(props) {
       sessionStorage.setItem('direction', 'rtl');
       setforgotPassmassage('לשחזור סיסמה נא ליצור קשר עם 054-464-3843');
       setErrormessage('שם משתמש או סיסמה אינם תקנים');
+      setDataLanguage('he');
+      setOriginalText('הצג טקסט מקורי (ללא תרגום)');
     } else if (checkedLanguage === 'English') {
       english();
       setDirection('ltr'); // Set direction to ltr
       sessionStorage.setItem('direction', 'ltr');
       setforgotPassmassage('To recover your password, please contact 054-464-3843');
       setErrormessage('Username or password are not valid');
+      setDataLanguage('en');
+      setOriginalText('Show Original Text (No Translation)');
     } else if (checkedLanguage === 'Arabic') {
       arabic();
       setDirection('rtl'); // Set direction to rtl
       sessionStorage.setItem('direction', 'rtl');
       setforgotPassmassage(' للحصول على كلمة مرورك، يرجى الاتصال ب 3843-464-054  ');
       setErrormessage('اسم المستخدم او كلمة المرور غير صالحة');
+      setDataLanguage('ar');
+      setOriginalText('عرض النص الأصلي (بدون ترجمة)');
     }
   };
 
   const { English, Arabic, Hebrew } = checked;
 
-  if(Hebrew) {
+  if (Hebrew) {
     sessionStorage.setItem('direction', direction);
     sessionStorage.setItem('language', language);
   }
@@ -182,7 +233,7 @@ function Login(props) {
     sessionStorage.setItem("token", res.data.token);
     localStorage.setItem("token", res.data.token);
     localStorage.setItem("userName", convertUsername(loggedInUser.name));
-    localStorage.setItem("undecodeduserName", loggedInUser.name); 
+    localStorage.setItem("undecodeduserName", loggedInUser.name);
     localStorage.setItem("userID", loggedInUser.id);
     // localStorage.setItem("useroacks", loggedInUser.packs);
 
@@ -252,12 +303,12 @@ function Login(props) {
 
     posthog.identify(loggedInUser.name)
     posthog.capture(
-      '$set', 
-      { 
-          $$set: [process.env.REACT_APP_VERSION],
+      '$set',
+      {
+        $$set: [process.env.REACT_APP_VERSION],
       }
-  )
-    
+    )
+
     props.actions.changeUser({
       imgPath: loggedInUser.picture_url || null,
       username: loggedInUser.name || "",
@@ -267,7 +318,7 @@ function Login(props) {
       arabicName: loggedInUser.name || "", //loggedInUser.arabic_name || "",
       guideName: loggedInUser.coach?.name || "", //extraData.guide || "",
       hebrewName: loggedInUser.name || "",// loggedInUser.hebrewName
-      guidePhone: loggedInUser.coach?.phone ||  "",
+      guidePhone: loggedInUser.coach?.phone || "",
     });
 
     setLoading(false);
@@ -276,11 +327,11 @@ function Login(props) {
     setLoggedIn(true);
   };
 
-    const [showPassword, setShowPassword] = useState(false);
-  
-    const togglePasswordVisibility = () => {
-      setShowPassword(prevShowPassword => !prevShowPassword);
-    };
+  const [showPassword, setShowPassword] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword(prevShowPassword => !prevShowPassword);
+  };
 
   const handleOnChange = (event) => {
     const { name, value } = event.target;
@@ -308,7 +359,7 @@ function Login(props) {
       },
     },
   };
-  
+
   const user = userNiceName ? userNiceName : localStorage.getItem("userName");
 
   if (loggedIn || localStorage.getItem("token")) {
@@ -318,7 +369,7 @@ function Login(props) {
   } else {
     return (
       <div className=" centered">
-      
+
         {/* {loading && <Spinner isLoading={loading} top={-200} />} */}
         {error && (
           <div
@@ -330,7 +381,7 @@ function Login(props) {
           <img alt={"login logo"} src={LogoLogin} style={{ maxWidth: "250px" }} />
         </div>
         <form onSubmit={onFormSubmit}>
-          <label className="form-group" style={{direction : ` ${direction}`}}>
+          <label className="form-group" style={{ direction: ` ${direction}` }}>
             <div className="icon">
               <FaRegUser />
             </div>
@@ -358,7 +409,7 @@ function Login(props) {
             />
           </label>
           <br /> */}
-          <label className="form-group" style={{direction : ` ${direction}`}}>
+          <label className="form-group" style={{ direction: ` ${direction}` }}>
             <div className="icon">
               {" "}
               <RiKey2Line />
@@ -409,8 +460,35 @@ function Login(props) {
               }}
               inputProps={{ 'aria-label': 'controlled' }}
             />
-           العربية
+            العربية
           </div>
+          {/* <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '15px' }}>
+            <label style={{ 
+              fontSize: '14px', 
+              color: '#666', 
+              marginBottom: '5px',
+              textAlign: 'center'
+            }}>
+              🌐 שפת תרגום נתונים / Data Translation / ترجمة البيانات
+            </label>
+            <DataLanguageSwitcher />
+          </div> */}
+          <label style={{
+            // display: 'flex',
+            alignItems: 'center',
+            gap: '8px',
+            fontSize: '14px',
+            cursor: 'pointer',
+            color: 'aliceblue'
+          }}>
+            <input
+              type="checkbox"
+              checked={showOriginal}
+              onChange={(e) => setShowOriginal(e.target.checked)}
+              style={{ cursor: 'pointer' }}
+            />
+            {originalText}
+          </label>
           <br />
           <button className="btn mb-3" type="submit">
             {loginLanguage}

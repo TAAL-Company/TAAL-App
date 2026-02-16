@@ -5,6 +5,7 @@ import Login from "./components/Login/Login";
 import Help from "./components/HelpPage/Help";
 import Sites from "./components/Sites/Sites";
 import Tasks from "./components/Tasks/Tasks"
+import { TranslationProvider } from './Utility/TranslationProvider';
 
 import { connect, Provider } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -23,12 +24,14 @@ function App() {
 	return (
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
-				<Router>
-					<LoginConnected path="/" />
-					<SitesConnected path="/Sites/:username" />
-					<HelpConnected path="/Help/:username" />
-					<TasksConnected path="/Tasks/:username" />
-				</Router>
+				<TranslationProvider defaultLang="he">
+					<Router>
+						<LoginConnected path="/" />
+						<SitesConnected path="/Sites/:username" />
+						<HelpConnected path="/Help/:username" />
+						<TasksConnected path="/Tasks/:username" />
+					</Router>
+				</TranslationProvider>
 			</PersistGate>
 		</Provider>
 	);
