@@ -375,10 +375,11 @@ export const getingDataRouteByIdsFromNodejs = async (RouteId) => {
     let allRoutes;
     console.log("geting data Routes");
     try {
-        await post(azureConfig.getRoutes + "/app", RouteId).then((res) => {
-            allRoutes = res.data
-        });
-        return allRoutes
+        const res = await post(azureConfig.getRoutes + "/app", RouteId);
+        if (res) {
+            allRoutes = res.data;
+        }
+        return allRoutes || null;
     } catch (error) {
         console.error(error)
         return null;

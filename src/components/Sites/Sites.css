@@ -256,3 +256,86 @@ h1.addText {
     margin-right: 0;
 
 }
+
+/* QR Route Scanner */
+.qrScanRouteBtn {
+    margin-top: 8px;
+    padding: 8px 18px;
+    background-color: #e8b221;
+    color: #272727;
+    border: none;
+    border-radius: 20px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.qrScanRouteBtn:active {
+    background-color: #c99a1a;
+}
+
+.qrRouteModalOverlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+.qrRouteModal {
+    background: #1e1e1e;
+    border-radius: 12px;
+    padding: 20px;
+    width: 90%;
+    max-width: 420px;
+    outline: none;
+}
+
+.qrRouteModalContent {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.qrRouteModalHeader {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.qrRouteModalHeader h3 {
+    color: #e8b221;
+    margin: 0;
+    font-size: 18px;
+}
+
+.qrRouteModalClose {
+    background: none;
+    border: none;
+    color: #aaa;
+    font-size: 22px;
+    cursor: pointer;
+    line-height: 1;
+}
+
+.qrRouteModalClose:hover {
+    color: #fff;
+}
+
+.qrRouteScanner {
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
+}
+
+.qrRouteError {
+    color: #ff6b6b;
+    font-size: 14px;
+    margin: 0;
+    text-align: center;
+}

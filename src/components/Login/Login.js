@@ -1,7 +1,8 @@
-import { Redirect } from "@reach/router";
+import { navigate, Redirect } from "@reach/router";
 import axios from "axios";
 import React, { useState } from "react";
 import Modal from "react-modal";
+import BarcodeComp from '../Sites/BarcodeComp';
 import clientConfig from "../../client-config";
 import "./Login.css";
 
@@ -13,6 +14,8 @@ import LogoLogin from "../../images/LogoLoginWhite.png";
 import wpConfig from "../../wp-config";
 import { IS_NODE } from "../Sites/Sites";
 import { getingDataUsersFromNodejs, loginUser } from "../api";
+import { getingDataTasksByIdsFromNodejs, getingDataRouteByIdsFromNodejs, getingDataRouteByIdFromNodejs } from "../api";
+import { expandRouteTasksWithLoops, extractPathForSiteWithLoops, addStationDetailsToTask } from "../Sites/functions";
 import posthog from "posthog-js";
 import { convertUsername } from "../functions";
 import { useTranslator } from "../../Utility/TranslationProvider";
@@ -67,7 +70,7 @@ function DataLanguageSwitcher() {
 }
 
 function Login(props) {
-  const { setLanguage: setDataLanguage, showOriginal, setShowOriginal  } = useTranslator();
+  const { setLanguage: setDataLanguage, showOriginal, setShowOriginal } = useTranslator();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [userNiceName, setUserNiceName] = useState("");
@@ -77,6 +80,10 @@ function Login(props) {
   const [error, setError] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [IS_ADMIN_VERSION, set_IS_ADMIN_VERSION] = useState(true);
+
+  const [showQRModal, setShowQRModal] = useState(false);
+  const [qrError, setQrError] = useState('');
+  const [qrLoading, setQrLoading] = useState(false);
 
   const [checked, setChecked] = useState({
     Hebrew: true,
@@ -157,6 +164,182 @@ function Login(props) {
     setpasswordLanguage('كلمة المرور');
     setUsernameLanguage('اسم المستخدم');
     setLoginLanguage('تسجيل الدخول');
+  };
+
+  const processRouteData = async (routeData) => {
+    // Normalize: support both Node format and WP format
+    let taskIds = [];
+    let site_id = null;
+    let siteName = '';
+    let routeName = '';
+
+    if (routeData.tasks && Array.isArray(routeData.tasks) && routeData.tasks[0]?.taskId) {
+      // Node format: { id, name, tasks: [{position, taskId}], sites: [{id, name}] }
+      taskIds = routeData.tasks
+        .sort((a, b) => (a.position ?? 0) - (b.position ?? 0))
+        .map(t => t.taskId);
+      site_id = routeData.sites?.[0]?.id;
+      siteName = routeData.sites?.[0]?.name || '';
+      routeName = routeData.name || '';
+    } else if (routeData.acf?.tasks) {
+      // WP format: { id, title.rendered, acf: { tasks: [{ID}] }, places: [siteIds] }
+      taskIds = routeData.acf.tasks.map(t => t.ID || t.id).filter(Boolean);
+      site_id = routeData.places?.[0]
+        ? String(routeData.places[0])
+        : null;
+      siteName = '';
+      routeName = routeData.title?.rendered || routeData.name || '';
+    } else {
+      return { error: language === 'english' ? 'QR code does not contain valid route data' : language === 'arabic' ? 'رمز QR لا يحتوي على بيانات مسار صالحة' : 'קוד QR לא מכיל נתוני מסלול תקינים' };
+    }
+
+    if (!site_id) {
+      return { error: language === 'english' ? 'Route has no site information' : language === 'arabic' ? 'لا توجد معلومات موقع' : 'אין מידע על אתר במסלול' };
+    }
+
+    if (!taskIds.length) {
+      return { error: language === 'english' ? 'Route has no tasks' : language === 'arabic' ? 'لا توجد مهام في المسار' : 'אין משימות במסלול' };
+    }
+
+    const fetchedTasks = await getingDataTasksByIdsFromNodejs(taskIds);
+    if (!fetchedTasks || fetchedTasks.length === 0) {
+      return { error: language === 'english' ? 'Could not load tasks for this route' : language === 'arabic' ? 'تعذر تحميل المهام' : 'לא ניתן לטעון משימות למסלול זה' };
+    }
+
+    // Add stationDetails BEFORE building taskMap so the spread copies in cleanList include it
+    addStationDetailsToTask(fetchedTasks, {});
+
+    const taskMap = {};
+    fetchedTasks.forEach(t => { if (t) taskMap[t.id || t.ID] = t; });
+
+    const routeTaskRefs = taskIds.map(id => ({ ID: id, id }));
+    const expanded = expandRouteTasksWithLoops(taskMap, routeTaskRefs, routeData.acf?.loops || []);
+    const [separateList, cleanList] = extractPathForSiteWithLoops(taskMap, expanded, site_id);
+
+    if (!cleanList.length) {
+      return { error: language === 'english' ? 'No tasks found for this route' : language === 'arabic' ? 'لم يتم العثور على مهام' : 'לא נמצאו משימות למסלול זה' };
+    }
+
+    return { separateList, cleanList, site_id, siteName, routeName, fetchedTasks };
+  };
+
+  const handleQRRouteScan = async (data) => {
+    if (!data || data === 'error' || qrLoading) return;
+    const qrText = (typeof data === 'object' && data !== null && data.text
+      ? data.text
+      : String(data)).trim();
+    if (!qrText || qrText === 'error') return;
+
+    setQrLoading(true);
+    setQrError('');
+
+    try {
+      let routeData;
+
+      // Try to parse as full JSON first
+      try {
+        routeData = JSON.parse(qrText);
+      } catch (e) {
+        // Treat as a plain route ID — fetch from API
+        routeData = await getingDataRouteByIdFromNodejs(qrText);
+        if (!routeData) {
+          setQrError(language === 'english' ? `Route not found: ${qrText}` : language === 'arabic' ? 'المسار غير موجود' : `המסלול לא נמצא: ${qrText}`);
+          setQrLoading(false);
+          return;
+        }
+      }
+
+      const result = await processRouteData(routeData);
+      if (result.error) {
+        setQrError(result.error);
+        setQrLoading(false);
+        return;
+      }
+
+      const { separateList, cleanList, site_id, siteName, routeName, fetchedTasks } = result;
+      const anonName = language === 'english' ? 'guest' : language === 'arabic' ? 'ضيف' : 'אורח';
+      localStorage.setItem('token', 'qr-anonymous-session');
+      localStorage.setItem('userName', anonName);
+      localStorage.setItem('userID', 'anonymous');
+      localStorage.setItem('site_id', site_id);
+      localStorage.setItem('site_title', siteName);
+      localStorage.setItem('route_title', routeName);
+      localStorage.setItem('guidphone', '');
+      localStorage.setItem("route_id", routeData.id || routeData.ID || '');
+
+      const currentDate = new Date().toISOString().split('T')[0];
+      props.actions.changePlaces([{ id: site_id, title: siteName }], currentDate);
+      props.actions.changeTasks(fetchedTasks, currentDate);
+      props.actions.visitPlaces(site_id);
+      props.actions.changeCurrentTasks(separateList);
+      props.actions.changeCurrentTasksList(cleanList);
+      props.actions.changeUser({
+        username: anonName,
+        isLoggedIn: true,
+        id: 'anonymous',
+        phone: '',
+        arabicName: anonName,
+        hebrewName: anonName,
+        guideName: '',
+        guidePhone: '0000000000',
+        imgPath: null,
+      });
+
+      setShowQRModal(false);
+      navigate(`/Tasks/${anonName}`);
+    } catch (e) {
+      console.error('QR scan error:', e);
+      setQrError(language === 'english' ? `Error: ${e.message}` : language === 'arabic' ? 'حدث خطأ' : `שגיאה: ${e.message}`);
+    } finally {
+      setQrLoading(false);
+    }
+  };
+
+  const handleManualRouteId = async (e) => {
+    e.preventDefault();
+    const id = e.target.elements.routeId.value.trim();
+    if (!id) return;
+    setQrLoading(true);
+    setQrError('');
+    try {
+      const routeData = await getingDataRouteByIdFromNodejs(id);
+      if (!routeData) {
+        setQrError(language === 'english' ? 'Route not found' : language === 'arabic' ? 'المسار غير موجود' : 'המסלול לא נמצא');
+        setQrLoading(false);
+        return;
+      }
+      const result = await processRouteData(routeData);
+      if (result.error) {
+        setQrError(result.error);
+        setQrLoading(false);
+        return;
+      }
+      const { separateList, cleanList, site_id, siteName, routeName, fetchedTasks } = result;
+      const anonName = language === 'english' ? 'guest' : language === 'arabic' ? 'ضيف' : 'אורח';
+      localStorage.setItem('token', 'qr-anonymous-session');
+      localStorage.setItem('userName', anonName);
+      localStorage.setItem('userID', 'anonymous');
+      localStorage.setItem('site_id', site_id);
+      localStorage.setItem('site_title', siteName);
+      localStorage.setItem('route_title', routeName);
+      const currentDate = new Date().toISOString().split('T')[0];
+      props.actions.changePlaces([{ id: site_id, title: siteName }], currentDate);
+      props.actions.changeTasks(fetchedTasks, currentDate);
+      props.actions.visitPlaces(site_id);
+      props.actions.changeCurrentTasks(separateList);
+      props.actions.changeCurrentTasksList(cleanList);
+      localStorage.setItem('anonymoususer', routeName);
+      localStorage.setItem('guidphone', '');
+      localStorage.setItem("route_id", routeData.id || routeData.ID || '');
+      props.actions.changeUser({ username: anonName, isLoggedIn: true, id: 'anonymous', phone: '', arabicName: anonName, hebrewName: anonName, guideName: '', guidePhone: '0000000000', imgPath: null });
+      setShowQRModal(false);
+      navigate(`/Tasks/${anonName}`);
+    } catch (e) {
+      console.error('Manual route error:', e);
+      setQrError(language === 'english' ? `Error: ${e.message}` : language === 'arabic' ? 'حدث خطأ' : `שגיאה: ${e.message}`);
+    } finally {
+      setQrLoading(false);
+    }
   };
 
   const toggleModal = () => {
@@ -365,6 +548,9 @@ function Login(props) {
   if (loggedIn || localStorage.getItem("token")) {
     //if we get the token
     const convertedUsername = convertUsername(user); // Use the function here
+    if (localStorage.getItem("token") === 'qr-anonymous-session') {
+      return <Redirect to={`/Tasks/` + convertedUsername} noThrow />;
+    }
     return <Redirect to={`/Sites/` + convertedUsername} noThrow />;
   } else {
     return (
@@ -497,6 +683,14 @@ function Login(props) {
           {/*{ loading && <img className="loader" src={Loader} alt="Loader"/> }*/}
         </form>
         <button
+          className="btn qrLoginBtn"
+          type="button"
+          onClick={() => { setQrError(''); setShowQRModal(true); }}
+          style={{ marginTop: '10px', backgroundColor: '#e8b221', borderColor: '#e8b221', color: '#272727', width: '16rem' }}
+        >
+          {language === 'english' ? '📷 Scan Route QR' : language === 'arabic' ? '📷 مسح رمز QR للمسار' : '📷 סרוק מסלול QR'}
+        </button>
+        <button
           className="forgotPass"
           onClick={(e) => setIsOpen(true)}
         >
@@ -512,6 +706,60 @@ function Login(props) {
             <div className="ModalMessage">
               <h2>{forgotPassmassage}</h2>
             </div>
+          </div>
+        </Modal>
+        <Modal
+          isOpen={showQRModal}
+          onRequestClose={() => setShowQRModal(false)}
+          style={{
+            overlay: { position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', zIndex: 9999 },
+            content: {
+              // width: '90%',
+              // maxWidth: '420px',
+              height: 'auto',
+              background: '#1e1e1e',
+              border: 'none',
+              borderRadius: '12px',
+              padding: '20px',
+              top: '50%',
+              left: '50%',
+              // transform: 'translate(-50%, -50%)',
+              position: 'absolute',
+              right: 'auto',
+              bottom: 'auto',
+            }
+          }}
+          contentLabel="QR Route Scanner"
+        >
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+              <h3 style={{ color: '#e8b221', margin: 0, fontSize: '18px' }}>
+                {language === 'english' ? 'Scan Route QR Code' : language === 'arabic' ? 'امسح رمز QR للمسار' : 'סרוק קוד QR של מסלול'}
+              </h3>
+              <button onClick={() => setShowQRModal(false)} style={{ background: 'none', border: 'none', color: '#aaa', fontSize: '22px', cursor: 'pointer' }}>✕</button>
+            </div>
+            {qrError && <p style={{ color: '#ff6b6b', margin: 0, textAlign: 'center', fontSize: '13px', wordBreak: 'break-word' }}>{qrError}</p>}
+            {qrLoading
+              ? <p style={{ color: '#e8b221', margin: 0, textAlign: 'center', fontSize: '14px' }}>
+                {language === 'english' ? 'Loading route...' : language === 'arabic' ? 'جارٍ تحميل المسار...' : 'טוען מסלול...'}
+              </p>
+              : <div style={{ borderRadius: '8px', overflow: 'hidden', background: '#000' }}>
+                <BarcodeComp onchange={handleQRRouteScan} />
+              </div>
+            }
+            <p style={{ color: '#888', margin: '4px 0 0', textAlign: 'center', fontSize: '12px' }}>
+              {language === 'english' ? '— or enter route ID manually —' : language === 'arabic' ? '— أو أدخل معرف المسار يدويًا —' : '— או הכנס מזהה מסלול ידנית —'}
+            </p>
+            <form onSubmit={handleManualRouteId} style={{ display: 'flex', gap: '6px' }}>
+              <input
+                name="routeId"
+                placeholder={language === 'english' ? 'Route ID...' : language === 'arabic' ? 'معرف المسار...' : 'מזהה מסלול...'}
+                style={{ flex: 1, padding: '8px', borderRadius: '6px', border: '1px solid #555', background: '#2a2a2a', color: '#fff', fontSize: '13px' }}
+              />
+              <button type="submit" style={{ padding: '8px 12px', background: '#e8b221', border: 'none', borderRadius: '6px', color: '#272727', fontWeight: 'bold', cursor: 'pointer' }}>
+                {language === 'english' ? 'Go' : language === 'arabic' ? 'انتقال' : 'עבור'}
+              </button>
+            </form>
           </div>
         </Modal>
       </div>

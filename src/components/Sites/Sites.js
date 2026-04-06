@@ -159,8 +159,8 @@ export default function Sites(props) {
     const routeTasks = selected?.acf?.tasks || [];
     const routeLoops = selected?.acf?.loops || [];
 
-  // Use the pre-built taskInformation map for fast lookups
-  const routeTasksExpanded = expandRouteTasksWithLoops(taskInformation || allTasks, routeTasks, routeLoops);
+    // Use the pre-built taskInformation map for fast lookups
+    const routeTasksExpanded = expandRouteTasksWithLoops(taskInformation || allTasks, routeTasks, routeLoops);
 
     // Build grouped and linear lists while preserving loop meta per task occurrence
     let [separateList, cleanList] = extractPathForSiteWithLoops(
@@ -237,6 +237,25 @@ export default function Sites(props) {
 
   const fetchData = async (networkState) => {
     // checkForInternet();
+    // Skip data fetching for anonymous QR users — tasks already loaded via Redux
+    if (userId === 'anonymous' || localStorage.getItem('token') === 'qr-anonymous-session') {
+      // localStorage.getItem('anonymoususer').then((user) => {
+      //   const routesID = user.routes.map(route => route.id);
+      //   const packsID = user.packs.map(pack => pack.id);
+      //   setUserPacksIDs(packsID);
+      //   console.log("routesID", routesID);
+      //   console.log("packs", packsID);
+      //   localStorage.setItem("routes", JSON.stringify(routesID))
+      //   localStorage.setItem("useroacks", JSON.stringify(packsID))
+      //   userRoutesIDs = JSON.parse(localStorage.getItem("routes"));
+      //   userPacksIDs = JSON.parse(localStorage.getItem("useroacks"));
+      //   setCompleted(5);
+      // })
+
+      
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     // try {
     if (networkState == "online") {

@@ -20,6 +20,23 @@ function Navbar(props) {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
+  useEffect(() => {
+    if (origin !== "Help" && audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.currentTime = 0;
+      setIsPlaying(false);
+    }
+  }, [origin]);
+
+  useEffect(() => {
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.currentTime = 0;
+      }
+    };
+  }, []);
+
   const handleAudioToggle = () => {
     if (!audioRef.current) {
       audioRef.current = new Audio(clickSound);
