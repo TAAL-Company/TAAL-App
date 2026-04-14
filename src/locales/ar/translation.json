@@ -19,5 +19,15 @@
     },
     "continue": {
         "1": "استمر"
+    },
+    "notification": {
+        "new_route": "مسار جديد",
+        "accept": "قبول",
+        "decline": "رفض",
+        "route_accepted": "تم قبول المسار!",
+        "loading_route": "جارٍ تحميل المسار...",
+        "from": "من",
+        "error": "خطأ",
+        "accept_failed": "لم نتمكن من قبول المسار"
     }
 }

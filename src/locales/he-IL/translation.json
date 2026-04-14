@@ -19,5 +19,15 @@
     },
     "continue": {
         "1": "להמשך"
+    },
+    "notification": {
+        "new_route": "מסלול חדש",
+        "accept": "קבל",
+        "decline": "דחה",
+        "route_accepted": "המסלול התקבל!",
+        "loading_route": "טוען מסלול...",
+        "from": "מאת",
+        "error": "שגיאה",
+        "accept_failed": "לא הצלחנו לקבל את המסלול"
     }
 }

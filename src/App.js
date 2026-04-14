@@ -6,6 +6,7 @@ import Help from "./components/HelpPage/Help";
 import Sites from "./components/Sites/Sites";
 import Tasks from "./components/Tasks/Tasks"
 import { TranslationProvider } from './Utility/TranslationProvider';
+import useSocketNotifications from './Utility/useSocketNotifications';
 
 import { connect, Provider } from 'react-redux'
 import { bindActionCreators } from 'redux'
@@ -19,11 +20,17 @@ console.log("Version", process.env.REACT_APP_VERSION);
 console.log("Version", process.env);
 
 // test
+function SocketNotificationListener() {
+	useSocketNotifications();
+	return null;
+}
+
 function App() {
 
 	return (
 		<Provider store={store}>
 			<PersistGate loading={null} persistor={persistor}>
+				<SocketNotificationListener />
 				<TranslationProvider defaultLang="he">
 					<Router>
 						<LoginConnected path="/" />
