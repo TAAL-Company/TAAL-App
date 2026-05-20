@@ -51,6 +51,7 @@ function Help(props) {
 
   const [phoneGuide, setPhoneGuide] = useState("error");
   const userId = localStorage.getItem("userID");
+  const routeVideoLink = localStorage.getItem("route_video_link") || '';
   const currentLanguage = sessionStorage.getItem('language')
   const { translate, currentLanguage: dataLanguage } = useTranslator();
   const [translatedTaskName, setTranslatedTaskName] = useState(currentTaskName);
@@ -270,6 +271,15 @@ function Help(props) {
                         <h2 className="secText-en" hidden={generalHelp?.help_text === ""}>
                           {translatedHelpText}
                         </h2>
+                        {routeVideoLink && (
+                          <div style={{ marginTop: '16px', width: '100%' }}>
+                            <video
+                              src={routeVideoLink}
+                              controls
+                              style={{ width: '100%', borderRadius: '8px', maxHeight: '300px' }}
+                            />
+                          </div>
+                        )}
                       </Fragment>
                     </div>
                     <div className="listen-en">
@@ -340,6 +350,15 @@ function Help(props) {
                           <h2 className="secText" hidden={generalHelp?.help_text === ""}>
                           {translatedHelpText}
                         </h2>
+                        {routeVideoLink && (
+                          <div style={{ marginTop: '16px', width: '100%' }}>
+                            <video
+                              src={routeVideoLink}
+                              controls
+                              style={{ width: '100%', borderRadius: '8px', maxHeight: '300px' }}
+                            />
+                          </div>
+                        )}
                         </Fragment>
                       </div>
                       <div className="listen">
@@ -407,6 +426,15 @@ function Help(props) {
                           <h2 className="secText" hidden={generalHelp?.help_text === ""}>
                             {translatedHelpText}
                           </h2>
+                          {routeVideoLink && (
+                            <div style={{ marginTop: '16px', width: '100%' }}>
+                              <video
+                                src={routeVideoLink}
+                                controls
+                                style={{ width: '100%', borderRadius: '8px', maxHeight: '300px' }}
+                              />
+                            </div>
+                          )}
                         </Fragment>
                       </div>
                       <div className="listen">

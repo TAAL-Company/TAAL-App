@@ -153,6 +153,7 @@ export default function Sites(props) {
 
     localStorage.setItem("route_title", routesOfUserInTheSite[index].title.rendered);
     localStorage.setItem("route_id", routesOfUserInTheSite[index].id);
+    localStorage.setItem("route_video_link", routesOfUserInTheSite[index].acf?.video_link || '');
 
     // Expand the selected route (or pack) tasks with loops if provided
     const selected = routesOfUserInTheSite[index];
