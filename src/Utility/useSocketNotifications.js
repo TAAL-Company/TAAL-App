@@ -128,7 +128,12 @@ const useSocketNotifications = () => {
       console.log('[Notifications] Accepting route:', routeId, 'for student:', studentId);
       const res = await fetch(`${clientConfig.baseUrl}/notifications/accept-route`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          ...(localStorage.getItem('accessToken')
+            ? { Authorization: `Bearer ${localStorage.getItem('accessToken')}` }
+            : {}),
+        },
         body: JSON.stringify({ routeId, studentId }),
       });
       if (!res.ok) throw new Error(`accept-route HTTP ${res.status}`);

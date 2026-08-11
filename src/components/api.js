@@ -2,6 +2,34 @@ import wpConfig from "../wp-config";
 import azureConfig from "../azure-config";
 import axios from "axios";
 import { IS_NODE } from "../components/Sites/Sites";
+import clientConfig from "../client-config";
+
+// ── Auth helpers ──────────────────────────────────────────────────────────
+const getJwtHeaders = () => {
+  const token = localStorage.getItem('accessToken');
+  return token ? { Authorization: `Bearer ${token}` } : {};
+};
+
+// Attach JWT to every axios request
+axios.interceptors.request.use((config) => {
+  const token = localStorage.getItem('accessToken');
+  if (token) {
+    config.headers = config.headers ?? {};
+    config.headers['Authorization'] = `Bearer ${token}`;
+  }
+  return config;
+});
+
+// Monkey-patch global fetch so that every fetch() call to the TAAL backend
+// automatically includes the Authorization header.
+const _originalFetch = window.fetch.bind(window);
+window.fetch = (url, options = {}) => {
+  if (typeof url === 'string' && clientConfig.baseUrl && url.startsWith(clientConfig.baseUrl)) {
+    const headers = { ...getJwtHeaders(), ...(options.headers || {}) };
+    return _originalFetch(url, { ...options, headers });
+  }
+  return _originalFetch(url, options);
+};
 
 //function to publish the data in the 'Data Time' table for each task the user has done
 export const postDataTime = (objTime) => {

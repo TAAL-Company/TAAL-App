@@ -19,13 +19,23 @@ import { expandRouteTasksWithLoops, extractPathForSiteWithLoops, addStationDetai
 import posthog from "posthog-js";
 import { convertUsername } from "../functions";
 import { useTranslator } from "../../Utility/TranslationProvider";
-//redux
-// import Spinner from "../assets/Spinner";
 
-
-const userNameApi = process.env.REACT_APP_USERNAME_ACCESSKEY;
-const passwordApi = process.env.REACT_APP_PASSWORD_ACCESSKEY;
-const base64encodedData = Buffer.from(`${userNameApi}:${passwordApi}`).toString('base64');
+/**
+ * Fetches a short-lived anonymous JWT from the backend and stores it in
+ * localStorage so that the axios/fetch interceptors can attach it to all
+ * subsequent API requests made during a QR session.
+ */
+async function acquireAnonymousToken() {
+  try {
+    const res = await fetch(`${clientConfig.baseUrl}/auth/anonymous`, { method: 'POST' });
+    if (res.ok) {
+      const { token } = await res.json();
+      localStorage.setItem('accessToken', token);
+    }
+  } catch (e) {
+    console.warn('Could not acquire anonymous token:', e);
+  }
+}
 
 function DataLanguageSwitcher() {
   const { currentLanguage, setLanguage, showOriginal, setShowOriginal } = useTranslator();
@@ -258,6 +268,7 @@ function Login(props) {
 
       const { separateList, cleanList, site_id, siteName, routeName, fetchedTasks } = result;
       const anonName = language === 'english' ? 'guest' : language === 'arabic' ? 'ضيف' : 'אורח';
+      await acquireAnonymousToken();
       localStorage.setItem('token', 'qr-anonymous-session');
       localStorage.setItem('userName', anonName);
       localStorage.setItem('userID', 'anonymous');
@@ -316,6 +327,7 @@ function Login(props) {
       }
       const { separateList, cleanList, site_id, siteName, routeName, fetchedTasks } = result;
       const anonName = language === 'english' ? 'guest' : language === 'arabic' ? 'ضيف' : 'אורח';
+      await acquireAnonymousToken();
       localStorage.setItem('token', 'qr-anonymous-session');
       localStorage.setItem('userName', anonName);
       localStorage.setItem('userID', 'anonymous');
@@ -354,67 +366,20 @@ function Login(props) {
     event.preventDefault();
 
     setLoading(true);
-    const res = { // wp login
-      data: {
-        "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwczpcL1wvdGFhbC50ZWNoIiwiaWF0IjoxNzEzMzc5MjEzLCJuYmYiOjE3MTMzNzkyMTMsImV4cCI6MTcxNTk3MTIxMywiZGF0YSI6eyJ1c2VyIjp7ImlkIjoiMjAifX19.pp1e68ABpbfUT7PKmUHcQQlNE4LR6Hxuf-mygYifUW8",
-        "user_email": "ilanimax+801@gmail.com",
-        "user_nicename": "sara-levy",
-        "user_display_name": "שרה לוי",
-        "user_ID": "20",
-        "acf": {
-          "ID": "20",
-          "user_login": "Sara Levy",
-          "user_pass": "$P$BeYMG.BS6V.CqLiEWPCDBz0/YwsNE1.",
-          "user_nicename": "sara-levy",
-          "user_email": "ilanimax+801@gmail.com",
-          "user_url": "",
-          "user_registered": "2021-07-27 13:46:00",
-          "user_activation_key": "",
-          "user_status": "0",
-          "display_name": "שרה לוי"
-        }
-      }
-    };
 
-    // const loggedInUser = await loginUser({ user_name: username, phone: password });
-    const loggedInUser = await loginUser({ user_name: username, password: password });
-    if (!loggedInUser) {
+    const loginResponse = await loginUser({ user_name: username, password: password });
+    if (!loginResponse) {
       setError(errormessage);
       setLoading(false);
       return;
     }
 
-    // const routesID = loggedInUser.routes.map(route => route.id);
-    // localStorage.setItem("routes", JSON.stringify(routesID))
+    const { token, user: loggedInUser } = loginResponse;
 
-    // const placesID = loggedInUser.sites.map(site => site.id);
-    // localStorage.setItem("placesID", JSON.stringify(placesID))
-
-    const loggedInUser2 = {
-      "id": "78c4941a-4b31-4b91-a039-5dba27fafbff",
-      "user_name": "TW1",
-      "email": "taalworker+1@gmail.com",
-      "name": "תמר לוי",
-      "phone": "1234",
-      "picture_url": null,
-      "role": "STUDENT",
-      "coachId": null,
-      "cognitiveProfile": {
-        "id": "3594ef80-a0a5-4fbd-9798-2071c5d31b58",
-        "remark": null,
-        "studentId": "78c4941a-4b31-4b91-a039-5dba27fafbff",
-        "value": [],
-      },
-      "coach": null,
-      "routes": [],
-      "tasks": [],
-      "sites": []
-    }
-
-    const { token, user_nicename, user_email, user_ID } = res.data;
-
-    sessionStorage.setItem("token", res.data.token);
-    localStorage.setItem("token", res.data.token);
+    // Store JWT access token for authenticated API requests
+    localStorage.setItem("accessToken", token);
+    sessionStorage.setItem("token", token);
+    localStorage.setItem("token", token);
     localStorage.setItem("userName", convertUsername(loggedInUser.name));
     localStorage.setItem("undecodeduserName", loggedInUser.name);
     localStorage.setItem("userID", loggedInUser.id);
@@ -477,11 +442,8 @@ function Login(props) {
         ]
       }
     }
-    console.log("res:");
-    console.log(res);
-    localStorage.setItem("guidphone", loggedInUser.coach?.phone || res2.acf.guide_phone);
+    localStorage.setItem("guidphone", loggedInUser.coach?.phone || "");
 
-    const extraData = res2.acf ? res2.acf : [];
     console.log("loggedInUser", loggedInUser);
 
     posthog.identify(loggedInUser.name)

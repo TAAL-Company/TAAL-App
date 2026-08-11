@@ -1,9 +1,10 @@
 const clientConfig = {
   siteUrl: "https://taal.tech/",
   // baseUrl: "https://prod-web-app0da5905.azurewebsites.net",
-  baseUrl: 'https://stg-web-app0da5905.azurewebsites.net',
+  // baseUrl: 'https://stg-web-app0da5905.azurewebsites.net',
   // baseUrl: "https://prod-web-with-supertokens.azurewebsites.net/",
   // baseUrl: "http://localhost:3000",
+     baseUrl: "https://staging-gfa2eybwcweaerds.westus2-01.azurewebsites.net",
 };
 // https://taal.tech/
 export default clientConfig;
